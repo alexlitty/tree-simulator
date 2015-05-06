@@ -1,4 +1,4 @@
-SOURCES=main.cpp layer.cpp layer/game.cpp layer/menu.cpp layer/root.cpp resource/font.cpp error.cpp
+SOURCES=main.cpp component/lifeform.cpp component/physical.cpp object/player.cpp layer.cpp layer/game.cpp layer/menu.cpp layer/root.cpp resource/font.cpp error.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 SRCPATH=src/
 INCPATHS=include/

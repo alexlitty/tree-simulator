@@ -12,6 +12,7 @@ tree::layer::root::root()
 : m_window(sf::VideoMode(800, 600), "Tree Simulator"),
   m_layer(nullptr)
 {
+    m_window.setVerticalSyncEnabled(true);
     m_menu = new tree::layer::menu(m_window);
 }
 
