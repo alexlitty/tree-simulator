@@ -40,6 +40,17 @@ bool tree::layer::root::execute(std::vector<sf::Event> &events)
         // Collect events.
         events.clear();
         while (m_window.pollEvent(event)) {
+            // Check for close window event.
+            if (event.type == sf::Event::Closed) {
+                if (m_layer != nullptr) {
+                    delete m_layer;
+                }
+                if (m_menu != nullptr) {
+                    delete m_menu;
+                }
+                break;
+            }
+
             events.push_back(event);
         }
 

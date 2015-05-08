@@ -1,7 +1,6 @@
 #include <layer/game.hpp>
 #include <layer/menu.hpp>
 #include <resource/font.hpp>
-#include <iostream>
 
 // Constructor.
 tree::layer::menu::menu(sf::RenderWindow& window)

@@ -1,12 +1,20 @@
 #ifndef TREESIMULATOR_COMPONENT_PHYSICAL_HPP
 #define TREESIMULATOR_COMPONENT_PHYSICAL_HPP
 
+namespace tree
+{
+    class object;
+}
+
+#include <vector>
 #include <SFML/Graphics.hpp>
 
 namespace tree
 {
     /**
      * A physical object in the game universe.
+     *
+     * Angles are represented in degrees. Positive angular values are clockwise.
      */
     class physical
     {
@@ -16,57 +24,64 @@ namespace tree
         // Current position.
         sf::Vector2f m_position;
 
-        // Current speed.
-        float m_speed_horizontal;
-        float m_speed_vertical;
-
-        // Current acceleration.
-        float m_acceleration_horizontal;
-        float m_acceleration_vertical;
+        // Rotational angle.
+        float m_rotation;
 
     public:
+        // Mass in kilograms.
+        float mass;
+
+        // Velocity in meters per second.
+        sf::Vector2f velocity;
+
+        // Acceleration in meters per second squared.
+        sf::Vector2f acceleration;
+
+        // Rotational speed.
+        float rotation_speed;
+
+        // Rotational speed limit.
+        float rotation_speed_max;
+
+        // Rotational acceleration.
+        float rotation_acceleration;
+
+        /**
+         * Constructor.
+         */
+        physical();
+
         /**
          * Retrieves the graphical transformation caused by physics.
          */
         const sf::Transform& get_physical_transform() const;
 
         /**
-         * Allow time to pass, letting this object move.
+         * Allows time to pass, letting physics change this object.
          */
-        void pass_time(float seconds);
+        void pass_time(float seconds, std::vector<physical*>& objects);
 
         /**
          * Move this object relative to its current position.
          */
-        void move(float horizontal, float vertical);
+        void move(sf::Vector2f& vector);
 
         /**
-         * Get and set position.
+         * Gets and sets position.
          */
         sf::Vector2f get_position() const;
-        void set_position(sf::Vector2f position);
+        void set_position(sf::Vector2f& position);
 
         /**
-         * Get and set speed.
+         * Gets and sets rotation.
          */
-        float get_speed_horizontal() const;
-        float get_speed_vertical() const;
-        void set_speed_horizontal(float amount);
-        void set_speed_vertical(float amount);
+        float get_rotation() const;
+        void set_rotation(float magnitude);
 
         /**
-         * Get and set acceleration.
+         * Perform rotation.
          */
-        float get_acceleration_horizontal() const;
-        float get_acceleration_vertical() const;
-        void set_acceleration_horizontal(float amount);
-        void set_acceleration_vertical(float amount);
-
-        /**
-         * Perform acceleration.
-         */
-        void accelerate_horizontal(float amount);
-        void accelerate_vertical(float amount);
+        void rotate(float magnitude);
     };
 }
 

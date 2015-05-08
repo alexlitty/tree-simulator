@@ -1,10 +1,10 @@
-SOURCES=main.cpp component/lifeform.cpp component/physical.cpp object/player.cpp layer.cpp layer/game.cpp layer/menu.cpp layer/root.cpp resource/font.cpp error.cpp
+SOURCES=main.cpp component/lifeform.cpp component/physical.cpp object/planet.cpp object/player.cpp layer.cpp layer/game.cpp layer/menu.cpp layer/root.cpp math/constant.cpp math/geometry.cpp math/trigonometry.cpp math/vector.cpp resource/font.cpp error.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 SRCPATH=src/
 INCPATHS=include/
 BINPATH=bin
 LDFLAGS=-lGLEW -lsfml-system -lsfml-window -lsfml-graphics
-CFLAGS=-Wall -std=c++11
+CFLAGS=-Wall -std=c++11 -g
 
 # Compilers
 BG_WHITE=$$(tput setab 7)
