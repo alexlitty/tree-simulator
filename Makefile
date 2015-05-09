@@ -1,4 +1,4 @@
-SOURCES=main.cpp component/lifeform.cpp component/physical.cpp object/planet.cpp object/player.cpp layer.cpp layer/game.cpp layer/menu.cpp layer/root.cpp math/constant.cpp math/geometry.cpp math/trigonometry.cpp math/vector.cpp resource/font.cpp error.cpp
+SOURCES=main.cpp component/lifeform.cpp component/physical.cpp constant.cpp object/background/stars.cpp object/planet.cpp object/player.cpp layer.cpp layer/game.cpp layer/menu.cpp layer/root.cpp math/constant.cpp math/geometry.cpp math/random.cpp math/trigonometry.cpp math/vector.cpp physics/boundary.cpp physics/intersect.cpp resource/font.cpp error.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 SRCPATH=src/
 INCPATHS=include/

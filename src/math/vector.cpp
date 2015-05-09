@@ -51,3 +51,9 @@ float tree::math::dot(sf::Vector2f& left, sf::Vector2f& right)
 {
     return (left.x * right.x) + (left.y * right.y);
 }
+
+// Calculates the cross product of two vectors.
+float tree::math::cross(sf::Vector2f& left, sf::Vector2f& right)
+{
+    return (left.x * right.y) - (left.y * right.x);
+}

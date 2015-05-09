@@ -11,6 +11,10 @@ tree::player::player()
     m_shape.setSize(sf::Vector2f(20, 10));
     m_shape.setFillColor(sf::Color::Green);
 
+    //m_shape.setSize(sf::Vector2f(5, 10));
+    //_shape.setFillColor(sf::Color::Blue);
+    //m_shape.setPosition(sf::Vector2f(0, 20));
+
     math::center_origin(m_shape);
     mass = 1000;
 }
@@ -41,4 +45,5 @@ void tree::player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= get_physical_transform();
     target.draw(m_shape, states);
+    //target.draw(m_hat, states);
 }

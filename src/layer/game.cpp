@@ -2,12 +2,24 @@
 #include <set>
 #include <layer/game.hpp>
 #include <object/planet.hpp>
+#include <iostream>
 
 // Constructor.
 tree::layer::game::game(sf::RenderWindow &window)
 : m_window(window),
   m_executing(false)
 {
+    // Initialize backgrounds.
+    for (unsigned int i = 0; i < 10; i++) {
+
+        tree::background::stars *bg = new tree::background::stars(
+            10000, std::pow((i + 2)*1.0f, 2));
+//        10000, 1);
+        m_drawable.push_back(bg);
+        m_background.push_back(bg);
+    }
+
+    // Initialize player.
     sf::Vector2f position(100, 100);
     m_player.set_position(position);
     m_physical.push_back(&m_player);
@@ -20,6 +32,13 @@ tree::layer::game::game(sf::RenderWindow &window)
     object->mass = 5.97e12;
     m_physical.push_back(object);
     m_drawable.push_back(object);
+
+    // Initialize viewport.
+    sf::Vector2f windowSize(
+        static_cast<float>(m_window.getSize().x),
+        static_cast<float>(m_window.getSize().y));
+    m_view.setCenter(sf::Vector2f(0, 0));
+    m_view.setSize(windowSize);
 }
 
 // Deconstructor.
@@ -50,8 +69,6 @@ float tree::layer::game::elapsed_time()
     return seconds.count();
 }
 
-
-#include <iostream>
 // Execute a game tick.
 bool tree::layer::game::execute(std::vector<sf::Event> &events)
 {
@@ -80,15 +97,29 @@ bool tree::layer::game::execute(std::vector<sf::Event> &events)
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
         m_player.thrust(false);
     }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+        return false;
+    }
  
     // Perform physics.
     for (uint32_t i = 0; i < m_physical.size(); i++) {
         m_physical[i]->pass_time(elapsed_time(), m_physical);
     }
 
+    // Adjust viewport.
+    m_view.setCenter(m_player.get_position());
+    m_window.setView(m_view);
+
+    // Adjust backgrounds.
+    for (unsigned int i = 0; i < m_background.size(); i++) {
+        m_background[i]->setViewTarget(m_view.getCenter());
+    }
+
+
     // Draw player.
     for (uint32_t i = 0; i < m_drawable.size(); i++) {
-        m_drawable[i]->draw(m_window, render_states);
+        m_drawable[i]->draw(m_window, m_render_states);
     }
 
     // End this tick.

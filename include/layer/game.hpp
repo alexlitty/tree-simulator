@@ -5,6 +5,7 @@
 #include <vector>
 
 #include <SFML/Graphics.hpp>
+#include "../object/background/stars.hpp"
 #include "../object/player.hpp"
 #include "../layer.hpp"
 
@@ -18,7 +19,10 @@ namespace tree
             sf::RenderWindow &m_window;
 
             // Current rendering state.
-            sf::RenderStates render_states;
+            sf::RenderStates m_render_states;
+
+            // Current viewport.
+            sf::View m_view;
 
             // Main player.
             player m_player;
@@ -34,6 +38,9 @@ namespace tree
 
             // Collection of drawable objects.
             std::vector<tree::drawable*> m_drawable;
+
+            // Background stars.
+            std::vector<tree::background::stars*> m_background;
 
         public:
             /**

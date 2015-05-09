@@ -9,7 +9,6 @@ tree::planet::planet()
     math::center_origin(m_shape);
 }
 
-#include <iostream>
 // Draw the planet.
 void tree::planet::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {

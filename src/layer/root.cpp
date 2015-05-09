@@ -1,19 +1,24 @@
+#include <ctime>
+
 #include <error.hpp>
 #include <layer/game.hpp>
 #include <layer/menu.hpp>
 #include <layer/root.hpp>
+#include <math/random.hpp>
 #include <resource/font.hpp>
-#include <iostream>
 
 /**
  * Constructor.
  */
 tree::layer::root::root()
-: m_window(sf::VideoMode(800, 600), "Tree Simulator"),
+: m_window(sf::VideoMode(1600, 1000), "Tree Simulator"),
   m_layer(nullptr)
 {
     m_window.setVerticalSyncEnabled(true);
     m_menu = new tree::layer::menu(m_window);
+
+    // Seed random number generator.
+    tree::seedRandom(static_cast<unsigned int>(std::time(0)));
 }
 
 /**

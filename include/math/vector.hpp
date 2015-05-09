@@ -31,6 +31,11 @@ namespace tree
          * Calculates the dot product of two vectors.
          */
         float dot(sf::Vector2f& left, sf::Vector2f& right);
+
+        /**
+         * Calculates the cross product of two vectors.
+         */
+        float cross(sf::Vector2f& left, sf::Vector2f& right);
     }
 }
 

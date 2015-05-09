@@ -16,6 +16,9 @@ namespace tree
         // Test shape for player.
         sf::RectangleShape m_shape;
 
+        // A friggin hat for the tree
+        sf::RectangleShape m_hat;
+
         // Power of rotational movements.
         float m_rotation_power;
 
