@@ -1,4 +1,4 @@
-SOURCES=main.cpp component/lifeform.cpp component/physical.cpp constant.cpp object/background/stars.cpp object/planet.cpp object/player.cpp layer.cpp layer/game.cpp layer/menu.cpp layer/root.cpp math/constant.cpp math/geometry.cpp math/random.cpp math/trigonometry.cpp math/vector.cpp physics/boundary.cpp physics/intersect.cpp resource/font.cpp error.cpp
+SOURCES=Main.cpp Component/Lifeform.cpp Component/Physical.cpp Engine/Constant.cpp Object/Background/Stars.cpp Object/Planet.cpp Object/Player.cpp Layer/Type.cpp Layer/Game.cpp Layer/Menu.cpp Layer/Root.cpp Math/Constant.cpp Math/Geometry.cpp Math/Random.cpp Math/Trigonometry.cpp Math/Vector.cpp Physics/Boundary.cpp Physics/Intersect.cpp Resource/Font.cpp Engine/Error.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 SRCPATH=src/
 INCPATHS=include/
@@ -22,6 +22,11 @@ COLOR_RESET=$$(tput sgr 0)
  
 # Goal-Based variables
 GOAL = $(MAKECMDGOALS)
+ifeq ($(GOAL), clean)
+	GOAL = 
+	SOURCE_FILES =
+endif
+
 OBJECTS=$(SOURCES:%.cpp=%.o)
 SOURCE_FILES=$(SOURCES:%=$(SRCPATH)%)
 OBJECT_FILES=$(OBJECTS:%=$(SRCPATH)%)
@@ -39,13 +44,19 @@ $(GOAL): $(SOURCES_FILES) $(EXECUTABLE)
 
 # Link into executable
 $(EXECUTABLE): $(OBJECT_FILES)
-	@echo "$(BG_WHITE)$(FG_GREEN) Creating $@ $(COLOR_RESET)"
+	@echo ""
+	@echo "$(BG_WHITE)$(FG_GREEN) Linking $(COLOR_RESET)"
 	$(CC) $(LDFLAGS) $(OBJECT_FILES) -o $(BINPATH)/$(GOAL)/$@
 	@echo ""
 
 # Compile source into objects
 .cpp.o:
-	@echo "$(BG_WHITE)$(FG_BLUE) Compiling $< $(COLOR_RESET)"
-	@mkdir -p $(dir $@)
+#	@echo "$(BG_WHITE)$(FG_BLUE) Compiling $< $(COLOR_RESET)"
+#	@mkdir -p $(dir $@)
 	$(CC) $(INCFLAGS) $(CFLAGS) -c $< -o $@
-	@echo ""
+#	@echo ""
+
+# Cleaning Target
+.PHONY: clean
+clean:
+	@find . -type f -name '*.o' -delete
