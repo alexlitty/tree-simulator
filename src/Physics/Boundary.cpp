@@ -2,8 +2,10 @@
 
 // Default boundary constructor.
 tree::Boundary::Boundary()
+: info(nullptr),
+  transform(nullptr)
 {
-    info = nullptr;
+
 }
 
 // Line boundary constructor.
@@ -14,7 +16,7 @@ tree::Boundary::Boundary(tree::Line line)
 }
 
 // Box boundary constructor.
-tree::Boundary::Boundary(sf::FloatRect box)
+tree::Boundary::Boundary(tree::Bounding::Box& box)
 : tree::Boundary::Boundary()
 {
     Set(box);
@@ -31,7 +33,7 @@ tree::Boundary::Boundary(tree::Boundary& other)
 
     // Copying a box boundary.
     else if (other.type == tree::Boundary::TYPE::BOX) {
-        Set(*reinterpret_cast<sf::FloatRect*>(other.info));
+        Set(*reinterpret_cast<tree::Bounding::Box*>(other.info));
     }
 }
 
@@ -61,7 +63,7 @@ void tree::Boundary::DeleteInfo()
     if (type == tree::Boundary::TYPE::LINE) {
         delete reinterpret_cast<tree::Line*>(info);
     } else if (type == tree::Boundary::TYPE::BOX) {
-        delete reinterpret_cast<sf::FloatRect*>(info);
+        delete reinterpret_cast<tree::Bounding::Box*>(info);
     }
 }
 
@@ -74,11 +76,11 @@ void tree::Boundary::Set(tree::Line line)
 }
 
 // Assigns new box parameters to this boundary.
-void tree::Boundary::Set(sf::FloatRect box)
+void tree::Boundary::Set(tree::Bounding::Box& box)
 {
     DeleteInfo();
     type = tree::Boundary::TYPE::BOX;
-    info = new sf::FloatRect(box);
+    info = new tree::Bounding::Box(box);
 }
 
 // Checks if this boundary collides with another boundary.
@@ -94,7 +96,20 @@ tree::Boundary& tree::Boundary::operator=(tree::Boundary other)
     return *this;
 }
 
-// Draw this boundary.
+// Draw this boundary. @@@ Only supports boxes
 void tree::Boundary::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+    // Get box parameters.
+    tree::Bounding::Box *box = reinterpret_cast<tree::Bounding::Box*>(info);
+    sf::Vector2f size(box->getSize());
+
+    // Decorate shape.
+    sf::RectangleShape shape(size);
+    shape.setFillColor(sf::Color::Magenta);
+
+    if (transform != nullptr) {
+        states.transform *= transform->getTransform();
+    }
+
+    target.draw(shape);
 }

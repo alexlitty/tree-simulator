@@ -1,9 +1,10 @@
-#ifndef TREESIMULATOR_PHYSICS_BOUNDARY_BOX_HPP
-#define TREESIMULATOR_PHYSICS_BOUNDARY_BOX_HPP
+#ifndef TREESIMULATOR_PHYSICS_BOUNDARY_HPP
+#define TREESIMULATOR_PHYSICS_BOUNDARY_HPP
 
 #include <SFML/Graphics.hpp>
 #include "../Component/Drawable.hpp"
 #include "../Math/Line.hpp"
+#include "Bounding/Box.hpp"
 
 namespace tree
 {
@@ -32,7 +33,7 @@ namespace tree
          *
          * For line boundaries, this will be a tree::Line.
          *
-         * For box boundaries, this will be a sf::FloatRect.
+         * For box boundaries, this will be a tree::Bounding::Box.
          *
          * For ellipse boundaries, this will be a @@@.
          */
@@ -40,12 +41,19 @@ namespace tree
 
     public:
 
+        // The physical transformation of this boundary.
+        sf::Transformable *transform;
+
         /**
-         * Constructors for different boundaries.
+         * Default constructor.
          */
         Boundary();
+
+        /**
+         * Constructors for different bounding methods.
+         */
         Boundary(tree::Line line);
-        Boundary(sf::FloatRect box);
+        Boundary(tree::Bounding::Box& box);
 
         /**
          * Copy constructor.
@@ -80,7 +88,7 @@ namespace tree
          * Assigns new parameters to this boundary.
          */
         void Set(tree::Line line);
-        void Set(sf::FloatRect box);
+        void Set(tree::Bounding::Box& box);
 
         /**
          * Checks if this boundary collides with another boundary.
@@ -96,6 +104,8 @@ namespace tree
 
         /**
          * Draw this boundary.
+         *
+         * Inefficient. Use for debugging only.
          */
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
     };

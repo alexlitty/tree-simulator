@@ -1,4 +1,5 @@
-SOURCES=Main.cpp Component/Lifeform.cpp Component/Physical.cpp Engine/Constant.cpp Object/Background/Stars.cpp Object/Planet.cpp Object/Player.cpp Layer/Type.cpp Layer/Game.cpp Layer/Menu.cpp Layer/Root.cpp Math/Constant.cpp Math/Geometry.cpp Math/Random.cpp Math/Trigonometry.cpp Math/Vector.cpp Physics/Boundary.cpp Physics/Intersect.cpp Resource/Font.cpp Engine/Error.cpp
+#SOURCES=Main.cpp Component/Lifeform.cpp Component/Physical.cpp Engine/Constant.cpp Object/Background/Stars.cpp Object/Planet.cpp Object/Player.cpp Layer/Type.cpp Layer/Game.cpp Layer/Menu.cpp Layer/Root.cpp Math/Constant.cpp Math/Geometry.cpp Math/Random.cpp Math/Trigonometry.cpp Math/Vector.cpp Physics/BoundingPhysics/Boundary.cpp Physics/Intersect.cpp Resource/Font.cpp Engine/Error.cpp
+SOURCES=$(shell find src/ -type f -name '*.cpp')
 OBJECTS=$(SOURCES:.cpp=.o)
 SRCPATH=src/
 INCPATHS=include/
@@ -28,8 +29,10 @@ ifeq ($(GOAL), clean)
 endif
 
 OBJECTS=$(SOURCES:%.cpp=%.o)
-SOURCE_FILES=$(SOURCES:%=$(SRCPATH)%)
-OBJECT_FILES=$(OBJECTS:%=$(SRCPATH)%)
+#SOURCE_FILES=$(SOURCES:%=$(SRCPATH)%)
+#OBJECT_FILES=$(OBJECTS:%=$(SRCPATH)%)
+SOURCE_FILES =$(SOURCES)
+OBJECT_FILES=$(OBJECTS)
 
 # Compilers
 CC_linux64=g++
@@ -56,6 +59,7 @@ $(EXECUTABLE): $(OBJECT_FILES)
 	$(CC) $(INCFLAGS) $(CFLAGS) -c $< -o $@
 #	@echo ""
 
+# Used to find all source files
 # Cleaning Target
 .PHONY: clean
 clean:
