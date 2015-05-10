@@ -2,7 +2,7 @@
 #include <tree/Physics/Intersect.hpp>
 
 // Finds the point where two lines intersect, if it exists.
-bool tree::intersect(sf::Vector2f& A, sf::Vector2f& B, sf::Vector2f& C, sf::Vector2f& D, sf::Vector2f& result)
+bool tree::Intersect::lines(sf::Vector2f& A, sf::Vector2f& B, sf::Vector2f& C, sf::Vector2f& D, sf::Vector2f& result)
 {
     sf::Vector2f R = (B - A);
     sf::Vector2f S = (D - C);
@@ -29,17 +29,18 @@ bool tree::intersect(sf::Vector2f& A, sf::Vector2f& B, sf::Vector2f& C, sf::Vect
     return false;
 }
 
+/*
 // Determines if a box contains a point.
-bool tree::intersect(sf::FloatRect& box, sf::Vector2f& point)
+bool tree::intersect(tree::Bounding::Box& box, sf::Vector2f& point)
 {
-    return (box.top > point.y
-         && box.left < point.x
-         && (box.left + box.width) > point.x
-         && (box.top + box.height) < point.y);
+    return (box.a.y > point.y
+         && box.a.x < point.x
+         && (box.d.x) > point.x
+         && (box.d.y) < point.y);
 }
 
 // Finds the point where a line intersects a box, if it exists.
-bool tree::intersect(sf::FloatRect& box, sf::Vector2f& A, sf::Vector2f& B, sf::Vector2f& result)
+bool tree::intersect(tree::Bounding::Box& box, sf::Vector2f& A, sf::Vector2f& B, sf::Vector2f& result)
 {
     // Starting point is inside box.
     if (tree::intersect(box, A)) {
@@ -47,29 +48,23 @@ bool tree::intersect(sf::FloatRect& box, sf::Vector2f& A, sf::Vector2f& B, sf::V
         return true;
     }
 
-    // intersects top line.
-    float right = box.left + box.width;
-    sf::Vector2f topLeft(box.left, box.top);
-    sf::Vector2f topRight(right, box.top);
-    if (tree::intersect(topLeft, topRight, A, B, result)) {
+    // Intersects top line.
+    if (tree::intersect(box.a, box.b, A, B, result)) {
         return true;
     }
 
-    // intersects left line.
-    float bottom = box.top + box.height;
-    sf::Vector2f bottomLeft(box.left, bottom);
-    if (tree::intersect(topLeft, bottomLeft, A, B, result)) {
+    // Intersects left line.
+    if (tree::intersect(box.a, box.c, A, B, result)) {
         return true;
     }
 
-    // intersects bottom line.
-    sf::Vector2f bottomRight(right, bottom);
-    if (tree::intersect(bottomLeft, bottomRight, A, B, result)) {
+    // Intersects bottom line.
+    if (tree::intersect(box.c, box.d, A, B, result)) {
         return true;
     }
 
-    // intersects right line, or no intersection occurs.
-    return tree::intersect(topRight, bottomRight, A, B, result);
+    // Intersects right line, or no intersection occurs.
+    return tree::intersect(box.d, box.b, A, B, result);
 }
 
 // Determines if two boxes overlap.
@@ -79,4 +74,4 @@ bool tree::intersect(sf::FloatRect A, sf::FloatRect B)
          && (A.left + A.width) > B.left
          && A.top < (B.top + B.height)
          && (A.top + A.height) > B.top);
-}
+}*/

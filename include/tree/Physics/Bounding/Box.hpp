@@ -14,6 +14,12 @@ namespace tree
          */
         struct Box
         {
+            // Local points.
+            sf::Vector2f aOriginal;
+            sf::Vector2f bOriginal;
+            sf::Vector2f cOriginal;
+            sf::Vector2f dOriginal;
+
             // Top-left point.
             sf::Vector2f a;
 
@@ -34,7 +40,7 @@ namespace tree
             /**
              * Constructor, from SFML rectangle.
              */
-            Box(sf::FloatRect& other);
+            Box(sf::FloatRect other);
 
             /**
              * Constructor, from individual points.
@@ -44,10 +50,12 @@ namespace tree
             /**
              * Returns the size of this box.
              */
-            sf::Vector2f getSize() const
-            {
-                return sf::Vector2f(b.x - a.x, d.y - b.y);
-            }
+            sf::Vector2f getSize() const;
+
+            /**
+             * Access the current points by index number.
+             */
+            sf::Vector2f& operator[](unsigned int index);
         };
     }
 }

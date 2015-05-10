@@ -27,7 +27,8 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
     position.x = position.y = 300;
     tree::Planet* object = new tree::Planet;
     object->setPosition(position);
-    object->mass = 5.97e15;
+//    object->mass = 5.97e15;
+    object->mass = 0;
     m_physical.push_back(object);
     m_drawable.push_back(object);
 
@@ -66,6 +67,8 @@ float tree::Layer::Game::elapsedTime()
     m_timer = std::chrono::system_clock::now();
     return seconds.count();
 }
+
+#include <iostream>
 
 // Execute a Game tick.
 bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
@@ -114,10 +117,14 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
         m_background[i]->setViewTarget(m_view.getCenter());
     }
 
-
     // Draw player.
     for (uint32_t i = 0; i < m_drawable.size(); i++) {
         m_drawable[i]->draw(m_window, m_render_states);
+    }
+
+    for (uint32_t i = 0; i < m_physical.size(); i++) {
+        m_physical[i]->boundary.draw(m_window, m_render_states);
+        m_window.draw(m_physical[i]->debug, m_render_states);
     }
 
     // End this tick.

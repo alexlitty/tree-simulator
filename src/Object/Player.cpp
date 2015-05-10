@@ -6,16 +6,18 @@
 tree::Player::Player()
 : tree::Lifeform::Lifeform(10),
   m_rotationPower(4),
-  m_velocityPower(0.1f)
+  m_velocityPower(300.0f)
 {
+    // Initialize shape.
     m_shape.setSize(sf::Vector2f(20, 10));
     m_shape.setFillColor(sf::Color::Green);
-
-    //m_shape.setSize(sf::Vector2f(5, 10));
-    //_shape.setFillColor(sf::Color::Blue);
-    //m_shape.setPosition(sf::Vector2f(0, 20));
-
     Math::centerOrigin(m_shape);
+
+    // Initialize boundary.
+    tree::Bounding::Box box(m_shape.getLocalBounds());
+    boundary.set(box);
+
+    // Other physics options.
     mass = 1000;
 }
 
@@ -28,9 +30,10 @@ void tree::Player::thrust(bool direction)
     );
 
     if (direction) {
-        velocity += delta;
+        accelerate(delta);
     } else {
-        velocity -= delta;
+        delta = -delta;
+        accelerate(delta);
     }
 }
 
@@ -45,5 +48,4 @@ void tree::Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= getPhysicalTransform();
     target.draw(m_shape, states);
-    //target.draw(m_hat, states);
 }

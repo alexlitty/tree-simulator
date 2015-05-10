@@ -3,6 +3,9 @@
 #include <tree/Math/Geometry.hpp>
 #include <tree/Math/Vector.hpp>
 
+// @@@@@
+#include <iostream>
+
 // Constructor.
 tree::Physical::Physical()
 : m_rotation(0),
@@ -11,7 +14,7 @@ tree::Physical::Physical()
   rotationSpeedMax(0),
   rotationAcceleration(0)
 {
-    
+    boundary.transform = &m_physicalTransform.getTransform();
 }
 
 // Retrieves the graphical transformation caused by physics.
@@ -20,7 +23,6 @@ const sf::Transform& tree::Physical::getPhysicalTransform() const
     return m_physicalTransform.getTransform();
 }
 
-#include <iostream>
 // Allows time to pass, letting physics change this object.
 void tree::Physical::passTime(float seconds, std::vector<Physical*>& objects)
 {
@@ -57,11 +59,60 @@ void tree::Physical::passTime(float seconds, std::vector<Physical*>& objects)
         }
     }
     
-    // Perform movement.
-    sf::Vector2f delta(acceleration.x * seconds, acceleration.y * seconds);
-    velocity += delta;
-    move(velocity);
+    // Perform acceleration.
+    velocity += acceleration * seconds;
     acceleration = tree::Math::Vector::ZERO;
+
+    // Move the object while resolving collisions.
+    boundary.update();
+    resolveCollisions(seconds, objects);
+}
+#include <iostream>
+// Resolve collisions on this object.
+void tree::Physical::resolveCollisions(float seconds, std::vector<Physical*>& objects)
+{
+    std::vector<Physical*> collisions;
+    Physical *nearestCollisionObject = nullptr;
+    float collisionDistance, nearestCollisionDistance = -1;
+    sf::Vector2f collisionPoint, nearestCollisionPoint;
+
+    // Determine the trajectory of this object.
+    sf::Vector2f start = getPosition();
+    sf::Vector2f delta = velocity * seconds;
+    sf::Vector2f end = start + delta;
+
+    for (unsigned int i = 0; i < objects.size(); i++) {
+
+        if (objects[i] == this) {
+            continue;
+        }
+
+        // Find collisions against the trajectory.
+        if (objects[i]->boundary.collides(start, end, collisionPoint)) {
+
+            // Debug point upon collision.
+            sf::Vertex temp(collisionPoint, sf::Color::Yellow);
+            debug.append(temp);
+            debug.setPrimitiveType(sf::Points);
+
+            // Look for the nearest collision.
+            collisionDistance = Math::distance(start, collisionPoint);
+            if (nearestCollisionDistance == -1 || collisionDistance < nearestCollisionDistance) {
+                nearestCollisionDistance = collisionDistance;
+                nearestCollisionPoint = collisionPoint;
+                nearestCollisionObject = objects[i];
+            }
+        }
+    }
+
+    // No collision.
+    if (nearestCollisionObject == nullptr) {
+        move(delta);
+    }
+
+    // Or, perform physics for this collision, and pass remaining time.
+    else {
+    }
 }
 
 // Gets position.

@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include "../Physics/Boundary.hpp"
 
 namespace tree
 {
@@ -23,6 +24,12 @@ namespace tree
         float m_rotation;
 
     public:
+        // @@@
+        sf::VertexArray debug;
+
+        // Boundary of this object.
+        Boundary boundary;
+
         // Mass in kilograms.
         float mass;
 
@@ -55,6 +62,11 @@ namespace tree
          * Allows time to pass, letting physics change this object.
          */
         void passTime(float seconds, std::vector<Physical*>& objects);
+
+        /**
+         * Resolve collisions on this object.
+         */
+        void resolveCollisions(float seconds, std::vector<Physical*>& objects);
 
         /**
          * Position methods.
