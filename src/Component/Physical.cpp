@@ -20,24 +20,18 @@ const sf::Transform& tree::Physical::getPhysicalTransform() const
     return m_physicalTransform.getTransform();
 }
 
+#include <iostream>
 // Allows time to pass, letting physics change this object.
 void tree::Physical::passTime(float seconds, std::vector<Physical*>& objects)
 {
     sf::Vector2f gravity;
     float force, magnitude, distance;
 
-    // Position.
-    sf::Vector2f delta(acceleration.x * seconds,
-                       acceleration.y * seconds);
-    velocity += delta;
-    move(velocity);
-
-    // Rotation.
-    magnitude = rotationAcceleration * seconds;
-    rotationSpeed += magnitude;
+    // Perform rotation.
+    rotationSpeed += rotationAcceleration * seconds;
     rotate(rotationSpeed);
 
-    // Influence of other objects.
+    // Gravitational influences.
     for (uint32_t i = 0; i < objects.size(); i++) {
         Physical* object = objects[i];
 
@@ -59,16 +53,15 @@ void tree::Physical::passTime(float seconds, std::vector<Physical*>& objects)
             gravity = Math::setMagnitude(
                 object->getPosition() - getPosition(),
                 magnitude);
-            velocity += gravity;
+            accelerate(gravity);
         }
     }
-}
-
-// Move this object relative to its current position.
-void tree::Physical::move(sf::Vector2f& vector)
-{
-    sf::Vector2f result = getPosition() + vector;
-    setPosition(result);
+    
+    // Perform movement.
+    sf::Vector2f delta(acceleration.x * seconds, acceleration.y * seconds);
+    velocity += delta;
+    move(velocity);
+    acceleration = tree::Math::Vector::ZERO;
 }
 
 // Gets position.
@@ -82,6 +75,19 @@ void tree::Physical::setPosition(sf::Vector2f& position)
 {
     m_position = position;
     m_physicalTransform.setPosition(position);
+}
+
+// Move this object relative to its current position.
+void tree::Physical::move(sf::Vector2f& vector)
+{
+    sf::Vector2f result = getPosition() + vector;
+    setPosition(result);
+}
+
+// Queue this object for acceleration.
+void tree::Physical::accelerate(sf::Vector2f& vector)
+{
+    acceleration += vector;
 }
 
 // Gets rotation.

@@ -27,7 +27,7 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
     position.x = position.y = 300;
     tree::Planet* object = new tree::Planet;
     object->setPosition(position);
-    object->mass = 5.97e12;
+    object->mass = 5.97e15;
     m_physical.push_back(object);
     m_drawable.push_back(object);
 

@@ -29,7 +29,7 @@ namespace tree
         // Velocity in meters per second.
         sf::Vector2f velocity;
 
-        // Acceleration in meters per second squared.
+        // Acceleration to be applied in this tick.
         sf::Vector2f acceleration;
 
         // Rotational speed.
@@ -38,7 +38,7 @@ namespace tree
         // Rotational speed limit.
         float rotationSpeedMax;
 
-        // Rotational acceleration.
+        // Rotational acceleration to be applied in this tick.
         float rotationAcceleration;
 
         /**
@@ -57,25 +57,18 @@ namespace tree
         void passTime(float seconds, std::vector<Physical*>& objects);
 
         /**
-         * Move this object relative to its current position.
-         */
-        void move(sf::Vector2f& vector);
-
-        /**
-         * Gets and sets position.
+         * Position methods.
          */
         sf::Vector2f getPosition() const;
         void setPosition(sf::Vector2f& position);
+        void move(sf::Vector2f& vector);
+        void accelerate(sf::Vector2f& vector);
 
         /**
-         * Gets and sets rotation.
+         * Rotation methods.
          */
         float getRotation() const;
         void setRotation(float magnitude);
-
-        /**
-         * Perform rotation.
-         */
         void rotate(float magnitude);
     };
 }
