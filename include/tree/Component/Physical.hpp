@@ -3,85 +3,18 @@
 
 #include <vector>
 #include <SFML/Graphics.hpp>
-#include "../Physics/Boundary.hpp"
+#include <Box2D/Box2D.h>
 
 namespace tree
 {
     /**
-     * A Physical object in the game universe.
+     * A physical object in the game world.
      *
-     * Angles are represented in degrees. Positive angular values are clockwise.
+     * Physics powered by Box2D.
      */
     class Physical
     {
-        // Graphical transformation caused by physics.
-        sf::Transformable m_physicalTransform;
 
-        // Current position.
-        sf::Vector2f m_position;
-
-        // Rotational angle.
-        float m_rotation;
-
-    public:
-        // @@@
-        sf::VertexArray debug;
-
-        // Boundary of this object.
-        Boundary boundary;
-
-        // Mass in kilograms.
-        float mass;
-
-        // Velocity in meters per second.
-        sf::Vector2f velocity;
-
-        // Acceleration to be applied in this tick.
-        sf::Vector2f acceleration;
-
-        // Rotational speed.
-        float rotationSpeed;
-
-        // Rotational speed limit.
-        float rotationSpeedMax;
-
-        // Rotational acceleration to be applied in this tick.
-        float rotationAcceleration;
-
-        /**
-         * Constructor.
-         */
-        Physical();
-
-        /**
-         * Retrieves the graphical transformation caused by physics.
-         */
-        const sf::Transform& getPhysicalTransform() const;
-
-        /**
-         * Allows time to pass, letting physics change this object.
-         */
-        void passTime(float seconds, std::vector<Physical*>& objects);
-
-        /**
-         * Resolve collisions on this object.
-         */
-        void resolveCollisions(float seconds, std::vector<Physical*>& objects);
-
-        /**
-         * Position methods.
-         */
-        sf::Vector2f getPosition() const;
-        void setPosition(sf::Vector2f& position);
-        void move(sf::Vector2f& vector);
-        void accelerate(sf::Vector2f& vector);
-
-        /**
-         * Rotation methods.
-         */
-        float getRotation() const;
-        void setRotation(float magnitude);
-        void rotate(float magnitude);
     };
 }
 

@@ -18,6 +18,11 @@ namespace tree
         sf::Vector2f getCenter(sf::FloatRect rect);
 
         /**
+         * Finds the center point between two vectors.
+         */
+        sf::Vector2f center(sf::Vector2f left, sf::Vector2f right);
+
+        /**
          * Centers the origin of a shape.
          */
         void centerOrigin(sf::Shape& object);

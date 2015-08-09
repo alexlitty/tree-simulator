@@ -15,6 +15,15 @@ sf::Vector2f tree::Math::getCenter(sf::FloatRect rect)
     );
 }
 
+// Finds the center point between two vectors.
+sf::Vector2f tree::Math::center(sf::Vector2f left, sf::Vector2f right)
+{
+    return sf::Vector2f(
+        (left.x + right.x) / 2,
+        (left.y + right.y) / 2
+    );
+}
+
 // Centers the origin of a shape.
 void tree::Math::centerOrigin(sf::Shape& object)
 {

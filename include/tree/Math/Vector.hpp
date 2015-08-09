@@ -36,6 +36,11 @@ namespace tree
          * Calculates the cross product of two vectors.
          */
         float cross(sf::Vector2f& left, sf::Vector2f& right);
+
+        /**
+         * Calculates the normal of a vector.
+         */
+        sf::Vector2f normal(sf::Vector2f& a, sf::Vector2f& b, bool topRight);
     }
 }
 

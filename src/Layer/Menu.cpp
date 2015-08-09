@@ -7,11 +7,12 @@ tree::Layer::Menu::Menu(sf::RenderWindow& window)
 : m_window(window),
   m_header("Tree Simulator", tree::Font::Header, 60),
   m_subheader("Press any key to be a tree", tree::Font::Header, 26),
+  m_version("Alpha Release - \"Hat Simulator\"", tree::Font::Header, 26),
   m_blinker(0),
   m_fresh(true),
   next(nullptr)
 {
-
+    m_window.setView(m_window.getDefaultView());
 }
 
 // Centers the menu items.
@@ -36,6 +37,13 @@ void tree::Layer::Menu::align()
         center.y - (bounds.height / 2)
         );
     m_subheader.move(0, 22);
+
+    // Align version.
+    bounds = m_version.getLocalBounds();
+    m_version.setPosition(
+        center.x - (bounds.width / 2),
+        size.y - (bounds.height * 2)
+    );
 }
 
 // Runs the menu layer.
@@ -68,8 +76,9 @@ bool tree::Layer::Menu::execute(std::vector<sf::Event> &events)
         }
     }
 
-    // Draw header.
+    // Draw static text.
     m_window.draw(m_header);
+    m_window.draw(m_version);
 
     // Draw and blink subheader.
     if (m_blinker > 40) {
@@ -82,5 +91,6 @@ bool tree::Layer::Menu::execute(std::vector<sf::Event> &events)
     }
     m_subheader.setColor(color);
     m_window.draw(m_subheader);
+
     return true;
 }

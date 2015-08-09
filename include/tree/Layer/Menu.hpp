@@ -16,6 +16,7 @@ namespace tree
             // Text items.
             sf::Text m_header;
             sf::Text m_subheader;
+            sf::Text m_version;
 
             // Counter for blinking the subheader.
             unsigned char m_blinker;

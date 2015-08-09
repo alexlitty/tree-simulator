@@ -16,6 +16,9 @@ namespace tree
         // Test shape for Player.
         sf::RectangleShape m_shape;
 
+        // Test hat for player.
+        sf::RectangleShape m_hat;
+
         // Power of rotational movements.
         float m_rotationPower;
 
@@ -23,6 +26,10 @@ namespace tree
         float m_velocityPower;
 
     public:
+
+        // Color of test hat.
+        sf::Color hatColor;
+
         /**
          * Constructor.
          */

@@ -57,3 +57,19 @@ float tree::Math::cross(sf::Vector2f& left, sf::Vector2f& right)
 {
     return (left.x * right.y) - (left.y * right.x);
 }
+
+// Calculates the normal vector of a line.
+sf::Vector2f tree::Math::normal(sf::Vector2f& a, sf::Vector2f& b, bool topRight)
+{
+    sf::Vector2f result(
+        b.y - a.y,
+        b.x - a.x
+    );
+
+    if (!topRight) {
+        result.x = -result.x;
+    } else {
+        result.y = -result.y;
+    }
+    return result;
+}
