@@ -2,45 +2,52 @@
 #define TREESIMULATOR_MATH_VECTOR
 
 #include <SFML/Graphics.hpp>
+#include <Box2D/Box2D.h>
 
 namespace tree
 {
     namespace Math
     {
         /**
+         * Converts drawing vectors and physical vectors.
+         */
+        sf::Vector2f vector(const b2Vec2 &vec);
+        b2Vec2 vector(const sf::Vector2f &vec);
+
+        /**
          * Computes the magnitude of a vector.
          */
-        float magnitude(sf::Vector2f& vector);
+        float magnitude(b2Vec2 vector);
 
         /**
          * Changes the magnitude of a vector.
          */
-        sf::Vector2f setMagnitude(sf::Vector2f vector, float magnitude);
+        b2Vec2 setMagnitude(b2Vec2 vector, float magnitude);
 
         /**
          * Finds the angle of a vector's direction.
          */
-        float getAngle(sf::Vector2f& vector);
+        float getAngle(b2Vec2 vector);
 
         /**
          * Computes a vector given an angle and magnitude.
          */
-        sf::Vector2f createVector(float angle, float magnitude);
+        b2Vec2 createVector(float angle, float magnitude);
 
         /**
          * Calculates the dot product of two vectors.
          */
-        float dot(sf::Vector2f& left, sf::Vector2f& right);
+        float dot(b2Vec2& left, b2Vec2& right);
 
         /**
          * Calculates the cross product of two vectors.
          */
-        float cross(sf::Vector2f& left, sf::Vector2f& right);
+        float cross(b2Vec2& left, b2Vec2& right);
 
         /**
          * Calculates the normal of a vector.
          */
-        sf::Vector2f normal(sf::Vector2f& a, sf::Vector2f& b, bool topRight);
+        b2Vec2 normal(b2Vec2& a, b2Vec2& b, bool topRight);
     }
 }
 

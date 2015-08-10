@@ -34,9 +34,6 @@ namespace tree
             // Indication that the Game has begun execution.
             bool m_executing;
 
-            // Collection of objects which Physically interact with each other.
-            std::vector<tree::Physical*> m_physical;
-
             // Collection of drawable objects.
             std::vector<tree::Drawable*> m_drawable;
 

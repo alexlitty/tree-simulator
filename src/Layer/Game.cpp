@@ -20,31 +20,19 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
     }
 
     // Initialize player 1.
-    sf::Vector2f position(-500.0f, 0.0f);
-    //m_player1.setPosition(position);
-    m_physical.push_back(&m_player1);
     m_drawable.push_back(&m_player1);
 
-    // Initialize player 2.
-    position = sf::Vector2f(500.0f, 0.0f);
-    //m_player2.setPosition(position);
-    m_physical.push_back(&m_player2);
-    m_drawable.push_back(&m_player2);
-
     // Create a gravity source.
-    position.x = -100.0f;
-    position.y = 2000.0f;
     tree::Planet *object = new tree::Planet;
-    //object->setPosition(position);
-    m_physical.push_back(object);
     m_drawable.push_back(object);
 
-    // Initialize viewport.
+    // Initialize viewport resolution.
     sf::Vector2f windowSize(
         static_cast<float>(m_window.getSize().x),
         static_cast<float>(m_window.getSize().y));
+    float resolution = windowSize.x / windowSize.y;
     m_view.setCenter(sf::Vector2f(0, 0));
-    m_view.setSize(windowSize);
+    m_view.setSize(1 * resolution, 1);
 }
 
 // Deconstructor.
@@ -118,32 +106,11 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
     }
  
     // Perform physics.
-    float time = elapsedTime();
-    for (uint32_t i = 0; i < m_physical.size(); i++) {
-    }
+    Physics::world.Step(1.0 / 120.0f, 8, 3);
 
-    // Get a basic viewport size.
-    sf::Vector2f windowSize = static_cast<sf::Vector2f>(m_window.getSize());
-    //sf::Vector2f playerDistance = m_player1.getPosition() - m_player2.getPosition();
-    float baseViewLength = 100 + 1;
-    if (baseViewLength < windowSize.x) {
-        baseViewLength = windowSize.x;
-    }
-    if (baseViewLength < windowSize.y) {
-        baseViewLength = windowSize.y;
-    }
+    // Update viewport.
+    m_view.setCenter(Math::vector(m_player1.getPosition()));
 
-    // Adjust viewport size to fit window ratio.
-    // @@@
-
-    // Apply new viewport size.
-    sf::Vector2f viewSize;
-    viewSize.x = viewSize.y = baseViewLength;
-    viewSize.x = (viewSize.y / windowSize.y) * windowSize.x;
-    viewSize.y = (viewSize.x / windowSize.x) * windowSize.y;
-    m_view.setSize(viewSize);
-    
-    // Center viewport.
     //m_view.setCenter(Math::center(m_player1.getPosition(), m_player2.getPosition()));
     m_window.setView(m_view);
 

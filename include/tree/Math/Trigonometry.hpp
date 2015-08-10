@@ -9,6 +9,11 @@ namespace tree
          * Converts degrees to radians.
          */
         float radians(float degrees);
+
+        /**
+         * Converts radians to degrees.
+         */
+        float degrees(float radians);
     }
 }
 

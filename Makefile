@@ -1,10 +1,10 @@
-#SOURCES=Main.cpp Component/Lifeform.cpp Component/Physical.cpp Engine/Constant.cpp Object/Background/Stars.cpp Object/Planet.cpp Object/Player.cpp Layer/Type.cpp Layer/Game.cpp Layer/Menu.cpp Layer/Root.cpp Math/Constant.cpp Math/Geometry.cpp Math/Random.cpp Math/Trigonometry.cpp Math/Vector.cpp Resource/Font.cpp Engine/Error.cpp
+#SOURCES=Main.cpp Component/Lifeform.cpp Component/Physical.cpp Engine/Constant.cpp Object/Background/Stars.cpp Object/Particles.cpp Object/Planet.cpp Object/Player.cpp Layer/Type.cpp Layer/Game.cpp Layer/Menu.cpp Layer/Root.cpp Math/Constant.cpp Math/Geometry.cpp Math/Random.cpp Math/Trigonometry.cpp Math/Vector.cpp Resource/Font.cpp Engine/Error.cpp Physics/World.cpp
 SOURCES=$(shell find src/ -type f -name '*.cpp')
 OBJECTS=$(SOURCES:.cpp=.o)
 SRCPATH=src/
 INCPATHS=include/
 BINPATH=bin
-LDFLAGS=-Llib/ -lGLEW -lsfml-system -lsfml-window -lsfml-graphics -lBox2D
+LDFLAGS=-lBox2D -lGLEW -lsfml-system -lsfml-window -lsfml-graphics
 CFLAGS=-Wall -std=c++11 -g
 
 # Compilers

@@ -9,7 +9,7 @@ namespace tree
     class Planet : public Physical, public Drawable
     {
         // Simple shape for the planet.
-        sf::RectangleShape m_shape;
+        sf::CircleShape m_shape;
 
     public:
 

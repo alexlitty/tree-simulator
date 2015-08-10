@@ -6,7 +6,7 @@ tree::Background::Stars::Stars(unsigned int count, float initDistance)
 : m_small(sf::Points, count),
   distance(initDistance)
 {
-    float min = -1E4, max = 1E4;
+    float min = -20, max = 20;
     int result;
     sf::Vector2f position;
 

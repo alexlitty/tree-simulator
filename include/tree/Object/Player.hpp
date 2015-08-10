@@ -5,6 +5,7 @@
 #include "../Component/Drawable.hpp"
 #include "../Component/Lifeform.hpp"
 #include "../Component/Physical.hpp"
+#include "Particles.hpp"
 
 namespace tree
 {
@@ -24,6 +25,9 @@ namespace tree
 
         // Power of non-rotational movements.
         float m_velocityPower;
+
+        // Particles for engine thrust.
+        Particles engineParticles;
 
     public:
 
