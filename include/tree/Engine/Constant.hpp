@@ -7,6 +7,8 @@ namespace tree
 {
     extern const char* const version;
 
+    extern const float GRAVITATIONAL_CONSTANT;
+
     extern const uint16_t COLLISION_WORLD;
     extern const uint16_t COLLISION_NORMAL;
     extern const uint16_t COLLISION_PARTICLES;

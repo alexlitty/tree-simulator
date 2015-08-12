@@ -40,7 +40,7 @@ tree::Player::Player()
     // Physical fixture.
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &pShape;
-    fixtureDef.density = 1.0f;
+    fixtureDef.density = 2.0f;
     fixtureDef.friction = 0.0f;
     fixtureDef.filter.categoryBits = tree::COLLISION_NORMAL;
     fixtureDef.filter.maskBits = tree::COLLISION_WORLD;
@@ -51,8 +51,8 @@ tree::Player::Player()
 void tree::Player::thrust(bool direction)
 {
     m_body->ApplyForceToCenter(
-        tree::Math::createVector(
-            m_body->GetAngle(),
+            tree::Math::createVector(
+                m_body->GetAngle(),
             direction ? m_velocityPower : -m_velocityPower
         ), true
     );

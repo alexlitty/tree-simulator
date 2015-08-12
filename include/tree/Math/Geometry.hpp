@@ -1,6 +1,7 @@
 #ifndef TREESIMULATOR_MATH_GEOMETRY_HPP
 #define TREESIMULATOR_MATH_GEOMETRY_HPP
 
+#include <Box2D/Box2D.h>
 #include <SFML/Graphics.hpp>
 
 namespace tree
@@ -10,7 +11,7 @@ namespace tree
         /**
          * Finds the distance between two vectors.
          */
-        float distance(sf::Vector2f left, sf::Vector2f right);
+        float distance(b2Vec2 left, b2Vec2 right);
 
         /**
          * Finds the center point of a rectangle.

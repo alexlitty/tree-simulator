@@ -1,7 +1,7 @@
 #include <tree/Math/Geometry.hpp>
 
 // Finds the distance between two vectors.
-float tree::Math::distance(sf::Vector2f left, sf::Vector2f right)
+float tree::Math::distance(b2Vec2 left, b2Vec2 right)
 {
     return std::sqrt(std::pow(right.x - left.x, 2) + std::pow(right.y - left.y, 2));
 }

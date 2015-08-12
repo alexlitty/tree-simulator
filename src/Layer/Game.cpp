@@ -24,6 +24,7 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
 
     // Create a gravity source.
     tree::Planet *object = new tree::Planet;
+    m_gravity.push_back(object);
     m_drawable.push_back(object);
 
     // Initialize viewport resolution.
@@ -85,26 +86,11 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
         m_player1.thrust(false);
     }
 
-    // Player two rotate counter-clockwise.
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-        m_player2.rotate(false);
+    // Perform gravity.
+    for (auto gravitySource : m_gravity) {
+        m_player1.applyGravity(*gravitySource);
     }
 
-    // Player two rotate clockwise.
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-        m_player2.rotate(true);
-    }
-
-    // Player two thrust.
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-        m_player2.thrust(true);
-    }
-
-    // Player two brake.
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-        m_player2.thrust(false);
-    }
- 
     // Perform physics.
     Physics::world.Step(1.0 / 120.0f, 8, 3);
 

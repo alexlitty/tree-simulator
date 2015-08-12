@@ -25,7 +25,7 @@ tree::Planet::Planet()
     // Physical fixture.
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &pShape;
-    fixtureDef.density = 1.0f;
+    fixtureDef.density = 3.0E10;
     fixtureDef.friction = 0.0f;
     fixtureDef.filter.categoryBits = tree::COLLISION_WORLD;
     fixtureDef.filter.maskBits = -1;

@@ -44,6 +44,11 @@ namespace tree
         virtual ~Physical();
 
         /**
+         * Gets mass.
+         */
+        float getMass() const;
+
+        /**
          * Gets and sets position.
          */
         b2Vec2 getPosition() const;
@@ -65,6 +70,16 @@ namespace tree
          */
         b2Vec2 getLinearVelocity() const;
         void setLinearVelocity(b2Vec2 &velocity);
+
+        /**
+         * Applies force to this object.
+         */
+        void applyForce(const b2Vec2 &force);
+
+        /**
+         * Applies gravity from a gravity source.
+         */
+        void applyGravity(Physical &other);
 
         /**
          * Adds the physical transform to a drawing state.

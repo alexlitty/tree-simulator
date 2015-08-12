@@ -37,6 +37,9 @@ namespace tree
             // Collection of drawable objects.
             std::vector<tree::Drawable*> m_drawable;
 
+            // Collection of gravity-enabled objects.
+            std::vector<tree::Physical*> m_gravity;
+
             // Background stars.
             std::vector<tree::Background::Stars*> m_background;
 
