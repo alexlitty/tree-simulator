@@ -4,13 +4,14 @@
 #include <tree/Math/Random.hpp>
 #include <tree/Math/Vector.hpp>
 #include <tree/Object/Player.hpp>
+#include <tree/Resource/Color.hpp>
 
 // Constructor.
 tree::Player::Player()
 : tree::Lifeform::Lifeform(10),
   m_rotationPower(0.1f),
   m_velocityPower(0.0025f),
-  engineParticles(120)
+  engineParticles(200, 1500)
 {
     // Initialize shape.
     m_shape.setSize(sf::Vector2f(0.02, 0.01));
@@ -56,28 +57,31 @@ void tree::Player::thrust(bool direction)
         ), true
     );
 
-    b2Vec2 baseEngineVector = this->getPosition() - tree::Math::createVector(m_body->GetAngle(), 0.01f);
-    float displacement = tree::random(0.0005f, 0.005f);
+    b2Vec2 baseEngineVector = this->getPosition() - tree::Math::createVector(this->getAngle(), 0.01f);
 
-    for (unsigned int i = 0; i < 2; i++) {
+    for (unsigned int j = 0; j < 2; j++) {
+        float displacement = tree::random(0.000f, 0.005f);
 
-        b2Vec2 engineVector = baseEngineVector - tree::Math::createVector(
-            m_body->GetAngle() - (tree::Math::PI / 2),
-            (i == 0) ? displacement : -displacement
-        );
+        for (unsigned int i = 0; i < 2; i++) {
 
-        engineParticles.add(
-            engineVector,
-            tree::Math::createVector(
-                -tree::Math::getAngle(this->getPosition() + engineVector) * 1000,
-                200 * (direction ? -m_velocityPower : m_velocityPower)
-            )
-        );
+            b2Vec2 engineVector = baseEngineVector - tree::Math::createVector(
+                m_body->GetAngle() - (tree::Math::PI / 2),
+                (i == 0) ? -displacement : displacement
+            );
+
+            engineParticles.add(
+                engineVector,
+                this->getLinearVelocity() + tree::Math::createVector(
+                    this->getAngle() + (((i==0) ? 1 : -1) * tree::random(-0.5f, 0.785f)),
+                    200 * (direction ? -m_velocityPower : m_velocityPower)
+                ),
+                tree::paletteColor(palette::fire)
+            );
+        }
     }
 }
 
 // Perform a rotation.
-#include <iostream>
 void tree::Player::rotate(bool direction)
 {
     this->addAngle(

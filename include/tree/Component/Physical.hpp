@@ -61,6 +61,12 @@ namespace tree
         void addAngle(float angle);
 
         /**
+         * Gets and sets velocity.
+         */
+        b2Vec2 getLinearVelocity() const;
+        void setLinearVelocity(b2Vec2 &velocity);
+
+        /**
          * Adds the physical transform to a drawing state.
          */
         void addPhysicalTransform(sf::Transform &transform) const;

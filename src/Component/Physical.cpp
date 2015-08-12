@@ -62,6 +62,18 @@ void tree::Physical::addAngle(float angle)
     );
 }
 
+// Gets current linear velocity.
+b2Vec2 tree::Physical::getLinearVelocity() const
+{
+    return m_body->GetLinearVelocity();
+}
+
+// Sets linear velocity.
+void tree::Physical::setLinearVelocity(b2Vec2 &velocity)
+{
+    m_body->SetLinearVelocity(velocity);
+}
+
 // Adds the physical transform to a drawing transform.
 void tree::Physical::addPhysicalTransform(sf::Transform &transform) const
 {
