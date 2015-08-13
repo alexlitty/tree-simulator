@@ -7,6 +7,9 @@
 // Create a body and add it to the physics system.
 void tree::Physical::setBody(b2BodyDef &bodyDef)
 {
+    bodyDef.userData = this;
+    
+    // Delete old body, set new body.
     if (m_body != nullptr) {
         deleteBody();
     }
@@ -30,6 +33,12 @@ tree::Physical::Physical()
 tree::Physical::~Physical()
 {
     deleteBody();
+}
+
+// Handle a collision with another physical object.
+void tree::Physical::onCollision(tree::Physical &other)
+{
+
 }
 
 // Get mass.
@@ -68,6 +77,12 @@ void tree::Physical::addAngle(float angle)
     this->setAngle(
         this->getAngle() + angle
     );
+}
+
+// Sets fixed rotation.
+void tree::Physical::setFixedRotation(bool fixed)
+{
+    return m_body->SetFixedRotation(fixed);
 }
 
 // Gets current linear velocity.

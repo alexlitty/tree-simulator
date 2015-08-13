@@ -4,6 +4,7 @@
 #include <tree/Math/Geometry.hpp>
 #include <tree/Math/Vector.hpp>
 #include <tree/Object/Planet.hpp>
+#include <tree/Physics/Collisions.hpp>
 
 // Constructor.
 tree::Layer::Game::Game(sf::RenderWindow &window)
@@ -39,7 +40,7 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
 // Deconstructor.
 tree::Layer::Game::~Game()
 {
-
+    tree::collisions.clear();
 }
 
 // Return the current timed duration, and restart the timer.

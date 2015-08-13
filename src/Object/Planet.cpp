@@ -26,7 +26,8 @@ tree::Planet::Planet()
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &pShape;
     fixtureDef.density = 3.0E10;
-    fixtureDef.friction = 0.0f;
+    fixtureDef.friction = 0.25f;
+    fixtureDef.restitution = 0.25f;
     fixtureDef.filter.categoryBits = tree::COLLISION_WORLD;
     fixtureDef.filter.maskBits = -1;
     m_body->CreateFixture(&fixtureDef);

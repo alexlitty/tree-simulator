@@ -13,7 +13,7 @@ namespace tree
 {
     namespace Layer
     {
-        class Game : public Layer::Type
+        class Game : public Layer::Type, public b2ContactListener
         {
             // Rendering window for the Game.
             sf::RenderWindow &m_window;

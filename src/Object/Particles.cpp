@@ -56,8 +56,9 @@ tree::Particles::Particles(int max_count, int lifetime)
     m_bodyTemplate.type = b2_dynamicBody;
     m_shapeTemplate.SetAsBox(0.01f, 0.01f);
     m_fixtureTemplate.shape = &m_shapeTemplate;
-    m_fixtureTemplate.density = 1.0f;
+    m_fixtureTemplate.density = 0.0001f;
     m_fixtureTemplate.friction = 0.0f;
+    m_fixtureTemplate.restitution = 1.0f;
     m_fixtureTemplate.filter.categoryBits = tree::COLLISION_PARTICLES;
     m_fixtureTemplate.filter.maskBits = tree::COLLISION_WORLD;
 }

@@ -44,6 +44,11 @@ namespace tree
         virtual ~Physical();
 
         /**
+         * Handle a collision with another physical object.
+         */
+        virtual void onCollision(Physical &other);
+
+        /**
          * Gets mass.
          */
         float getMass() const;
@@ -64,6 +69,11 @@ namespace tree
          * Performs a static rotation.
          */
         void addAngle(float angle);
+
+        /**
+         * Sets fixed rotation.
+         */
+        void setFixedRotation(bool fixed);
 
         /**
          * Gets and sets velocity.

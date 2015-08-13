@@ -1,11 +1,15 @@
 #include <iostream>
 #include <vector>
 #include <tree/Layer/Root.hpp>
+#include <tree/Physics/Collisions.hpp>
 
 int main()
 {
     // Disable SFML output.
     sf::err().rdbuf(nullptr);
+
+    // Prepare Box2D.
+    tree::Physics::world.SetContactListener(&tree::collisions);
 
     // Prepare events container.
     std::vector<sf::Event> events;

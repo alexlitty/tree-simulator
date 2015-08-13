@@ -30,7 +30,7 @@ tree::Player::Player()
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.angularDamping = 100.0f;
-    bodyDef.fixedRotation = false;
+    bodyDef.fixedRotation = true;
     setBody(bodyDef);
 
     // Physical shape.
@@ -41,7 +41,8 @@ tree::Player::Player()
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &pShape;
     fixtureDef.density = 2.0f;
-    fixtureDef.friction = 0.0f;
+    fixtureDef.friction = 0.05f;
+    fixtureDef.restitution = 0.25f;
     fixtureDef.filter.categoryBits = tree::COLLISION_NORMAL;
     fixtureDef.filter.maskBits = tree::COLLISION_WORLD;
     m_body->CreateFixture(&fixtureDef);
@@ -84,9 +85,13 @@ void tree::Player::thrust(bool direction)
 // Perform a rotation.
 void tree::Player::rotate(bool direction)
 {
+    this->setFixedRotation(false);
+
     this->addAngle(
         (direction ? m_rotationPower : -m_rotationPower)
     );
+
+    this->setFixedRotation(true);
 }
 
 // Draw the player.
