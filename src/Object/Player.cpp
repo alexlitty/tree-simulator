@@ -67,6 +67,23 @@ tree::Player::~Player()
     }
 }
 
+// Perform branch actions.
+bool tree::Player::act(tree::Objects &objects)
+{
+    for (auto branch : m_branches) {
+        branch->act(objects);
+    }
+    return true;
+}
+
+// Toggles shooting.
+void tree::Player::toggleShooting(bool isShooting)
+{
+    for (auto branch : m_branches) {
+        branch->activate(isShooting);
+    }
+}
+
 // Perform a thrust.
 void tree::Player::thrust(bool direction)
 {

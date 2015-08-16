@@ -1,11 +1,27 @@
 #ifndef TREESIMULATOR_COMPONENT_ACTOR_HPP
 #define TREESIMULATOR_COMPONENT_ACTOR_HPP
 
+#include <tree/Component/Object.hpp>
+
 namespace tree
 {
-    class Actor
+    /**
+     * An object which performs actions.
+     */
+    class Actor : virtual public Object
     {
-        virtual void act() = 0;
+    public:
+        /**
+         * Constructor.
+         */
+        Actor();
+
+        /**
+         * Perform actions.
+         *
+         * Returns false if this object should be destroyed.
+         */
+        virtual bool act(tree::Objects &objects);
     };
 }
 

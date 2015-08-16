@@ -13,8 +13,6 @@ namespace tree
          */
         class BirchLeaf : public Bullet
         {
-
-
         public:
             void draw(sf::RenderTarget &target, sf::RenderStates states) const;
         };
@@ -24,10 +22,12 @@ namespace tree
          */
         class Birch : public Branch
         {
-            std::vector<BirchLeaf> m_leaves;
-
+            // Drawn shapes.
             sf::CircleShape m_tempShape;
             sf::VertexArray m_branchShape;
+
+            // Shooting clock.
+            sf::Clock m_clock;
 
         public:
             /**
@@ -36,9 +36,9 @@ namespace tree
             Birch(b2Body *parent, b2Vec2 position, b2Vec2 anchor);
 
             /**
-             * Upkeep leaves.
+             * Shoot leaves.
              */
-            void act(std::vector<tree::object> &objects) override;
+            bool act(tree::Objects &objects) override;
 
             /**
              * Draw branch and leaves.

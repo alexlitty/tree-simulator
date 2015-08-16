@@ -65,10 +65,19 @@ tree::branches::Birch::Birch(b2Body *parent, b2Vec2 position, b2Vec2 anchor)
     m_branchShape.append(vertex);
 }
 
-// Upkeep leaves.
-void tree::branches::Birch::act()
+// Shoot leaves.
+bool tree::branches::Birch::act(tree::Objects &objects)
 {
+    if (m_activated) {
+        if (m_clock.getElapsedTime().asMilliseconds() > 200) {
+            m_clock.restart();
+            objects.push_back(
+                new BirchLeaf()
+            );
+        }
+    }
 
+    return true;
 }
 
 // Draw branch and leaves.
@@ -79,9 +88,4 @@ void tree::branches::Birch::draw(sf::RenderTarget &target, sf::RenderStates stat
 
     // Draw node.
     target.draw(m_tempShape, states);
-
-    // Draw leaves.
-    for (auto &leaf : m_leaves) {
-        leaf.draw(target, states);
-    }
 }

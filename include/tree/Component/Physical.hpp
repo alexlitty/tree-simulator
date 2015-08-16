@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include <tree/Component/Object.hpp>
 #include <tree/Physics/World.hpp>
 
 namespace tree
@@ -12,7 +13,7 @@ namespace tree
      *
      * Physics powered by Box2D.
      */
-    class Physical
+    class Physical : virtual public Object
     {
     protected:
 

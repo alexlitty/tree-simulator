@@ -13,7 +13,7 @@ namespace tree
     /**
      * Representation of a Player in the game.
      */
-    class Player : public Lifeform, public Physical, public Drawable
+    class Player : public Actor, public Lifeform, public Physical, public Drawable
     {
         // Test shape for Player.
         sf::RectangleShape m_shape;
@@ -43,6 +43,16 @@ namespace tree
          */
         Player();
         ~Player();
+
+        /**
+         * Perform branch actions.
+         */
+        bool act(tree::Objects &objects) override;
+
+        /**
+         * Toggles shooting.
+         */
+        void toggleShooting(bool isShooting);
 
         /**
          * Performs a thrust.

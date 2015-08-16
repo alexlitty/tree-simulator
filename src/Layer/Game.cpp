@@ -1,11 +1,11 @@
 #include <cmath>
-#include <set>
 #include <tree/Layer/Game.hpp>
 #include <tree/Math/Constant.hpp>
 #include <tree/Math/Geometry.hpp>
 #include <tree/Math/Vector.hpp>
 #include <tree/Object/Planet.hpp>
 #include <tree/Physics/Collisions.hpp>
+#include <tree/Utility/Collection.hpp>
 
 // Constructor.
 tree::Layer::Game::Game(sf::RenderWindow &window)
@@ -15,29 +15,25 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
     // Initialize backgrounds.
     for (unsigned int i = 0; i < 10; i++) {
 
-        tree::Background::Stars *bg = new tree::Background::Stars(
-            10000, std::pow((i + 2)*1.0f, 2));
+        //tree::Background::Stars *bg = new tree::Background::Stars(
+            //10000, std::pow((i + 2)*1.0f, 2));
         //m_drawable.push_back(bg);
         //m_background.push_back(bg);
     }
 
-    // Initialize player 1.
-    //b2Vec2 initPos = b2Vec2(1.0f, -0.3f);
-    //m_player1.setPosition(initPos);
-    m_gravity.push_back(&m_player1);
-    m_drawable.push_back(&m_player1);
+    // Initialize player.
+    m_player = new tree::Player();
+    m_objects.push_back(m_player);
 
     // Create a gravity source.
     tree::Planet *object = new tree::Planet(50.0f, 3E10, b2Vec2(200.0f, 0));
-    m_gravity.push_back(object);
-    m_drawable.push_back(object);
+    m_objects.push_back(object);
 
     // Create another gravity source.
     object = new tree::Planet(10.0f, 3E10, b2Vec2(200.0f, 100.0f));
     b2Vec2 velocity(-150.0f, 0);
     object->setLinearVelocity(velocity);
-    m_gravity.push_back(object);
-    m_drawable.push_back(object);
+    m_objects.push_back(object);
 
     // Initialize viewport resolution.
     sf::Vector2f windowSize(
@@ -51,11 +47,78 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
 // Deconstructor.
 tree::Layer::Game::~Game()
 {
+    // Cleanup physics.
     tree::collisions.clear();
 
-    for (auto physical : m_gravity) {
-        delete physical;
+    // Collect objects to destroy.
+    for (auto drawable : m_drawable) {
+        m_objectsDestroy.insert(drawable);
     }
+    for (auto physical : m_physical) {
+        m_objectsDestroy.insert(physical);
+    }
+    for (auto actor : m_actor) {
+        m_objectsDestroy.insert(actor);
+    }
+    for (auto object : m_objects) {
+        m_objectsDestroy.insert(object);
+    }
+
+    m_objects.clear();
+    updateObjects();
+}
+
+// Update object collections.
+void tree::Layer::Game::updateObjects()
+{
+    // Add new objects.
+    for (auto object : m_objects) {
+
+        if (object->isDrawable()) {
+            m_drawable.push_back(
+                dynamic_cast<tree::Drawable*>(object)
+            );
+        }
+
+        if (object->isPhysical()) {
+            m_physical.push_back(
+                dynamic_cast<tree::Physical*>(object)
+            );
+        }
+
+        if (object->isActor()) {
+            m_actor.push_back(
+                dynamic_cast<tree::Actor*>(object)
+            );
+        }
+    }
+    m_objects.clear();
+
+    // Destroy objects.
+    for (auto object : m_objectsDestroy) {
+
+        // Clear from drawable objects.
+        tree::remove(
+            m_drawable,
+            dynamic_cast<tree::Drawable*>(object)
+        );
+
+        // Clear from physical objects.
+        tree::remove(
+            m_physical,
+            dynamic_cast<tree::Physical*>(object)
+        );
+
+        // Clear from actor objects.
+        tree::remove(
+            m_actor,
+            dynamic_cast<tree::Actor*>(object)
+        );
+        
+        // Destroy object.
+        delete object;
+    }
+    m_objectsDestroy.clear();
 }
 
 // Return the current timed duration, and restart the timer.
@@ -84,27 +147,42 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
 
     // Left key pressed. Rotate counter-clockwise.
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-        m_player1.rotate(false);
+        m_player->rotate(false);
     }
 
     // Right key pressed. Rotate clockwise.
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-        m_player1.rotate(true);
+        m_player->rotate(true);
     }
 
     // Up key pressed, thrust.
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-        m_player1.thrust(true);
+        m_player->thrust(true);
     }
 
     // Down key pressed, brake.
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-        m_player1.thrust(false);
+        m_player->thrust(false);
     }
 
+    // Space key is pressed, shoot.
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+        m_player->toggleShooting(true);
+    } else {
+        m_player->toggleShooting(false);
+    }
+
+    // Perform actions.
+    for (auto actor : m_actor) {
+        if (!actor->act(m_objects)) {
+            m_objectsDestroy.insert(actor);
+        }
+    }
+    updateObjects();
+
     // Perform gravity.
-    for (auto gravitySource : m_gravity) {
-        for (auto gravityTarget : m_gravity) {
+    for (auto gravitySource : m_physical) {
+        for (auto gravityTarget : m_physical) {
             gravityTarget->applyGravity(*gravitySource);
         }
     }
@@ -113,7 +191,7 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
     tree::world.Step(1.0 / 120.0f, 8, 3);
 
     // Update viewport.
-    m_view.setCenter(m_player1.getPixelPosition());
+    m_view.setCenter(m_player->getPixelPosition());
     m_window.setView(m_view);
 
     // Adjust backgrounds.

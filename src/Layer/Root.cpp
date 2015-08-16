@@ -49,9 +49,11 @@ bool tree::Layer::Root::execute(std::vector<sf::Event> &events)
             if (event.type == sf::Event::Closed) {
                 if (m_layer != nullptr) {
                     delete m_layer;
+                    m_layer = nullptr;
                 }
                 if (m_menu != nullptr) {
                     delete m_menu;
+                    m_menu = nullptr;
                 }
                 break;
             }
@@ -77,7 +79,7 @@ bool tree::Layer::Root::execute(std::vector<sf::Event> &events)
 
         // Or, execute menu layer.
         else {
-            if (!m_menu->execute(events)) {
+            if (m_menu != nullptr && !m_menu->execute(events)) {
                 m_layer = m_menu->next;
                 
                 // Remove this menu instance.

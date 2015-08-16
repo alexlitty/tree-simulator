@@ -49,10 +49,8 @@ void tree::Layer::Menu::align()
 // Runs the menu layer.
 bool tree::Layer::Menu::execute(std::vector<sf::Event> &events)
 {
-    if (m_fresh) {
-        m_fresh = false;
-        align();
-    }
+    align();
+    next = nullptr;
     sf::Color color;
 
     // Act on events.

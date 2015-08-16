@@ -17,6 +17,19 @@ namespace tree
             vector.end()
         );
     }
+
+    template <typename T>
+    void remove(std::vector<T*> &vector, T *value)
+    {
+        vector.erase(
+            std::remove(
+                vector.begin(),
+                vector.end(),
+                value
+            ),
+            vector.end()
+        );
+    }
 }
 
 #endif

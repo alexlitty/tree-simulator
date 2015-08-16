@@ -29,7 +29,7 @@ void tree::Physical::deleteBody()
 tree::Physical::Physical()
 : m_body(nullptr)
 {
-
+    m_isPhysical = true;
 }
 
 // Destructor.

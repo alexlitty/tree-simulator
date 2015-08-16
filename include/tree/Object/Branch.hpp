@@ -12,6 +12,7 @@ namespace tree
      */
     class Branch : public Actor, public Drawable
     {
+    protected:
         // Whether the special abilities of this branch are activated.
         bool m_activated;
 

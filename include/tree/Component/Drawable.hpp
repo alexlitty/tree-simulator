@@ -2,12 +2,18 @@
 #define TREESIMULATOR_COMPONENT_DRAWABLE_HPP
 
 #include <SFML/Graphics.hpp>
+#include <tree/Component/Object.hpp>
 
 namespace tree
 {
-    class Drawable : public sf::Drawable
+    class Drawable : virtual public Object, public sf::Drawable
     {
     public:
+        /**
+         * Constructor.
+         */
+        Drawable();
+
         /**
          * Make the draw method public instead of protected.
          */
