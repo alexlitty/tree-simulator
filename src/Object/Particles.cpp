@@ -3,17 +3,11 @@
 #include <tree/Object/Particles.hpp>
 
 // Particle constructor.
-tree::Particle::Particle(b2Body *initBody, sf::Color &initColor)
-: body(initBody),
-  color(initColor)
+tree::Particle::Particle(b2BodyDef &bodyDef, sf::Color &initColor)
+: color(initColor)
 {
+    setBody(bodyDef);
     birthtime = std::chrono::steady_clock::now();
-}
-
-// Particle destructor.
-tree::Particle::~Particle()
-{
-    tree::Physics::world.DestroyBody(body);
 }
 
 // Get the age of this particle in milliseconds.
@@ -54,7 +48,7 @@ tree::Particles::Particles(int max_count, int lifetime)
   m_shapes(sf::Points, 0)
 {
     m_bodyTemplate.type = b2_dynamicBody;
-    m_shapeTemplate.SetAsBox(0.01f, 0.01f);
+    m_shapeTemplate.SetAsBox(1.0f, 1.0f);
     m_fixtureTemplate.shape = &m_shapeTemplate;
     m_fixtureTemplate.density = 0.0001f;
     m_fixtureTemplate.friction = 0.0f;
@@ -79,16 +73,12 @@ void tree::Particles::add(b2Vec2 position, b2Vec2 velocity, sf::Color color)
         this->pop();
     }
 
-    // Create physics body.
+    // Create and add new particle.
     m_bodyTemplate.position = position;
-    b2Body *body = tree::Physics::world.CreateBody(&m_bodyTemplate);
-    body->CreateFixture(&m_fixtureTemplate);
-    body->SetLinearVelocity(velocity);
-
-    // Add particle.
-    m_particles.push_back(
-        new Particle(body, color)
-    );
+    Particle *particle = new Particle(m_bodyTemplate, color);
+    particle->addFixture(m_fixtureTemplate);
+    particle->setLinearVelocity(velocity);
+    m_particles.push_back(particle);
 
     // Add drawing shape.
     if (m_shapes.getVertexCount() < m_max_count) {
@@ -132,7 +122,7 @@ void tree::Particles::draw(sf::RenderTarget &target, sf::RenderStates states) co
         for (auto particle : m_particles) {
 
             // Copy information.
-            m_shapes[i].position = tree::Math::vector(particle->body->GetPosition());
+            m_shapes[i].position = particle->getPixelPosition();
             m_shapes[i].color = particle->color;
             m_shapes[i].color.a = this->getAlpha(particle->getAge());
             i++;

@@ -3,6 +3,7 @@
 #include <tree/Math/Geometry.hpp>
 #include <tree/Math/Random.hpp>
 #include <tree/Math/Vector.hpp>
+#include <tree/Object/Branch/Birch.hpp>
 #include <tree/Object/Player.hpp>
 #include <tree/Resource/Color.hpp>
 
@@ -10,24 +11,25 @@
 tree::Player::Player()
 : tree::Lifeform::Lifeform(10),
   m_rotationPower(0.1f),
-  m_velocityPower(0.0025f),
+  m_velocityPower(250000.0f),
   engineParticles(200, 1500)
 {
     // Initialize shape.
-    m_shape.setSize(sf::Vector2f(0.02, 0.01));
+    m_shape.setSize(tree::pixels(b2Vec2(2.0f, 1.0f)));
     m_shape.setFillColor(sf::Color::Green);
-    Math::centerOrigin(m_shape);
+    //Math::centerOrigin(m_shape);
 
     // Initialize hat.
     hatColor = sf::Color::Magenta;
-    m_hat.setSize(sf::Vector2f(0.005, 0.01));
-    m_hat.move(sf::Vector2f(0.016, 0));
+    m_hat.setSize(tree::pixels(b2Vec2(1.0f, 0.2f)));
+    m_hat.move(tree::pixels(b2Vec2(0, 0.3f)));
     m_hat.setFillColor(hatColor);
     Math::centerOrigin(m_shape);
     m_hat.setOrigin(m_shape.getOrigin());
 
     // Physical body definition.
     b2BodyDef bodyDef;
+    bodyDef.position.Set(0.0f, 0.0f);
     bodyDef.type = b2_dynamicBody;
     bodyDef.angularDamping = 100.0f;
     bodyDef.fixedRotation = true;
@@ -35,17 +37,34 @@ tree::Player::Player()
 
     // Physical shape.
     b2PolygonShape pShape;
-    pShape.SetAsBox(0.02, 0.01);
+    pShape.SetAsBox(1.0f, 0.5f);
 
     // Physical fixture.
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &pShape;
-    fixtureDef.density = 2.0f;
+    fixtureDef.density = 500.0f;
     fixtureDef.friction = 0.05f;
     fixtureDef.restitution = 0.25f;
     fixtureDef.filter.categoryBits = tree::COLLISION_NORMAL;
     fixtureDef.filter.maskBits = tree::COLLISION_WORLD;
     m_body->CreateFixture(&fixtureDef);
+
+    // Test branch.
+    m_branches.push_back(
+        new tree::branches::Birch(
+            this->m_body,
+            m_body->GetLocalPoint(getPosition() + b2Vec2(0.0f, 5.0f)),
+            m_body->GetLocalPoint(getPosition())
+        )
+    );
+}
+
+// Destructor.
+tree::Player::~Player()
+{
+    for (auto branch : m_branches) {
+        delete branch;
+    }
 }
 
 // Perform a thrust.
@@ -58,10 +77,10 @@ void tree::Player::thrust(bool direction)
         ), true
     );
 
-    b2Vec2 baseEngineVector = this->getPosition() - tree::Math::createVector(this->getAngle(), 0.01f);
+    b2Vec2 baseEngineVector = this->getPosition() - tree::Math::createVector(this->getAngle(), 0.1f);
 
     for (unsigned int j = 0; j < 2; j++) {
-        float displacement = tree::random(0.000f, 0.005f);
+        float displacement = tree::random(0.0f, 0.5f);
 
         for (unsigned int i = 0; i < 2; i++) {
 
@@ -97,9 +116,16 @@ void tree::Player::rotate(bool direction)
 // Draw the player.
 void tree::Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+    // Draw engine particles.
     target.draw(engineParticles, states);
 
     addPhysicalTransform(states.transform);
+
+    // Draw branches.
+    for (auto branch : m_branches) {
+        branch->draw(target, states);
+    }
+
     target.draw(m_shape, states);
     target.draw(m_hat, states);
 }

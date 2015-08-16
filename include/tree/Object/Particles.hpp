@@ -3,7 +3,7 @@
 
 #include <chrono>
 #include <list>
-#include <tree/Component/Drawable.hpp>
+#include <tree/Component.hpp>
 #include <tree/Physics/World.hpp>
 
 namespace tree
@@ -13,15 +13,12 @@ namespace tree
      *
      * Not drawable. Particle shapes are kept in a separated vertex array for better performance.
      */
-    class Particle
+    class Particle : public Physical
     {
     public:
 
         // Birthtime of this particle.
         std::chrono::time_point<std::chrono::steady_clock> birthtime;
-
-        // Physical body of this particle.
-        b2Body *body;
 
         // Color of this particle.
         sf::Color color;
@@ -29,12 +26,7 @@ namespace tree
         /**
          * Constructor.
          */
-        Particle(b2Body *initBody, sf::Color &initColor);
-
-        /**
-         * Destructor.
-         */
-        ~Particle();
+        Particle(b2BodyDef &bodyDef, sf::Color &initColor);
 
         /**
          * Get the age of this particle in milliseconds.

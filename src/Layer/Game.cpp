@@ -1,6 +1,7 @@
 #include <cmath>
 #include <set>
 #include <tree/Layer/Game.hpp>
+#include <tree/Math/Constant.hpp>
 #include <tree/Math/Geometry.hpp>
 #include <tree/Math/Vector.hpp>
 #include <tree/Object/Planet.hpp>
@@ -16,15 +17,25 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
 
         tree::Background::Stars *bg = new tree::Background::Stars(
             10000, std::pow((i + 2)*1.0f, 2));
-        m_drawable.push_back(bg);
-        m_background.push_back(bg);
+        //m_drawable.push_back(bg);
+        //m_background.push_back(bg);
     }
 
     // Initialize player 1.
+    //b2Vec2 initPos = b2Vec2(1.0f, -0.3f);
+    //m_player1.setPosition(initPos);
+    m_gravity.push_back(&m_player1);
     m_drawable.push_back(&m_player1);
 
     // Create a gravity source.
-    tree::Planet *object = new tree::Planet;
+    tree::Planet *object = new tree::Planet(50.0f, 3E10, b2Vec2(200.0f, 0));
+    m_gravity.push_back(object);
+    m_drawable.push_back(object);
+
+    // Create another gravity source.
+    object = new tree::Planet(10.0f, 3E10, b2Vec2(200.0f, 100.0f));
+    b2Vec2 velocity(-150.0f, 0);
+    object->setLinearVelocity(velocity);
     m_gravity.push_back(object);
     m_drawable.push_back(object);
 
@@ -34,13 +45,17 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
         static_cast<float>(m_window.getSize().y));
     float resolution = windowSize.x / windowSize.y;
     m_view.setCenter(sf::Vector2f(0, 0));
-    m_view.setSize(1 * resolution, 1);
+    m_view.setSize(tree::pixels(200.0f * resolution), tree::pixels(200.0f));
 }
 
 // Deconstructor.
 tree::Layer::Game::~Game()
 {
     tree::collisions.clear();
+
+    for (auto physical : m_gravity) {
+        delete physical;
+    }
 }
 
 // Return the current timed duration, and restart the timer.
@@ -89,16 +104,16 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
 
     // Perform gravity.
     for (auto gravitySource : m_gravity) {
-        m_player1.applyGravity(*gravitySource);
+        for (auto gravityTarget : m_gravity) {
+            gravityTarget->applyGravity(*gravitySource);
+        }
     }
 
     // Perform physics.
-    Physics::world.Step(1.0 / 120.0f, 8, 3);
+    tree::world.Step(1.0 / 120.0f, 8, 3);
 
     // Update viewport.
-    m_view.setCenter(Math::vector(m_player1.getPosition()));
-
-    //m_view.setCenter(Math::center(m_player1.getPosition(), m_player2.getPosition()));
+    m_view.setCenter(m_player1.getPixelPosition());
     m_window.setView(m_view);
 
     // Adjust backgrounds.
@@ -106,9 +121,9 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
         m_background[i]->setViewTarget(m_view.getCenter());
     }
 
-    // Draw player.
+    // Draw objects.
     for (uint32_t i = 0; i < m_drawable.size(); i++) {
-        m_drawable[i]->draw(m_window, sf::RenderStates::Default);
+        m_drawable[i]->draw(m_window, m_render_states);
     }
 
     // End this tick.

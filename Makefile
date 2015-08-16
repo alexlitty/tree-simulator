@@ -1,4 +1,4 @@
-#SOURCES=Main.cpp Component/Lifeform.cpp Component/Physical.cpp Engine/Constant.cpp Object/Background/Stars.cpp Object/Particles.cpp Object/Planet.cpp Object/Player.cpp Layer/Type.cpp Layer/Game.cpp Layer/Menu.cpp Layer/Root.cpp Math/Constant.cpp Math/Geometry.cpp Math/Random.cpp Math/Trigonometry.cpp Math/Vector.cpp Resource/Color.cpp Resource/Font.cpp Engine/Error.cpp Object/Branch.cpp Object/Branch/Birch.cpp Physics/Collisions.cpp Physics/World.cpp
+#SOURCES=Main.cpp Component/Lifeform.cpp Component/Physical.cpp Engine/Constant.cpp Object/Background/Stars.cpp Object/Particles.cpp Object/Planet.cpp Object/Player.cpp Layer/Type.cpp Layer/Game.cpp Layer/Menu.cpp Layer/Root.cpp Math/Constant.cpp Math/Geometry.cpp Math/Random.cpp Math/Trigonometry.cpp Math/Vector.cpp Resource/Color.cpp Resource/Font.cpp Engine/Error.cpp Object/Branch.cpp Object/Branch/Birch.cpp Physics/Collisions.cpp Physics/Pixels.cpp Physics/World.cpp
 SOURCES=$(shell find src/ -type f -name '*.cpp')
 OBJECTS=$(SOURCES:.cpp=.o)
 SRCPATH=src/

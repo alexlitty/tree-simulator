@@ -20,7 +20,7 @@ tree::Layer::Root::Root()
     // Seed random number generator.
     tree::seedRandom(static_cast<unsigned int>(std::time(0)));
 }
-#include <iostream>
+
 /**
  * Run Tree Simulator.
  */

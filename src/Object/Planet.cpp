@@ -3,29 +3,30 @@
 #include <tree/Object/Planet.hpp>
 
 // Constructor.
-tree::Planet::Planet()
-: m_shape(0.265f, 60)
+tree::Planet::Planet(float radius, float density, b2Vec2 position)
+: m_shape(tree::pixels(radius), 60)
 {
+    this->createsGravity = true;
+
     // Drawn shape.
     m_shape.setFillColor(sf::Color::Red);
     Math::centerOrigin(m_shape);
-    m_shape.setPosition(1.0f, 0.0f);
 
     // Physics body.
     b2BodyDef bodyDef;
+    bodyDef.position = position;
     bodyDef.type = b2_dynamicBody;
     bodyDef.fixedRotation = false;
     setBody(bodyDef);
 
     // Physical shape.
     b2CircleShape pShape;
-    pShape.m_p.Set(1.0f, 0.0f);
-    pShape.m_radius = 0.25f;
+    pShape.m_radius = radius;
 
     // Physical fixture.
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &pShape;
-    fixtureDef.density = 3.0E10;
+    fixtureDef.density = density;
     fixtureDef.friction = 0.25f;
     fixtureDef.restitution = 0.25f;
     fixtureDef.filter.categoryBits = tree::COLLISION_WORLD;

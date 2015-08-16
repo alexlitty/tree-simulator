@@ -16,7 +16,7 @@ namespace tree
         /**
          * Constructor.
          */
-        Planet();
+        Planet(float radius, float density, b2Vec2 position);
 
         /**
          * Draw the planet.

@@ -26,7 +26,6 @@ namespace tree
 
             // Players.
             Player m_player1;
-            Player m_player2;
 
             // Timer, for real-time physics calculations.
             std::chrono::time_point<std::chrono::system_clock> m_timer;

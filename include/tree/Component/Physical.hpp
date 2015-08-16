@@ -31,7 +31,18 @@ namespace tree
          */
         void deleteBody();
 
+        /**
+         * List of active joints.
+         */
+        std::vector<b2Joint*> m_joints;
+
     public:
+
+        // Whether this object creates gravitational forces.
+        bool createsGravity = false;
+
+        // Whether this object feels gravitational forces.
+        bool feelsGravity = true;
 
         /**
          * Constructor.
@@ -42,6 +53,26 @@ namespace tree
          * Destructor.
          */
         virtual ~Physical();
+
+        /**
+         * Add a fixture.
+         */
+        void addFixture(b2FixtureDef &fixtureDef);
+
+        /**
+         * Add a distance joint.
+         */
+        void distanceJoint(Physical &other, b2Vec2 thisPosition, b2Vec2 otherPosition, bool localize = true);
+
+        /**
+         * Adds a joint to be tracked.
+         */
+        void trackJoint(b2Joint *joint);
+
+        /**
+         * Removes a joint.
+         */
+        void removeJoint(b2Joint *joint, bool fromOther = false);
 
         /**
          * Handle a collision with another physical object.
@@ -57,6 +88,7 @@ namespace tree
          * Gets and sets position.
          */
         b2Vec2 getPosition() const;
+        sf::Vector2f getPixelPosition() const;
         void setPosition(b2Vec2 &pos);
 
         /**

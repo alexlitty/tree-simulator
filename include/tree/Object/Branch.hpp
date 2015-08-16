@@ -10,12 +10,15 @@ namespace tree
     /**
      * Base object for all tree branches.
      */
-    class Branch : public Actor, public Drawable, public Physical
+    class Branch : public Actor, public Drawable
     {
         // Whether the special abilities of this branch are activated.
         bool m_activated;
 
     public:
+
+        std::vector<b2Fixture*> fixtures;
+
         /**
          * Activate the special abilities of this branch.
          */

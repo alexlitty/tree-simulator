@@ -2,10 +2,11 @@
 #define TREESIMULATOR_OBJECT_PLAYER_HPP
 
 #include <SFML/Graphics.hpp>
-#include "../Component/Drawable.hpp"
-#include "../Component/Lifeform.hpp"
-#include "../Component/Physical.hpp"
-#include "Particles.hpp"
+#include <tree/Component/Drawable.hpp>
+#include <tree/Component/Lifeform.hpp>
+#include <tree/Component/Physical.hpp>
+#include <tree/Object/Branch.hpp>
+#include <tree/Object/Particles.hpp>
 
 namespace tree
 {
@@ -29,15 +30,19 @@ namespace tree
         // Particles for engine thrust.
         Particles engineParticles;
 
+        // Collection of branches.
+        std::vector<tree::Branch*> m_branches;
+
     public:
 
         // Color of test hat.
         sf::Color hatColor;
 
         /**
-         * Constructor.
+         * Constructor and destructor.
          */
         Player();
+        ~Player();
 
         /**
          * Performs a thrust.
