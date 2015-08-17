@@ -52,7 +52,7 @@ tree::Player::Player()
     // Test branch.
     m_branches.push_back(
         new tree::branches::Birch(
-            this->m_body,
+            this,
             m_body->GetLocalPoint(getPosition() + b2Vec2(0.0f, 5.0f)),
             m_body->GetLocalPoint(getPosition())
         )

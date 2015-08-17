@@ -10,7 +10,7 @@ namespace tree
     /**
      * Base object for all tree branches.
      */
-    class Branch : public Actor, public Drawable
+    class Branch : virtual public Actor, virtual public Drawable
     {
     protected:
         // Whether the special abilities of this branch are activated.

@@ -23,16 +23,11 @@ namespace tree
             sf::RenderStates m_render_states;
 
             // Current viewport.
-            sf::View m_view;
+            sf::View m_viewGame;
+            sf::View m_viewInterface;
 
             // Players.
             Player *m_player;
-
-            // Timer, for real-time physics calculations.
-            std::chrono::time_point<std::chrono::system_clock> m_timer;
-
-            // Indication that the Game has begun execution.
-            bool m_executing;
 
             // Collection of drawable objects.
             std::vector<tree::Drawable*> m_drawable;
@@ -50,6 +45,11 @@ namespace tree
             // Background stars.
             std::vector<tree::Background::Stars*> m_background;
 
+            // FPS information.
+            sf::Text m_framesText;
+            unsigned int m_frames;
+            sf::Clock m_framesClock;
+
         public:
             /**
              * Constructor.
@@ -65,11 +65,6 @@ namespace tree
              * Add temporary objects to permanent collections.
              */
             void updateObjects();
-
-            /**
-             * Return the current timed duration, and restart the timer.
-             */
-            float elapsedTime();
 
             /**
              * Execute the Game.

@@ -5,13 +5,17 @@
 #include <tree/Math/Vector.hpp>
 #include <tree/Object/Planet.hpp>
 #include <tree/Physics/Collisions.hpp>
+#include <tree/Resource/Font.hpp>
 #include <tree/Utility/Collection.hpp>
 
 // Constructor.
 tree::Layer::Game::Game(sf::RenderWindow &window)
-: m_window(window),
-  m_executing(false)
+: m_window(window)
 {
+    m_framesText.setCharacterSize(18);
+    m_framesText.setColor(sf::Color::White);
+    m_framesText.setFont(tree::Font::Header);
+
     // Initialize backgrounds.
     for (unsigned int i = 0; i < 10; i++) {
 
@@ -40,8 +44,8 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
         static_cast<float>(m_window.getSize().x),
         static_cast<float>(m_window.getSize().y));
     float resolution = windowSize.x / windowSize.y;
-    m_view.setCenter(sf::Vector2f(0, 0));
-    m_view.setSize(tree::pixels(200.0f * resolution), tree::pixels(200.0f));
+    m_viewGame.setCenter(sf::Vector2f(0, 0));
+    m_viewGame.setSize(tree::pixels(200.0f * resolution), tree::pixels(200.0f));
 }
 
 // Deconstructor.
@@ -121,25 +125,9 @@ void tree::Layer::Game::updateObjects()
     m_objectsDestroy.clear();
 }
 
-// Return the current timed duration, and restart the timer.
-float tree::Layer::Game::elapsedTime()
-{
-    std::chrono::duration<float> seconds;
-    
-    seconds = std::chrono::system_clock::now() - m_timer;
-    m_timer = std::chrono::system_clock::now();
-    return seconds.count();
-}
-
 // Execute a Game tick.
 bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
 {
-    // Initialize timer.
-    if (!m_executing) {
-        m_executing = true;
-        m_timer = std::chrono::system_clock::now();
-    }
-
     // Reset.
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
         return false;
@@ -173,9 +161,14 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
     }
 
     // Perform actions.
+    static tree::Object *special = nullptr;
     for (auto actor : m_actor) {
         if (!actor->act(m_objects)) {
             m_objectsDestroy.insert(actor);
+        }
+
+        if (m_objects.size() > 0) {
+            special = m_objects.front();
         }
     }
     updateObjects();
@@ -183,26 +176,41 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
     // Perform gravity.
     for (auto gravitySource : m_physical) {
         for (auto gravityTarget : m_physical) {
-            gravityTarget->applyGravity(*gravitySource);
+            gravityTarget->applyGravity(gravitySource);
         }
     }
 
     // Perform physics.
     tree::world.Step(1.0 / 120.0f, 8, 3);
 
-    // Update viewport.
-    m_view.setCenter(m_player->getPixelPosition());
-    m_window.setView(m_view);
+    // Set game view.
+    m_viewGame.setCenter(m_player->getPixelPosition());
+    m_window.setView(m_viewGame);
 
     // Adjust backgrounds.
     for (unsigned int i = 0; i < m_background.size(); i++) {
-        m_background[i]->setViewTarget(m_view.getCenter());
+        m_background[i]->setViewTarget(m_viewGame.getCenter());
     }
 
     // Draw objects.
     for (uint32_t i = 0; i < m_drawable.size(); i++) {
         m_drawable[i]->draw(m_window, m_render_states);
     }
+
+    // Set interface view.
+    m_window.setView(m_viewInterface);
+
+    // Draw FPS information.
+    m_frames++;
+    if (m_frames >= 5) {
+        m_framesText.setString(
+            "FPS - " + std::to_string(
+                static_cast<int>(std::round(m_frames / m_framesClock.restart().asSeconds()))
+            )
+        );
+        m_frames = 0;
+    }
+    m_window.draw(m_framesText);
 
     // End this tick.
     return true;

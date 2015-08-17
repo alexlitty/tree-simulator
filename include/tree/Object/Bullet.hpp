@@ -9,7 +9,7 @@ namespace tree
     /**
      * Base class for all bullets.
      */
-    class Bullet : public Drawable, public Physical
+    class Bullet : virtual public Drawable, virtual public Physical
     {
 
     public:

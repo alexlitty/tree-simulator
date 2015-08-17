@@ -9,11 +9,21 @@ namespace tree
     namespace branches
     {
         /**
-         * Birch leaves, fired by birch branches.
+         * Birch leaf, fired by birch branches.
          */
         class BirchLeaf : public Bullet
         {
+            // Triangle shape.
+            sf::VertexArray m_triangle;
+            sf::Vector2f m_center;
+
         public:
+            /**
+             * Constructor.
+             */
+            BirchLeaf(b2Vec2 position, float angle, b2Vec2 velocity);
+
+            // Draw leaf.
             void draw(sf::RenderTarget &target, sf::RenderStates states) const;
         };
 
@@ -22,6 +32,15 @@ namespace tree
          */
         class Birch : public Branch
         {
+            // Parent body.
+            Physical *m_parent;
+
+            // Initial position.
+            b2Vec2 m_position;
+
+            // Anchor point.
+            b2Vec2 m_anchor;
+
             // Drawn shapes.
             sf::CircleShape m_tempShape;
             sf::VertexArray m_branchShape;
@@ -33,7 +52,7 @@ namespace tree
             /**
              * Constructor.
              */
-            Birch(b2Body *parent, b2Vec2 position, b2Vec2 anchor);
+            Birch(Physical *parent, b2Vec2 position, b2Vec2 anchor);
 
             /**
              * Shoot leaves.

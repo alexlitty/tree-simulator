@@ -1,28 +1,76 @@
 #include <tree/Engine/Constant.hpp>
-#include <tree/Math/Geometry.hpp>
-#include <tree/Math/Vector.hpp>
+#include <tree/Math.hpp>
 #include <tree/Object/Branch/Birch.hpp>
 #include <tree/Resource/Color.hpp>
+
+#include <iostream>
+
+// Birch leaf constructor.
+tree::branches::BirchLeaf::BirchLeaf(b2Vec2 position, float angle, b2Vec2 velocity)
+: m_triangle(sf::Triangles, 0)
+{
+    angle += tree::Math::PI / 2;
+
+    // Drawn shape.
+    sf::Vertex vertex;
+    vertex.color = sf::Color::Blue;
+    vertex.position = sf::Vector2f(0.0f, -0.75f);
+    m_triangle.append(vertex);
+
+    vertex.position = sf::Vector2f(-0.75f, 0.0f);
+    m_triangle.append(vertex);
+
+    vertex.position = sf::Vector2f(0.75f, 0.0f);
+    m_triangle.append(vertex);
+
+    m_center = tree::Math::getCenter(m_triangle);
+    m_center.x *= 2;
+    m_center.y *= 2;
+
+    // Physical body.
+    b2BodyDef bodyDef;
+    bodyDef.type = b2_dynamicBody;
+    bodyDef.position = position;
+    bodyDef.linearVelocity = velocity;
+    bodyDef.fixedRotation = true;
+    this->setBody(bodyDef);
+
+    // Physical shape.
+    b2Vec2 vertices[3];
+    b2PolygonShape shape;
+    for (unsigned int i = 0; i < 3; i++) {
+        vertices[i] = tree::Math::vector(
+            m_triangle[i].position
+        );
+    }
+    shape.Set(vertices, 3);
+
+    // Physical fixture.
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape = &shape;
+    fixtureDef.density = 100.0f;
+    fixtureDef.friction = 0.0f;
+    fixtureDef.restitution = 1.0f;
+    fixtureDef.filter.categoryBits = tree::COLLISION_NORMAL;
+    fixtureDef.filter.maskBits = tree::COLLISION_WORLD;
+    this->addFixture(fixtureDef);
+    this->setAngle(angle);
+}
 
 // Draw birch leaf.
 void tree::branches::BirchLeaf::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-    sf::VertexArray temp;
-    temp.setPrimitiveType(sf::Triangles);
-
-    sf::Vertex test(
-        tree::Math::vector(this->getPosition()),
-        tree::paletteColor(tree::palette::random)
-    );
-
-    temp.append(test);
-
-    target.draw(temp, states);
+    this->addPhysicalTransform(states.transform);
+    states.transform.translate(-m_center);
+    target.draw(m_triangle, states);
 }
 
 // Branch constructor.
-tree::branches::Birch::Birch(b2Body *parent, b2Vec2 position, b2Vec2 anchor)
-: m_tempShape(tree::pixels(0.5f), 60),
+tree::branches::Birch::Birch(Physical *parent, b2Vec2 position, b2Vec2 anchor)
+: m_parent(parent),
+  m_position(position),
+  m_anchor(anchor),
+  m_tempShape(tree::pixels(0.5f), 60),
   m_branchShape(sf::Lines, 2)
 {
     // Node shape.
@@ -38,7 +86,7 @@ tree::branches::Birch::Birch(b2Body *parent, b2Vec2 position, b2Vec2 anchor)
     fixtureDef.restitution = 0.25f;
     fixtureDef.filter.categoryBits = tree::COLLISION_NORMAL;
     fixtureDef.filter.maskBits = tree::COLLISION_WORLD;
-    b2Fixture *fixture = parent->CreateFixture(&fixtureDef);
+    b2Fixture *fixture = parent->addFixture(fixtureDef);
     this->fixtures.push_back(fixture);
 
     // Node visual.
@@ -52,7 +100,7 @@ tree::branches::Birch::Birch(b2Body *parent, b2Vec2 position, b2Vec2 anchor)
 
     // Branch fixture.
     fixtureDef.shape = &branchShape;
-    fixture = parent->CreateFixture(&fixtureDef);
+    fixture = parent->addFixture(fixtureDef);
     this->fixtures.push_back(fixture);
 
     // Branch visual.
@@ -68,19 +116,38 @@ tree::branches::Birch::Birch(b2Body *parent, b2Vec2 position, b2Vec2 anchor)
 // Shoot leaves.
 bool tree::branches::Birch::act(tree::Objects &objects)
 {
+    // Check if it's time to shoot.
     if (m_activated) {
-        if (m_clock.getElapsedTime().asMilliseconds() > 200) {
-            m_clock.restart();
+        if (m_clock.getElapsedTime().asMilliseconds() > 75) {
+
+            // Create new leaf.
             objects.push_back(
-                new BirchLeaf()
+                new BirchLeaf(
+                    m_parent->getPosition(),
+                    /*tree::Math::createVector(
+                        m_parent->getAngle()
+                            + tree::Math::getAngle(m_position),
+                        tree::Math::magnitude(m_position)
+                    ),*/
+                    /*m_parent->getAngledPosition(0.5f)
+                    tree::Math::createVector(
+                        m_parent->getAngle(),
+                        tree::Math::magnitude(m_position)
+                    ),*/
+                    m_parent->getAngle(),
+                    m_parent->getLinearVelocity() + m_parent->getAngledPosition(500.0f) + m_position
+                )
             );
+
+            // Restart shooting timer.
+            m_clock.restart();
         }
     }
 
     return true;
 }
 
-// Draw branch and leaves.
+// Draw branch.
 void tree::branches::Birch::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     // Draw branch.

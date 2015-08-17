@@ -15,6 +15,21 @@ sf::Vector2f tree::Math::getCenter(sf::FloatRect rect)
     );
 }
 
+// Finds the center point of a vertex array.
+sf::Vector2f tree::Math::getCenter(sf::VertexArray array)
+{
+    sf::Vector2f result;
+
+    for (unsigned int i = 0; i < array.getVertexCount(); i++) {
+        result.x += array[i].position.x;
+        result.y += array[i].position.y;
+    }
+
+    result.x /= array.getVertexCount();
+    result.y /= array.getVertexCount();
+    return result;
+}
+
 // Finds the center point between two vectors.
 sf::Vector2f tree::Math::center(sf::Vector2f left, sf::Vector2f right)
 {

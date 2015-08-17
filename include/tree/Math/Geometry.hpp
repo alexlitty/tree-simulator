@@ -19,6 +19,11 @@ namespace tree
         sf::Vector2f getCenter(sf::FloatRect rect);
 
         /**
+         * Finds the center point of a vertex array.
+         */
+        sf::Vector2f getCenter(sf::VertexArray array);
+
+        /**
          * Finds the center point between two vectors.
          */
         sf::Vector2f center(sf::Vector2f left, sf::Vector2f right);

@@ -45,9 +45,9 @@ tree::Physical::~Physical()
 }
 
 // Add a fixture.
-void tree::Physical::addFixture(b2FixtureDef &fixtureDef)
+b2Fixture* tree::Physical::addFixture(b2FixtureDef &fixtureDef)
 {
-    m_body->CreateFixture(&fixtureDef);
+    return m_body->CreateFixture(&fixtureDef);
 }
 
 // Add a distance joint.
@@ -134,6 +134,14 @@ void tree::Physical::setPosition(b2Vec2 &pos)
     m_body->SetTransform(pos, this->getAngle());
 }
 
+// Gets position, plus an angled distance.
+b2Vec2 tree::Physical::getAngledPosition(float magnitude, float angle) const
+{
+    return this->getPosition() + tree::Math::createVector(
+        this->getAngle() + angle, magnitude
+    );
+}
+
 // Gets current angle.
 float tree::Physical::getAngle() const
 {
@@ -181,11 +189,17 @@ void tree::Physical::applyForce(const b2Vec2 &force)
 // Applies gravity from a gravity source.
 void tree::Physical::applyGravity(Physical &other)
 {
-    if (!other.createsGravity || !this->feelsGravity) {
+    this->applyGravity(&other);
+}
+
+// Applies gravity from a gravity source.
+void tree::Physical::applyGravity(Physical *other)
+{
+    if (this == other || !other->createsGravity || !this->feelsGravity) {
         return;
     }
 
-    float distance = Math::distance(this->getPosition(), other.getPosition());
+    float distance = Math::distance(this->getPosition(), other->getPosition());
 
     if (distance == 0) {
         return;
@@ -193,11 +207,11 @@ void tree::Physical::applyGravity(Physical &other)
 
     this->applyForce(
         Math::setMagnitude(
-            other.getPosition() - this->getPosition(),
+            other->getPosition() - this->getPosition(),
 
             tree::GRAVITATIONAL_CONSTANT
             * this->getMass()
-            * other.getMass()
+            * other->getMass()
             / std::pow(distance, 2)
         )
     );

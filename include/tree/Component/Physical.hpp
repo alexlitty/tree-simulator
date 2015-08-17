@@ -58,7 +58,7 @@ namespace tree
         /**
          * Add a fixture.
          */
-        void addFixture(b2FixtureDef &fixtureDef);
+        b2Fixture* addFixture(b2FixtureDef &fixtureDef);
 
         /**
          * Add a distance joint.
@@ -93,6 +93,11 @@ namespace tree
         void setPosition(b2Vec2 &pos);
 
         /**
+         * Gets position, plus an angled distance.
+         */
+        b2Vec2 getAngledPosition(float magnitude, float angle = 0) const;
+
+        /**
          * Gets and sets angle.
          */
         float getAngle() const;
@@ -123,6 +128,7 @@ namespace tree
          * Applies gravity from a gravity source.
          */
         void applyGravity(Physical &other);
+        void applyGravity(Physical *other);
 
         /**
          * Adds the physical transform to a drawing state.
