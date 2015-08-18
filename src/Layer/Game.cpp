@@ -64,6 +64,9 @@ tree::Layer::Game::~Game()
     for (auto actor : m_actor) {
         m_objectsDestroy.insert(actor);
     }
+    for (auto expirable : m_expirable) {
+        m_objectsDestroy.insert(expirable);
+    }
     for (auto object : m_objects) {
         m_objectsDestroy.insert(object);
     }
@@ -95,6 +98,12 @@ void tree::Layer::Game::updateObjects()
                 dynamic_cast<tree::Actor*>(object)
             );
         }
+
+        if (object->isExpirable()) {
+            m_expirable.push_back(
+                dynamic_cast<tree::Expirable*>(object)
+            );
+        }
     }
     m_objects.clear();
 
@@ -117,6 +126,12 @@ void tree::Layer::Game::updateObjects()
         tree::remove(
             m_actor,
             dynamic_cast<tree::Actor*>(object)
+        );
+
+        // Clear from expirable objects.
+        tree::remove(
+            m_expirable,
+            dynamic_cast<tree::Expirable*>(object)
         );
         
         // Destroy object.
@@ -159,6 +174,15 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
     } else {
         m_player->toggleShooting(false);
     }
+
+    // Expire objects.
+    for (auto expirable : m_expirable) {
+        if (expirable->isExpired()) {
+            expirable->expire(m_objects);
+            m_objectsDestroy.insert(expirable);
+        }
+    }
+    updateObjects();
 
     // Perform actions.
     static tree::Object *special = nullptr;

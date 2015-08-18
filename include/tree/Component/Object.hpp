@@ -13,6 +13,8 @@ namespace tree
     protected:
         bool m_isActor = false;
         bool m_isDrawable = false;
+        bool m_isExpirable = false;
+        bool m_isIntel = false;
         bool m_isLifeform = false;
         bool m_isPhysical = false;
 
@@ -21,6 +23,8 @@ namespace tree
 
         bool isActor() const;
         bool isDrawable() const;
+        bool isExpirable() const;
+        bool isIntel() const;
         bool isLifeform() const;
         bool isPhysical() const;
     };

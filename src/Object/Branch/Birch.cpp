@@ -3,11 +3,11 @@
 #include <tree/Object/Branch/Birch.hpp>
 #include <tree/Resource/Color.hpp>
 
-#include <iostream>
-
 // Birch leaf constructor.
 tree::branches::BirchLeaf::BirchLeaf(b2Vec2 position, float angle, b2Vec2 velocity)
-: m_triangle(sf::Triangles, 0)
+: m_triangle(sf::Triangles, 0),
+  m_frameDirection(true),
+  m_frame(1.5f)
 {
     angle += tree::Math::PI / 2;
 
@@ -61,7 +61,21 @@ tree::branches::BirchLeaf::BirchLeaf(b2Vec2 position, float angle, b2Vec2 veloci
 void tree::branches::BirchLeaf::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     this->addPhysicalTransform(states.transform);
+
+    if (m_frame <= 1.0f) {
+        m_frameDirection = true;
+    }
+    if (m_frame >= 3.0f) {
+        m_frameDirection = false;
+    }
+
+    if (m_frameDirection) {
+        m_frame = m_frame + 0.5f;
+    } else {
+        m_frame = m_frame - 0.5f;
+    }
     states.transform.translate(-m_center);
+    states.transform.scale(m_frame, 1);
     target.draw(m_triangle, states);
 }
 
@@ -123,17 +137,12 @@ bool tree::branches::Birch::act(tree::Objects &objects)
             // Create new leaf.
             objects.push_back(
                 new BirchLeaf(
-                    m_parent->getPosition(),
-                    /*tree::Math::createVector(
+                    m_parent->getPosition() +
+                    tree::Math::createVector(
                         m_parent->getAngle()
                             + tree::Math::getAngle(m_position),
                         tree::Math::magnitude(m_position)
-                    ),*/
-                    /*m_parent->getAngledPosition(0.5f)
-                    tree::Math::createVector(
-                        m_parent->getAngle(),
-                        tree::Math::magnitude(m_position)
-                    ),*/
+                    ),
                     m_parent->getAngle(),
                     m_parent->getLinearVelocity() + m_parent->getAngledPosition(500.0f) + m_position
                 )

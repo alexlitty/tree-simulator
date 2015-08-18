@@ -1,8 +1,8 @@
 #ifndef TREESIMULATOR_OBJECT_BRANCH_BIRCH_HPP
 #define TREESIMULATOR_OBJECT_BRANCH_BIRCH_HPP
 
+#include <tree/Component.hpp>
 #include <tree/Object/Branch.hpp>
-#include <tree/Object/Bullet.hpp>
 
 namespace tree
 {
@@ -11,11 +11,17 @@ namespace tree
         /**
          * Birch leaf, fired by birch branches.
          */
-        class BirchLeaf : public Bullet
+        class BirchLeaf
+        : public Drawable,
+          public Expirable,
+          public Physical
         {
+        protected:
             // Triangle shape.
             sf::VertexArray m_triangle;
             sf::Vector2f m_center;
+            mutable bool m_frameDirection;
+            mutable float m_frame;
 
         public:
             /**
@@ -23,7 +29,9 @@ namespace tree
              */
             BirchLeaf(b2Vec2 position, float angle, b2Vec2 velocity);
 
-            // Draw leaf.
+            /**
+             * Draw leaf.
+             */
             void draw(sf::RenderTarget &target, sf::RenderStates states) const;
         };
 

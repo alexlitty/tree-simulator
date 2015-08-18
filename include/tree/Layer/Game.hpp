@@ -6,9 +6,10 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
-#include "../Object/Background/Stars.hpp"
-#include "../Object/Player.hpp"
-#include "Type.hpp"
+#include <tree/Component.hpp>
+#include <tree/Layer/Type.hpp>
+#include <tree/Object/Background/Stars.hpp>
+#include <tree/Object/Player.hpp>
 
 namespace tree
 {
@@ -37,6 +38,9 @@ namespace tree
 
             // Collection of acting objects.
             std::vector<tree::Actor*> m_actor;
+
+            // Collection of expirable objects.
+            std::vector<tree::Expirable*> m_expirable;
 
             // Temporary collections of objects.
             tree::Objects m_objects;
