@@ -2,24 +2,52 @@
 #define TREESIMULATOR_COMPONENT_LIFEFORM_HPP
 
 #include <cstdint>
+#include <tree/Component/Physical.hpp>
 
 namespace tree
 {
+    /**
+     * Factions of lifeforms.
+     */
+    enum class Faction
+    {
+        none,
+        wood,
+        beaver
+    };
+
+    /**
+     * Levels of friendliness.
+     */
+    enum class Opinion
+    {
+        neutral,
+        friendly,
+        hostile
+    };
+
     /**
      * An object with life.
      *
      * Has health properties, which implies living and death conditions.
      */
-    class Lifeform
+    class Lifeform : virtual public Physical
     {
         uint32_t m_healthMax;
         uint32_t m_health;
+
+        Faction m_faction;
 
     public:
         /**
          * Constructor.
          */
-        Lifeform(uint32_t health_max = 1);
+        Lifeform(Faction faction, uint32_t health_max = 1);
+
+        /**
+         * Checks the friendliness of two lifeforms.
+         */
+        Opinion getOpinion(Lifeform &other) const;
 
         /**
          * Retrieves maximum health.

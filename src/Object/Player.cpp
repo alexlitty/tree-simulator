@@ -9,7 +9,7 @@
 
 // Constructor.
 tree::Player::Player()
-: tree::Lifeform::Lifeform(10),
+: tree::Lifeform::Lifeform(tree::Faction::wood, 10),
   m_rotationPower(0.1f),
   m_velocityPower(250000.0f),
   engineParticles(200, 1500)
@@ -33,7 +33,7 @@ tree::Player::Player()
     bodyDef.type = b2_dynamicBody;
     bodyDef.angularDamping = 100.0f;
     bodyDef.fixedRotation = true;
-    setBody(bodyDef);
+    this->setBody(bodyDef);
 
     // Physical shape.
     b2PolygonShape pShape;
@@ -47,7 +47,7 @@ tree::Player::Player()
     fixtureDef.restitution = 0.25f;
     fixtureDef.filter.categoryBits = tree::COLLISION_NORMAL;
     fixtureDef.filter.maskBits = tree::COLLISION_WORLD;
-    m_body->CreateFixture(&fixtureDef);
+    this->addFixture(fixtureDef);
 
     // Test branch.
     m_branches.push_back(

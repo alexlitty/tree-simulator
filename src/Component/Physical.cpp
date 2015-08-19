@@ -186,6 +186,27 @@ void tree::Physical::applyForce(const b2Vec2 &force)
     m_body->ApplyForceToCenter(force, true);
 }
 
+// Applies thrust to this object.
+void tree::Physical::applyThrust(bool direction)
+{
+    m_body->ApplyForceToCenter(
+        tree::Math::createVector(
+            this->getAngle(),
+            direction ? m_thrustPower : -m_thrustPower
+        ),
+        true
+    );
+}
+
+// Applies torque to this object.
+void tree::Physical::applyTorque(bool direction)
+{
+    m_body->ApplyTorque(
+        direction ? m_torquePower : -m_torquePower,
+        true
+    );
+}
+
 // Applies gravity from a gravity source.
 void tree::Physical::applyGravity(Physical &other)
 {

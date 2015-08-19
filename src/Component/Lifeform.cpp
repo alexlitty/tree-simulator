@@ -1,10 +1,22 @@
 #include <tree/Component/Lifeform.hpp>
 
 // Constructor.
-tree::Lifeform::Lifeform(uint32_t health_max)
-: m_healthMax(health_max)
+tree::Lifeform::Lifeform(tree::Faction faction, uint32_t health_max)
+: m_healthMax(health_max),
+  m_faction(faction)
 {
     fillHealth();
+}
+
+tree::Opinion tree::Lifeform::getOpinion(tree::Lifeform &other) const
+{
+    // Be kind to your own.
+    if (this->m_faction == other.m_faction) {
+        return tree::Opinion::friendly;
+    }
+
+    // Be harsh to others.
+    return tree::Opinion::hostile;
 }
 
 // Retrieves maximum health.

@@ -32,10 +32,14 @@ namespace tree
          */
         void deleteBody();
 
-        /**
-         * List of active joints.
-         */
+        // List of active joints.
         std::vector<b2Joint*> m_joints;
+
+        // Thrust power.
+        float m_thrustPower = 75000.0f;
+
+        // Rotation power.
+        float m_torquePower = 7500000.0f;
 
     public:
 
@@ -123,6 +127,20 @@ namespace tree
          * Applies force to this object.
          */
         void applyForce(const b2Vec2 &force);
+
+        /**
+         * Applies thrust to this object.
+         *
+         * Uses internal thrust power.
+         */
+        void applyThrust(bool direction);
+
+        /**
+         * Applies torque to this object.
+         *
+         * Uses internal torque power.
+         */
+        void applyTorque(bool direction);
 
         /**
          * Applies gravity from a gravity source.

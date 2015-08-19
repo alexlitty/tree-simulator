@@ -1,12 +1,15 @@
 #ifndef TREESIMULATOR_COMPONENT_INTEL_HPP
 #define TREESIMULATOR_COMPONENT_INTEL_HPP
 
-#include <Box2D/Box2D.h>
-#include <tree/Component/Object.hpp>
+#include <tree/Component/Actor.hpp>
+#include <tree/Component/Physical.hpp>
 
 namespace tree
 {
-    class Intel : virtual public Object
+    /**
+     * A being of intelligence.
+     */
+    class Intel : virtual public Actor, virtual public Physical
     {
 
         b2Vec2 m_intelTarget;
@@ -18,9 +21,14 @@ namespace tree
         Intel();
 
         /**
-         * Set the current target.
+         * Attempt to face a target.
          */
-        //void setIntelTarget(b2Vec2 &target);
+        void faceTarget(b2Vec2 &target);
+
+        /**
+         * Blindly move toward a target position.
+         */
+        void moveBlindly(b2Vec2 &target);
     };
 }
 

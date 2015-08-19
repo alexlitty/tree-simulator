@@ -3,10 +3,14 @@
 #include <tree/Math/Constant.hpp>
 #include <tree/Math/Geometry.hpp>
 #include <tree/Math/Vector.hpp>
+#include <tree/Object/Character/Beaver.hpp>
 #include <tree/Object/Planet.hpp>
 #include <tree/Physics/Collisions.hpp>
 #include <tree/Resource/Font.hpp>
 #include <tree/Utility/Collection.hpp>
+
+// @@
+#include <iostream>
 
 // Constructor.
 tree::Layer::Game::Game(sf::RenderWindow &window)
@@ -30,14 +34,20 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
     m_objects.push_back(m_player);
 
     // Create a gravity source.
-    tree::Planet *object = new tree::Planet(50.0f, 3E10, b2Vec2(200.0f, 0));
-    m_objects.push_back(object);
+    tree::Planet *planet = new tree::Planet(50.0f, 3E10, b2Vec2(200.0f, 0));
+    m_objects.push_back(planet);
 
     // Create another gravity source.
-    object = new tree::Planet(10.0f, 3E10, b2Vec2(200.0f, 100.0f));
+    planet = new tree::Planet(10.0f, 3E10, b2Vec2(200.0f, 100.0f));
     b2Vec2 velocity(-150.0f, 0);
-    object->setLinearVelocity(velocity);
-    m_objects.push_back(object);
+    planet->setLinearVelocity(velocity);
+    m_objects.push_back(planet);
+
+    // Create beaver.
+    m_objects.push_back(
+        new tree::character::Beaver(b2Vec2(-50.0f, 0))
+    );
+    std::cout << m_objects.back()->isPhysical() << std::endl;
 
     // Initialize viewport resolution.
     sf::Vector2f windowSize(
@@ -185,14 +195,9 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
     updateObjects();
 
     // Perform actions.
-    static tree::Object *special = nullptr;
     for (auto actor : m_actor) {
         if (!actor->act(m_objects)) {
             m_objectsDestroy.insert(actor);
-        }
-
-        if (m_objects.size() > 0) {
-            special = m_objects.front();
         }
     }
     updateObjects();

@@ -13,7 +13,7 @@ namespace tree
     /**
      * Representation of a Player in the game.
      */
-    class Player : public Actor, public Lifeform, public Physical, public Drawable
+    class Player : public Actor, public Lifeform, public Drawable
     {
         // Test shape for Player.
         sf::RectangleShape m_shape;
