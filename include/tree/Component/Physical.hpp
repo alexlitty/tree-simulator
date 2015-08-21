@@ -35,11 +35,14 @@ namespace tree
         // List of active joints.
         std::vector<b2Joint*> m_joints;
 
-        // Thrust power.
-        float m_thrustPower = 75000.0f;
+        // Default thrust power.
+        float m_thrustPower = 7500.0f;
 
-        // Rotation power.
-        float m_torquePower = 7500000.0f;
+        // Default torque power.
+        float m_torquePower = 75000.0f;
+
+        // Default rotation power.
+        float m_rotationPower = 0.1f;
 
     public:
 
@@ -108,13 +111,15 @@ namespace tree
         void setAngle(float angle);
 
         /**
-         * Performs a static rotation.
+         * Performs a rotation.
          */
-        void addAngle(float angle);
+        void rotate(bool direction);
+        void rotate(float angle);
 
         /**
-         * Sets fixed rotation.
+         * Gets and sets fixed rotation.
          */
+        bool getFixedRotation() const;
         void setFixedRotation(bool fixed);
 
         /**

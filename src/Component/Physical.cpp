@@ -145,21 +145,39 @@ b2Vec2 tree::Physical::getAngledPosition(float magnitude, float angle) const
 // Gets current angle.
 float tree::Physical::getAngle() const
 {
-    return m_body->GetAngle();
+    return tree::angle(m_body->GetAngle());
 }
 
 // Sets current angle.
 void tree::Physical::setAngle(float angle)
 {
+    angle = tree::angle(angle);
+    bool originalValue = this->getFixedRotation();
+    this->setFixedRotation(false);
     m_body->SetTransform(this->getPosition(), angle);
+    this->setFixedRotation(originalValue);
 }
 
-// Performs a static rotation.
-void tree::Physical::addAngle(float angle)
+// Performs a rotation with default power.
+void tree::Physical::rotate(bool direction)
+{
+    this->rotate(
+        direction ? m_rotationPower : -m_rotationPower
+    );
+}
+
+// Performs a rotation.
+void tree::Physical::rotate(float angle)
 {
     this->setAngle(
         this->getAngle() + angle
     );
+}
+
+// Gets fixed rotation.
+bool tree::Physical::getFixedRotation() const
+{
+    return m_body->IsFixedRotation();
 }
 
 // Sets fixed rotation.

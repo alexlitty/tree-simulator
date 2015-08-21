@@ -5,6 +5,8 @@
 tree::character::Beaver::Beaver(b2Vec2 position)
 : tree::Lifeform::Lifeform(tree::Faction::beaver, 10)
 {
+    m_thrustPower = 1E4;
+
     // Initialize shape.
     m_tempShape.setSize(tree::pixels(b2Vec2(3.0f, 1.5f)));
     m_tempShape.setFillColor(sf::Color::Yellow);
@@ -15,7 +17,7 @@ tree::character::Beaver::Beaver(b2Vec2 position)
     bodyDef.position = position;
     bodyDef.type = b2_dynamicBody;
     bodyDef.angularDamping = 0.0f;
-    bodyDef.fixedRotation = false;
+    bodyDef.fixedRotation = true;
     this->setBody(bodyDef);
 
     // Physical shape.
@@ -25,7 +27,7 @@ tree::character::Beaver::Beaver(b2Vec2 position)
     // Physical fixture.
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &pShape;
-    fixtureDef.density = 500.0f;
+    fixtureDef.density = 100.0f;
     fixtureDef.friction = 0.05f;
     fixtureDef.restitution = 0.25;
     fixtureDef.filter.categoryBits = tree::COLLISION_WORLD;
@@ -36,7 +38,7 @@ tree::character::Beaver::Beaver(b2Vec2 position)
 // Be a beaver.
 bool tree::character::Beaver::act(tree::Objects &objects)
 {
-    b2Vec2 target(0.0f, 0.0f);
+    b2Vec2 target(200.0f, 0.0f);
     this->moveBlindly(target);
     return true;
 }

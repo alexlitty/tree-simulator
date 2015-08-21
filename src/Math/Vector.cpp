@@ -1,6 +1,32 @@
 #include <cmath>
-#include <tree/Math/Vector.hpp>
-#include <tree/Math/Trigonometry.hpp>
+#include <tree/Math.hpp>
+
+// Reduces an angle.
+float tree::angle(float a)
+{
+    if (a <= PI && a >= -PI) {
+        return a;
+    }
+    return a - TWO_PI * std::floor(
+        (a + PI) / TWO_PI
+    );
+}
+
+// Finds the angle between two vectors.
+float tree::getAngle(b2Vec2 point, b2Vec2 target)
+{
+    b2Vec2 sub = target - point;
+
+    // Prevent division by zero.
+    if (sub.x == 0 || sub.y == 0) {
+        return 0.0f;
+    }
+
+    // Return angle.
+    return tree::angle(
+        std::atan2(sub.y, sub.x)
+    );
+}
 
 // Converts physics vectors to drawing vectors.
 sf::Vector2f tree::Math::vector(const b2Vec2 &vec)
@@ -44,7 +70,7 @@ float tree::Math::getAngle(b2Vec2 vector)
     // Reference vector, where 0 degrees is.
     b2Vec2 start(1.0f, 0);
 
-    float result = tree::Math::dot(vector, start);
+    float result = tree::dot(vector, start);
     result /= tree::Math::magnitude(vector) * tree::Math::magnitude(start);
     return std::acos(result);
 }
@@ -59,7 +85,7 @@ b2Vec2 tree::Math::createVector(float angle, float magnitude)
 }
 
 // Calculates the dot product of two vectors.
-float tree::Math::dot(b2Vec2& left, b2Vec2& right)
+float tree::dot(b2Vec2& left, b2Vec2& right)
 {
     return (left.x * right.x) + (left.y * right.y);
 }

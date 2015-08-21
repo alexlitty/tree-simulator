@@ -4,14 +4,17 @@
 // Attempt to face a target.
 void tree::Intel::faceTarget(b2Vec2 &target)
 {
-    float deltaAngle = tree::Math::getAngle(
-        target - this->getPosition()
+    float deltaAngle = tree::getAngle(
+        this->getPosition(), target
     );
 
-    if (deltaAngle < 0) {
-        this->applyTorque(false);
-    } else {
-        this->applyTorque(true);
+    float angle = tree::angle(this->getAngle() - deltaAngle);
+    if (!tree::similar(angle, 0.0f, 0.1f)) {
+        if (angle < 0.0f) {
+            this->rotate(true);
+        } else {
+            this->rotate(false);
+        }
     }
 }
 

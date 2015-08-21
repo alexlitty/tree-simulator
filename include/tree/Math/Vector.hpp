@@ -6,6 +6,21 @@
 
 namespace tree
 {
+    /**
+     * Reduces an angle.
+     */
+    float angle(float a);
+
+    /**
+     * Finds the angle between two points.
+     */
+    float getAngle(b2Vec2 point, b2Vec2 target);
+
+    /**
+     * Calculates the dot product of two vectors.
+     */
+    float dot(b2Vec2& left, b2Vec2& right);
+
     namespace Math
     {
         /**
@@ -33,11 +48,6 @@ namespace tree
          * Computes a vector given an angle and magnitude.
          */
         b2Vec2 createVector(float angle, float magnitude);
-
-        /**
-         * Calculates the dot product of two vectors.
-         */
-        float dot(b2Vec2& left, b2Vec2& right);
 
         /**
          * Calculates the cross product of two vectors.

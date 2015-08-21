@@ -5,6 +5,10 @@
 
 namespace tree
 {
+    extern const float PI;
+    extern const float TWO_PI;
+    extern const float PI_HALF;
+
     namespace Math
     {
         extern const float PI;

@@ -21,12 +21,6 @@ namespace tree
         // Test hat for player.
         sf::RectangleShape m_hat;
 
-        // Power of rotational movements.
-        float m_rotationPower;
-
-        // Power of non-rotational movements.
-        float m_velocityPower;
-
         // Particles for engine thrust.
         Particles engineParticles;
 
@@ -60,13 +54,6 @@ namespace tree
          * If parameter is false, performs a brake.
          */
         void thrust(bool direction);
-
-        /**
-         * Perform a rotation.
-         *
-         * True indicates clockwise, false indicates counter-clockwise.
-         */
-        void rotate(bool direction);
 
         /**
          * Draw the player.

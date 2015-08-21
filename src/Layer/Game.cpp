@@ -10,7 +10,6 @@
 #include <tree/Utility/Collection.hpp>
 
 // @@
-#include <iostream>
 
 // Constructor.
 tree::Layer::Game::Game(sf::RenderWindow &window)
@@ -47,7 +46,6 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
     m_objects.push_back(
         new tree::character::Beaver(b2Vec2(-50.0f, 0))
     );
-    std::cout << m_objects.back()->isPhysical() << std::endl;
 
     // Initialize viewport resolution.
     sf::Vector2f windowSize(
@@ -210,7 +208,7 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
     }
 
     // Perform physics.
-    tree::world.Step(1.0 / 120.0f, 8, 3);
+    tree::world.Step(1.0 / 120.0f, 20, 20);
 
     // Set game view.
     m_viewGame.setCenter(m_player->getPixelPosition());

@@ -10,10 +10,9 @@
 // Constructor.
 tree::Player::Player()
 : tree::Lifeform::Lifeform(tree::Faction::wood, 10),
-  m_rotationPower(0.1f),
-  m_velocityPower(250000.0f),
   engineParticles(200, 1500)
 {
+    m_thrustPower = 25E4;
     // Initialize shape.
     m_shape.setSize(tree::pixels(b2Vec2(2.0f, 1.0f)));
     m_shape.setFillColor(sf::Color::Green);
@@ -87,12 +86,13 @@ void tree::Player::toggleShooting(bool isShooting)
 // Perform a thrust.
 void tree::Player::thrust(bool direction)
 {
-    m_body->ApplyForceToCenter(
-            tree::Math::createVector(
+    this->applyThrust(direction);
+    /*        tree::Math::createVector(
                 m_body->GetAngle(),
-            direction ? m_velocityPower : -m_velocityPower
+                direction ? m_velocityPower : -m_velocityPower
+            )
         ), true
-    );
+    );*/
 
     b2Vec2 baseEngineVector = this->getPosition() - tree::Math::createVector(this->getAngle(), 0.1f);
 
@@ -110,24 +110,12 @@ void tree::Player::thrust(bool direction)
                 engineVector,
                 this->getLinearVelocity() + tree::Math::createVector(
                     this->getAngle() + (((i==0) ? 1 : -1) * tree::random(-0.5f, 0.785f)),
-                    200 * (direction ? -m_velocityPower : m_velocityPower)
+                    200 * (direction ? -m_thrustPower : m_thrustPower)
                 ),
                 tree::paletteColor(palette::fire)
             );
         }
     }
-}
-
-// Perform a rotation.
-void tree::Player::rotate(bool direction)
-{
-    this->setFixedRotation(false);
-
-    this->addAngle(
-        (direction ? m_rotationPower : -m_rotationPower)
-    );
-
-    this->setFixedRotation(true);
 }
 
 // Draw the player.
