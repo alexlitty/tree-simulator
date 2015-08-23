@@ -1,11 +1,10 @@
 #include <cmath>
 #include <tree/Layer/Game.hpp>
-#include <tree/Math/Constant.hpp>
-#include <tree/Math/Geometry.hpp>
-#include <tree/Math/Vector.hpp>
+#include <tree/Math.hpp>
 #include <tree/Object/Character/Beaver.hpp>
 #include <tree/Object/Planet.hpp>
 #include <tree/Resource/Font.hpp>
+#include <tree/Resource/Shader.hpp>
 
 // Constructor.
 tree::Layer::Game::Game(sf::RenderWindow &window)
@@ -14,6 +13,16 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
     m_framesText.setCharacterSize(18);
     m_framesText.setColor(sf::Color::White);
     m_framesText.setFont(tree::Font::Header);
+
+    m_positionText.setCharacterSize(18);
+    m_positionText.setColor(sf::Color::White);
+    m_positionText.setFont(tree::Font::Header);
+    m_positionText.setPosition(0, 22);
+
+    m_velocityText.setCharacterSize(18);
+    m_velocityText.setColor(sf::Color::White);
+    m_velocityText.setFont(tree::Font::Header);
+    m_velocityText.setPosition(0, 44);
 
     // Initialize backgrounds.
     for (unsigned int i = 0; i < 10; i++) {
@@ -43,78 +52,148 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
         new tree::character::Beaver(b2Vec2(-50.0f, 0))
     );
 
-    // Initialize viewport resolution.
+    this->updateViews(true);
+}
+
+// Updates views.
+void tree::Layer::Game::updateViews(bool immediate)
+{
+    // Center game view on player.
+    m_viewGame.setCenter(m_player->getPixelPosition());
+
+    // Get window resolution.
     sf::Vector2f windowSize(
         static_cast<float>(m_window.getSize().x),
         static_cast<float>(m_window.getSize().y)
     );
     float resolution = windowSize.x / windowSize.y;
-    m_viewGame.setCenter(sf::Vector2f(0, 0));
-    m_viewGame.setSize(tree::pixels(200.0f * resolution), tree::pixels(200.0f));
+
+    // Get goal size and angle.
+    sf::Vector2f goalSize;
+    float goalAngle;
+    if (m_isEditing) {
+        goalSize.y = 50.0f;
+        goalAngle = tree::Math::degrees(
+            m_player->getAngle() + PI_HALF
+        );
+    } else {
+        goalSize.y = 200.0f;
+        goalAngle = 0.0f;
+    }
+    goalSize.x = goalSize.y * resolution;
+
+    // Set goal views immediately.
+    if (immediate) {
+        m_viewGame.setSize(goalSize);
+        m_viewGame.setRotation(goalAngle);
+    }
+
+    // Set goal views slowly.
+    else {
+
+        // Size.
+        goalSize -= m_viewGame.getSize();
+        goalSize = m_viewGame.getSize() + (goalSize / 10.0f);
+        m_viewGame.setSize(goalSize);
+
+        // Angle.
+        goalAngle = tree::angle(
+            goalAngle - m_viewGame.getRotation(),
+            false
+        );
+        if (goalAngle > 180.0f) {
+            goalAngle = -(360.0f - goalAngle);
+        }
+        m_viewGame.rotate(goalAngle / 7.0f);
+    }
 }
 
 // Execute a Game tick.
 bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
 {
-    // Reset.
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-        return false;
-    }
+    // Editor mode.
+    if (m_isEditing) {
 
-    // Left key pressed. Rotate counter-clockwise.
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-        m_player->rotate(false);
-    }
+        // Fade out non-editor objects.
+        if (m_editingAlpha > 0.0f) {
+            m_editingAlpha -= 0.1f;
+        }
 
-    // Right key pressed. Rotate clockwise.
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-        m_player->rotate(true);
-    }
-
-    // Up key pressed, thrust.
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-        m_player->thrust(true);
-    }
-
-    // Down key pressed, brake.
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-        m_player->thrust(false);
-    }
-
-    // Space key is pressed, shoot.
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-        m_player->toggleShooting(true);
-    } else {
-        m_player->toggleShooting(false);
-    }
-
-    // Prepare physical objects for more steps.
-    for (auto physical : m_stage.physicals) {
-        physical->prepare();
-    }
-
-    // Perform gravity.
-    for (auto gravitySource : m_stage.gravities) {
-        for (auto gravityTarget : m_stage.physicals) {
-            gravityTarget->applyGravity(gravitySource);
+        // Return to game.
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
+            m_isEditing = false;
+            m_render_states.shader = nullptr;
         }
     }
 
-    // Perform physics.
-    tree::world.Step(1.0 / 120.0f, 20, 20);
+    // Normal mode.
+    else {
 
-    // Perform actions.
-    for (auto actor : m_stage.actors) {
-        if (!actor->act(m_stage)) {
-            m_stage.destroy(actor);
+        // Tree editor activated.
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
+            m_isEditing = true;
         }
-    }
 
-    // Expire objects.
-    for (auto expirable : m_stage.expirables) {
-        if (expirable->isExpired()) {
-            expirable->expire(m_stage);
-            m_stage.destroy(expirable);
+        // Reset.
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+            return false;
+        }
+
+        // Left key pressed. Rotate counter-clockwise.
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+            m_player->rotate(false);
+        }
+
+        // Right key pressed. Rotate clockwise.
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+            m_player->rotate(true);
+        }
+
+        // Up key pressed, thrust.
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+            m_player->thrust(true);
+        }
+
+        // Down key pressed, brake.
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+            m_player->thrust(false);
+        }
+
+        // Space key is pressed, shoot.
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+            m_player->toggleShooting(true);
+        } else {
+            m_player->toggleShooting(false);
+        }
+
+        // Prepare physical objects for more steps.
+        for (auto physical : m_stage.physicals) {
+            physical->prepare();
+        }
+
+        // Perform gravity.
+        for (auto gravitySource : m_stage.gravities) {
+            for (auto gravityTarget : m_stage.physicals) {
+                gravityTarget->applyGravity(gravitySource);
+            }
+        }
+
+        // Perform physics.
+        tree::world.Step(1.0 / 120.0f, 20, 20);
+
+        // Perform actions.
+        for (auto actor : m_stage.actors) {
+            if (!actor->act(m_stage)) {
+                m_stage.destroy(actor);
+            }
+        }
+
+        // Expire objects.
+        for (auto expirable : m_stage.expirables) {
+            if (expirable->isExpired()) {
+                expirable->expire(m_stage);
+                m_stage.destroy(expirable);
+            }
         }
     }
 
@@ -122,7 +201,7 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
     m_stage.update();
 
     // Set game view.
-    m_viewGame.setCenter(m_player->getPixelPosition());
+    this->updateViews();
     m_window.setView(m_viewGame);
 
     // Adjust backgrounds.
@@ -130,25 +209,74 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
         m_background[i]->setViewTarget(m_viewGame.getCenter());
     }
 
+    // Use alpha shader if needed.
+    if (m_editingAlpha <= 1.0f) {
+
+        // Fade-in as appropriate.
+        if (!m_isEditing) {
+            m_editingAlpha += 0.1f;
+        }
+
+        // Enable shader.
+        m_render_states.shader = &tree::Shader::ForceAlpha;
+        tree::Shader::ForceAlpha.setParameter("alpha", m_editingAlpha);
+    }
+
     // Draw objects.
     for (auto drawable : m_stage.drawables) {
-        drawable->draw(m_window, m_render_states);
+        if (drawable != m_player) {
+            drawable->draw(m_window, m_render_states);
+        }
     }
+
+    // Disable any shaders.
+    m_render_states.shader = nullptr;
+
+    // Draw player.
+    m_player->draw(m_window, m_render_states);
 
     // Set interface view.
     m_window.setView(m_viewInterface);
 
     // Draw FPS information.
     m_frames++;
-    if (m_frames >= 5) {
+    if (m_frames >= 1) {
         m_framesText.setString(
-            "FPS - " + std::to_string(
+            "FPS: " + std::to_string(
                 static_cast<int>(std::round(m_frames / m_framesClock.restart().asSeconds()))
             )
         );
         m_frames = 0;
     }
     m_window.draw(m_framesText);
+
+    // Draw position information.
+    m_positionText.setString(
+        "Position: "
+        + std::to_string(
+            static_cast<int>(
+                std::round(m_player->getPosition().x)
+            )
+        ) + ", "
+        + std::to_string(
+            static_cast<int>(
+                std::round(m_player->getPosition().y)
+            )
+        )
+    );
+    m_window.draw(m_positionText);
+
+    // Draw velocity information.
+    m_velocityText.setString(
+        "Velocity: "
+        + std::to_string(
+            static_cast<int>(
+                std::round(m_player->getLinearVelocity().Length())
+            )
+        )
+        + " m/s"
+    );
+    m_window.draw(m_velocityText);
 
     // End this tick.
     return true;

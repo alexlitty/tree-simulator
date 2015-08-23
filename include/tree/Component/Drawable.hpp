@@ -8,6 +8,8 @@ namespace tree
 {
     class Drawable : virtual public Object, public sf::Drawable
     {
+        unsigned char m_alpha;
+
     public:
         /**
          * Constructor.

@@ -6,7 +6,7 @@
 int main()
 {
     // Disable SFML output.
-    sf::err().rdbuf(nullptr);
+    //sf::err().rdbuf(nullptr);
 
     // Prepare Box2D.
     tree::world.SetContactListener(&tree::collisions);

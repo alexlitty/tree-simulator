@@ -41,11 +41,26 @@ namespace tree
             unsigned int m_frames;
             sf::Clock m_framesClock;
 
+            // Player information.
+            sf::Text m_positionText;
+            sf::Text m_velocityText;
+
+            // Editor information.
+            bool m_isEditing = false;
+            float m_editingAlpha = 1.0f;
+
         public:
             /**
              * Constructor.
              */
             Game(sf::RenderWindow &window);
+
+            /**
+             * Updates views.
+             *
+             * If immediate is false, view is updated slowly.
+             */
+            void updateViews(bool immediate = false);
 
             /**
              * Execute the Game.

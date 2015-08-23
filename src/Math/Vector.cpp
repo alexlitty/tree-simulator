@@ -1,15 +1,36 @@
 #include <cmath>
 #include <tree/Math.hpp>
 
-// Reduces an angle.
-float tree::angle(float a)
+// Simplifies an angle.
+float tree::angle(float a, bool radians)
 {
-    if (a <= PI && a >= -PI) {
-        return a;
+    // In radians.
+    if (radians) {
+
+        // Out of simple range.
+        if (a < 0.0f || a > TWO_PI) {
+            return std::fmod((a + TWO_PI), TWO_PI);
+        }
+
+        // No change required.
+        else {
+            return a;
+        }
     }
-    return a - TWO_PI * std::floor(
-        (a + PI) / TWO_PI
-    );
+
+    // In degrees.
+    else {
+
+        // Out of simple range.
+        if (a < 0.0f || a > 360.0f) {
+            return std::fmod((a + 360.0f), 360.0f);
+        }
+
+        // No change required.
+        else {
+            return a;
+        }
+    }
 }
 
 // Finds the angle between two vectors.

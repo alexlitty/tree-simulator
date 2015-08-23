@@ -6,6 +6,7 @@
 #include <tree/Layer/Root.hpp>
 #include <tree/Math/Random.hpp>
 #include <tree/Resource/Font.hpp>
+#include <tree/Resource/Shader.hpp>
 
 /**
  * Constructor.
@@ -31,6 +32,11 @@ bool tree::Layer::Root::execute(std::vector<sf::Event> &events)
     // Font resources.
     if (!tree::Font::Header.loadFromFile("lobster.otf")) {
         throw tree::Error("Header font not found.");
+    }
+
+    // Shader resources.
+    if (!tree::Shader::ForceAlpha.loadFromFile("ForceAlpha.shader", sf::Shader::Vertex)) {
+        throw tree::Error("Shader file not found.");
     }
 
     // Main game loop.

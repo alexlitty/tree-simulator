@@ -7,9 +7,9 @@
 namespace tree
 {
     /**
-     * Reduces an angle.
+     * Simplifies an angle.
      */
-    float angle(float a);
+    float angle(float a, bool radians = true);
 
     /**
      * Finds the angle between two points.
