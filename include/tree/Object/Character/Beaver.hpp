@@ -12,7 +12,7 @@ namespace tree
           virtual public Intel,
           virtual public Lifeform
         {
-            sf::RectangleShape m_tempShape;
+            mutable sf::RectangleShape m_tempShape;
 
         public:
 
@@ -20,7 +20,7 @@ namespace tree
             Beaver(b2Vec2 position);
 
             // Be a beaver.
-            bool act(tree::Objects &objects) override;
+            bool act(tree::Stage &stage) override;
 
             // Draw beaver.
             void draw(sf::RenderTarget &target, sf::RenderStates states) const;

@@ -128,14 +128,14 @@ tree::branches::Birch::Birch(Physical *parent, b2Vec2 position, b2Vec2 anchor)
 }
 
 // Shoot leaves.
-bool tree::branches::Birch::act(tree::Objects &objects)
+bool tree::branches::Birch::act(tree::Stage &stage)
 {
     // Check if it's time to shoot.
     if (m_activated) {
         if (m_clock.getElapsedTime().asMilliseconds() > 75) {
 
             // Create new leaf.
-            objects.push_back(
+            stage.add(
                 new BirchLeaf(
                     m_parent->getPosition() +
                     tree::Math::createVector(

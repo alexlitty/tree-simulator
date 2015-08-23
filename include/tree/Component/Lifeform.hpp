@@ -45,9 +45,19 @@ namespace tree
         Lifeform(Faction faction, uint32_t health_max = 1);
 
         /**
-         * Checks the friendliness of two lifeforms.
+         * Checks the opinion between two lifeforms.
          */
         Opinion getOpinion(Lifeform &other) const;
+
+        /**
+         * Quickly checks friendliness.
+         */
+        bool isFriendly(Lifeform &other) const;
+
+        /**
+         * Quickly checks hostility.
+         */
+        bool isHostile(Lifeform &other) const;
 
         /**
          * Retrieves maximum health.

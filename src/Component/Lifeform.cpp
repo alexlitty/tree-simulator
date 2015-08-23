@@ -5,9 +5,11 @@ tree::Lifeform::Lifeform(tree::Faction faction, uint32_t health_max)
 : m_healthMax(health_max),
   m_faction(faction)
 {
+    m_isLifeform = true;
     fillHealth();
 }
 
+// Checks the opinion between two lifeforms.
 tree::Opinion tree::Lifeform::getOpinion(tree::Lifeform &other) const
 {
     // Be kind to your own.
@@ -17,6 +19,18 @@ tree::Opinion tree::Lifeform::getOpinion(tree::Lifeform &other) const
 
     // Be harsh to others.
     return tree::Opinion::hostile;
+}
+
+// Quickly checks friendliness.
+bool tree::Lifeform::isFriendly(tree::Lifeform &other) const
+{
+    return (this->getOpinion(other) != tree::Opinion::hostile);
+}
+
+// Quickly checks hostility.
+bool tree::Lifeform::isHostile(tree::Lifeform &other) const
+{
+    return !this->isFriendly(other);
 }
 
 // Retrieves maximum health.

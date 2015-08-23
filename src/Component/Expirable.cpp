@@ -1,4 +1,4 @@
-#include <tree/Component/Expirable.hpp>
+#include <tree/Component.hpp>
 
 // Constructor.
 tree::Expirable::Expirable(unsigned int lifetime)
@@ -14,7 +14,7 @@ bool tree::Expirable::isExpired() const
 }
 
 // Action to occur upon expiration.
-void tree::Expirable::expire(tree::Objects &objects)
+void tree::Expirable::expire(tree::Stage &stage)
 {
 
 }

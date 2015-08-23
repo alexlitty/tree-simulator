@@ -67,10 +67,10 @@ tree::Player::~Player()
 }
 
 // Perform branch actions.
-bool tree::Player::act(tree::Objects &objects)
+bool tree::Player::act(tree::Stage &stage)
 {
     for (auto branch : m_branches) {
-        branch->act(objects);
+        branch->act(stage);
     }
     return true;
 }
@@ -87,12 +87,6 @@ void tree::Player::toggleShooting(bool isShooting)
 void tree::Player::thrust(bool direction)
 {
     this->applyThrust(direction);
-    /*        tree::Math::createVector(
-                m_body->GetAngle(),
-                direction ? m_velocityPower : -m_velocityPower
-            )
-        ), true
-    );*/
 
     b2Vec2 baseEngineVector = this->getPosition() - tree::Math::createVector(this->getAngle(), 0.1f);
 

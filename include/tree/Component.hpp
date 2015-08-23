@@ -8,4 +8,6 @@
 #include <tree/Component/Lifeform.hpp>
 #include <tree/Component/Physical.hpp>
 
+#include <tree/Utility/Stage.hpp>
+
 #endif

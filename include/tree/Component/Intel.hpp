@@ -29,6 +29,11 @@ namespace tree
          * Blindly move toward a target position.
          */
         void moveBlindly(b2Vec2 &target);
+
+        /**
+         * Maintains a distance from a target position.
+         */
+        void maintainDistance(b2Vec2 target, float distance);
     };
 }
 

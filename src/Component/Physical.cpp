@@ -201,19 +201,33 @@ void tree::Physical::setLinearVelocity(b2Vec2 &velocity)
 // Applies force to this object.
 void tree::Physical::applyForce(const b2Vec2 &force)
 {
+    m_totalForce += force;
     m_body->ApplyForceToCenter(force, true);
 }
 
 // Applies thrust to this object.
 void tree::Physical::applyThrust(bool direction)
 {
+    m_currentThrustPower = direction ? m_thrustPower : -m_thrustPower;
     m_body->ApplyForceToCenter(
         tree::Math::createVector(
             this->getAngle(),
-            direction ? m_thrustPower : -m_thrustPower
+            m_currentThrustPower
         ),
         true
     );
+}
+
+// Whether this object is currently thrusting.
+bool tree::Physical::isThrusting() const
+{
+    return m_currentThrustPower != 0.0f;
+}
+
+// Gets current thrusting power.
+float tree::Physical::getCurrentThrust() const
+{
+    return m_currentThrustPower;
 }
 
 // Applies torque to this object.
@@ -254,6 +268,25 @@ void tree::Physical::applyGravity(Physical *other)
             / std::pow(distance, 2)
         )
     );
+}
+
+// Gets the total force being applied next step.
+b2Vec2 tree::Physical::getTotalForce() const
+{
+    return m_totalForce;
+}
+
+// Prepares this object for another physics step.
+void tree::Physical::prepare()
+{
+    m_currentThrustPower = 0.0f;
+    m_totalForce.SetZero();
+}
+
+// Estimates the next linear velocity.
+b2Vec2 tree::Physical::estimateLinearVelocity() const
+{
+    return this->getLinearVelocity() + ((1 / 120.0f) * m_totalForce);
 }
 
 // Adds the physical transform to a drawing transform.

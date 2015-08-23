@@ -27,24 +27,11 @@ namespace tree
             sf::View m_viewGame;
             sf::View m_viewInterface;
 
-            // Players.
+            // Stage of objects.
+            tree::Stage m_stage;
+
+            // Quick pointer to player.
             Player *m_player;
-
-            // Collection of drawable objects.
-            std::vector<tree::Drawable*> m_drawable;
-
-            // Collection of physical objects.
-            std::vector<tree::Physical*> m_physical;
-
-            // Collection of acting objects.
-            std::vector<tree::Actor*> m_actor;
-
-            // Collection of expirable objects.
-            std::vector<tree::Expirable*> m_expirable;
-
-            // Temporary collections of objects.
-            tree::Objects m_objects;
-            std::set<tree::Object*> m_objectsDestroy;
 
             // Background stars.
             std::vector<tree::Background::Stars*> m_background;
@@ -59,16 +46,6 @@ namespace tree
              * Constructor.
              */
             Game(sf::RenderWindow &window);
-
-            /**
-             * Deconstructor.
-             */
-            virtual ~Game();
-
-            /**
-             * Add temporary objects to permanent collections.
-             */
-            void updateObjects();
 
             /**
              * Execute the Game.

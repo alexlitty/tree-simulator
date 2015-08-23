@@ -6,6 +6,11 @@
 namespace tree
 {
     /**
+     * Forward-declare stage.
+     */
+    class Stage;
+
+    /**
      * An object which performs actions.
      */
     class Actor : virtual public Object
@@ -21,7 +26,7 @@ namespace tree
          *
          * Returns false if this object should be destroyed.
          */
-        virtual bool act(tree::Objects &objects);
+        virtual bool act(tree::Stage &stage);
     };
 }
 

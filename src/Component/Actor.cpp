@@ -1,4 +1,4 @@
-#include <tree/Component/Actor.hpp>
+#include <tree/Component.hpp>
 
 // Constructor.
 tree::Actor::Actor()
@@ -7,7 +7,7 @@ tree::Actor::Actor()
 }
 
 // Performs actions.
-bool tree::Actor::act(tree::Objects &objects)
+bool tree::Actor::act(tree::Stage &stage)
 {
     return true;
 }

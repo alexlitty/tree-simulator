@@ -38,5 +38,6 @@ void tree::Background::Stars::setViewTarget(sf::Vector2f target)
 void tree::Background::Stars::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= m_smallTransform.getTransform();
+    states.transform.scale(200.0f, 200.0f);
     target.draw(m_small, states);
 }

@@ -38,11 +38,17 @@ namespace tree
         // Default thrust power.
         float m_thrustPower = 7500.0f;
 
+        // Current thrust power.
+        float m_currentThrustPower = 0.0f;
+
         // Default torque power.
         float m_torquePower = 75000.0f;
 
         // Default rotation power.
         float m_rotationPower = 0.1f;
+
+        // Total force being applied on the next step.
+        b2Vec2 m_totalForce;
 
     public:
 
@@ -141,6 +147,16 @@ namespace tree
         void applyThrust(bool direction);
 
         /**
+         * Whether this object is currently thrusting.
+         */
+        bool isThrusting() const;
+
+        /**
+         * Gets current thrusting power.
+         */
+        float getCurrentThrust() const;
+
+        /**
          * Applies torque to this object.
          *
          * Uses internal torque power.
@@ -152,6 +168,26 @@ namespace tree
          */
         void applyGravity(Physical &other);
         void applyGravity(Physical *other);
+
+        /**
+         * Gets and resets the total force being applied next step.
+         */
+        b2Vec2 getTotalForce() const;
+
+        /**
+         * Prepares this object for another physics step.
+         */
+        void prepare();
+
+        /**
+         * Estimates the next linear velocity.
+         */
+        b2Vec2 estimateLinearVelocity() const;
+
+        /**
+         * Retrieve a point along the current trajectory.
+         */
+        //b2Vec2 trajectoryPoint(unsigned int steps);
 
         /**
          * Adds the physical transform to a drawing state.

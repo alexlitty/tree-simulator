@@ -65,7 +65,7 @@ namespace tree
             /**
              * Shoot leaves.
              */
-            bool act(tree::Objects &objects) override;
+            bool act(tree::Stage &stage) override;
 
             /**
              * Draw branch and leaves.

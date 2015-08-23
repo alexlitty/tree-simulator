@@ -41,7 +41,7 @@ namespace tree
         /**
          * Perform branch actions.
          */
-        bool act(tree::Objects &objects) override;
+        bool act(tree::Stage &stage) override;
 
         /**
          * Toggles shooting.
