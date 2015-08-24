@@ -40,9 +40,6 @@ namespace tree
          */
         class Birch : public Branch
         {
-            // Parent body.
-            Physical *m_parent;
-
             // Initial position.
             b2Vec2 m_position;
 
@@ -57,10 +54,21 @@ namespace tree
             sf::Clock m_clock;
 
         public:
+
             /**
              * Constructor.
              */
-            Birch(Physical *parent, b2Vec2 position, b2Vec2 anchor);
+            Birch();
+
+            /**
+             * Preview the placement of this branch.
+             */
+            void onPreview(b2Vec2 anchor, b2Vec2 position) override;
+
+            /**
+             * Place this branch permanently.
+             */
+            void place() override;
 
             /**
              * Shoot leaves.

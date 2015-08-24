@@ -49,13 +49,13 @@ tree::Player::Player()
     this->addFixture(fixtureDef);
 
     // Test branch.
-    m_branches.push_back(
+    /*m_branches.push_back(
         new tree::branches::Birch(
             this,
             m_body->GetLocalPoint(getPosition() + b2Vec2(0.0f, 5.0f)),
             m_body->GetLocalPoint(getPosition())
         )
-    );
+    );*/
 }
 
 // Destructor.
@@ -63,6 +63,37 @@ tree::Player::~Player()
 {
     for (auto branch : m_branches) {
         delete branch;
+    }
+}
+
+// Run the tree editor.
+void tree::Player::runEditor(sf::Vector2f mouse, tree::Stage &stage)
+{
+    // Message.
+    //m_editMessage = n
+
+    // Make a new branch.
+    if (m_newBranch == nullptr) {
+        m_newBranch = new tree::branches::Birch;
+    }
+
+    // Preview branch.
+    m_newBranch->preview(
+        this,
+        this->getPosition(),
+        b2Vec2(
+            mouse.x,
+            mouse.y
+        )
+    );
+}
+
+// Stop the tree editor.
+void tree::Player::stopEditor()
+{
+    if (m_newBranch != nullptr) {
+        delete m_newBranch;
+        m_newBranch = nullptr;
     }
 }
 
@@ -115,6 +146,11 @@ void tree::Player::thrust(bool direction)
 // Draw the player.
 void tree::Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+    // Draw preview branch.
+    if (m_newBranch != nullptr) {
+        m_newBranch->draw(target, states);
+    }
+
     // Draw engine particles.
     target.draw(engineParticles, states);
 

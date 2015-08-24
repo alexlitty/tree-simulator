@@ -6,12 +6,22 @@
 
 namespace tree
 {
+    namespace gui
+    {
+        class Message;
+    }
+
     /**
      * A stage, on which objects are placed and tracked.
      */
     class Stage
     {
     public:
+
+        /**
+         * Window size.
+         */
+        sf::Vector2f windowSize;
 
         /**
          * Newly created objects and objects to be destroyed.
@@ -30,6 +40,7 @@ namespace tree
         std::vector<tree::Physical*> physicals;
         std::vector<tree::Physical*> gravities;
         std::vector<tree::Lifeform*> lifeforms;
+        std::vector<tree::gui::Message*> guis;
 
         /**
          * Destructor.

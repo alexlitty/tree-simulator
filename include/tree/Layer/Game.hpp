@@ -49,6 +49,12 @@ namespace tree
             bool m_isEditing = false;
             float m_editingAlpha = 1.0f;
 
+            // Notification message.
+            sf::Text m_notificationText;
+            std::string m_notification;
+            bool m_notificationPersist = false;
+            sf::Clock m_notificationClock;
+
         public:
             /**
              * Constructor.

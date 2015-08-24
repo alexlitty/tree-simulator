@@ -31,12 +31,15 @@ bool tree::Layer::Root::execute(std::vector<sf::Event> &events)
 
     // Font resources.
     if (!tree::Font::Header.loadFromFile("lobster.otf")) {
-        throw tree::Error("Header font not found.");
+        throw tree::Error("Could not load header font.");
+    }
+    if (!tree::Font::Standard.loadFromFile("glacial.otf")) {
+        throw tree::Error("Could not load standard font.");
     }
 
     // Shader resources.
     if (!tree::Shader::ForceAlpha.loadFromFile("ForceAlpha.shader", sf::Shader::Vertex)) {
-        throw tree::Error("Shader file not found.");
+        throw tree::Error("Could not load alpha shader.");
     }
 
     // Main game loop.

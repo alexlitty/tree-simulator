@@ -5,6 +5,11 @@ tree::Object::~Object()
 
 }
 
+bool tree::Object::isMessage() const
+{
+    return m_isMessage;
+}
+
 bool tree::Object::isActor() const
 {
     return m_isActor;

@@ -28,6 +28,14 @@ void tree::Stage::update()
     // Add objects.
     for (auto object : this->newObjects) {
 
+        if (object->isGui()) {
+            this->guis.push_back(
+                dynamic_cast<tree::gui::Message*>(object)
+            );
+
+            continue;
+        }
+
         if (object->isActor()) {
             this->actors.push_back(
                 dynamic_cast<tree::Actor*>(object)
@@ -69,6 +77,10 @@ void tree::Stage::update()
 
         physical = dynamic_cast<tree::Physical*>(object);
 
+        tree::remove(
+            this->guis,
+            dynamic_cast<tree::gui::Message*>(object)
+        );
 
         tree::remove(
             this->actors,
@@ -111,6 +123,9 @@ void tree::Stage::clear()
     tree::collisions.clear();
 
     // Collect objects to destroy.
+    for (auto gui : this->guis) {
+        this->destroy(gui);
+    }
     for (auto actor : this->actors) {
         this->destroy(actor);
     }

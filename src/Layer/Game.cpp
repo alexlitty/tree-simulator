@@ -1,4 +1,5 @@
 #include <cmath>
+#include <tree/Gui/Message.hpp>
 #include <tree/Layer/Game.hpp>
 #include <tree/Math.hpp>
 #include <tree/Object/Character/Beaver.hpp>
@@ -12,17 +13,21 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
 {
     m_framesText.setCharacterSize(18);
     m_framesText.setColor(sf::Color::White);
-    m_framesText.setFont(tree::Font::Header);
+    m_framesText.setFont(tree::Font::Standard);
 
     m_positionText.setCharacterSize(18);
     m_positionText.setColor(sf::Color::White);
-    m_positionText.setFont(tree::Font::Header);
+    m_positionText.setFont(tree::Font::Standard);
     m_positionText.setPosition(0, 22);
 
     m_velocityText.setCharacterSize(18);
     m_velocityText.setColor(sf::Color::White);
-    m_velocityText.setFont(tree::Font::Header);
+    m_velocityText.setFont(tree::Font::Standard);
     m_velocityText.setPosition(0, 44);
+
+    m_notificationText.setCharacterSize(24);
+    m_notificationText.setColor(sf::Color::White);
+    m_notificationText.setFont(tree::Font::Standard);
 
     // Initialize backgrounds.
     for (unsigned int i = 0; i < 10; i++) {
@@ -53,6 +58,12 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
     );
 
     this->updateViews(true);
+
+    // Welcome our victim.
+    //m_notification = "Adventure awaits.";
+    m_stage.add(
+        new tree::gui::Message("Testing!!", 5.0f)
+    );
 }
 
 // Updates views.
@@ -66,6 +77,7 @@ void tree::Layer::Game::updateViews(bool immediate)
         static_cast<float>(m_window.getSize().x),
         static_cast<float>(m_window.getSize().y)
     );
+    m_stage.windowSize = windowSize;
     float resolution = windowSize.x / windowSize.y;
 
     // Get goal size and angle.
@@ -106,6 +118,12 @@ void tree::Layer::Game::updateViews(bool immediate)
         }
         m_viewGame.rotate(goalAngle / 7.0f);
     }
+
+    // Align notification text.
+    m_notificationText.setPosition(
+        16,
+        windowSize.y - 34
+    );
 }
 
 // Execute a Game tick.
@@ -121,8 +139,22 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
 
         // Return to game.
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
+            m_notification = " ";
             m_isEditing = false;
-            m_render_states.shader = nullptr;
+            m_player->stopEditor();
+        }
+
+        // Run editor.
+        else {
+            m_player->runEditor(
+                m_window.mapPixelToCoords(
+                    sf::Mouse::getPosition(),
+                    m_viewGame
+                ),
+                m_stage
+            );
+            m_notification = "Place the branch with your mouse.";
+            m_notificationPersist = true;
         }
     }
 
@@ -277,6 +309,18 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
         + " m/s"
     );
     m_window.draw(m_velocityText);
+
+    // Draw GUI.
+    for (auto gui : m_stage.guis) {
+        gui->draw(m_window, m_render_states);
+    }
+
+    // Act GUI.
+    for (auto gui : m_stage.guis) {
+        if (!gui->act(m_stage)) {
+            m_stage.destroy(gui);
+        }
+    }
 
     // End this tick.
     return true;

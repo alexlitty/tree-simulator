@@ -16,6 +16,7 @@ namespace tree
         bool m_isExpirable = false;
         bool m_isIntel = false;
         bool m_isLifeform = false;
+        bool m_isMessage = false;
         bool m_isPhysical = false;
 
     public:
@@ -26,6 +27,7 @@ namespace tree
         bool isExpirable() const;
         bool isIntel() const;
         bool isLifeform() const;
+        bool isMessage() const;
         bool isPhysical() const;
     };
 
