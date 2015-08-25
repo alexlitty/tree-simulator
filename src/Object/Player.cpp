@@ -69,9 +69,6 @@ tree::Player::~Player()
 // Run the tree editor.
 void tree::Player::runEditor(sf::Vector2f mouse, tree::Stage &stage)
 {
-    // Message.
-    //m_editMessage = n
-
     // Make a new branch.
     if (m_newBranch == nullptr) {
         m_newBranch = new tree::branches::Birch;

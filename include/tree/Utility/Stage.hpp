@@ -6,10 +6,7 @@
 
 namespace tree
 {
-    namespace gui
-    {
-        class Message;
-    }
+    class Message;
 
     /**
      * A stage, on which objects are placed and tracked.
@@ -40,7 +37,7 @@ namespace tree
         std::vector<tree::Physical*> physicals;
         std::vector<tree::Physical*> gravities;
         std::vector<tree::Lifeform*> lifeforms;
-        std::vector<tree::gui::Message*> guis;
+        std::vector<tree::Message*> messages;
 
         /**
          * Destructor.
@@ -70,5 +67,7 @@ namespace tree
         void clear();
     };
 }
+
+#include <tree/Gui/Message.hpp>
 
 #endif

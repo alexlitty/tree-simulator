@@ -7,6 +7,9 @@
 #include <tree/Resource/Font.hpp>
 #include <tree/Resource/Shader.hpp>
 
+// @@@
+#include <iostream>
+
 // Constructor.
 tree::Layer::Game::Game(sf::RenderWindow &window)
 : m_window(window)
@@ -24,10 +27,6 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
     m_velocityText.setColor(sf::Color::White);
     m_velocityText.setFont(tree::Font::Standard);
     m_velocityText.setPosition(0, 44);
-
-    m_notificationText.setCharacterSize(24);
-    m_notificationText.setColor(sf::Color::White);
-    m_notificationText.setFont(tree::Font::Standard);
 
     // Initialize backgrounds.
     for (unsigned int i = 0; i < 10; i++) {
@@ -60,9 +59,8 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
     this->updateViews(true);
 
     // Welcome our victim.
-    //m_notification = "Adventure awaits.";
     m_stage.add(
-        new tree::gui::Message("Testing!!", 5.0f)
+        new tree::Message("Welcome to Tree Simulator", MESSAGE::INFO, 240)
     );
 }
 
@@ -118,12 +116,6 @@ void tree::Layer::Game::updateViews(bool immediate)
         }
         m_viewGame.rotate(goalAngle / 7.0f);
     }
-
-    // Align notification text.
-    m_notificationText.setPosition(
-        16,
-        windowSize.y - 34
-    );
 }
 
 // Execute a Game tick.
@@ -139,9 +131,13 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
 
         // Return to game.
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
-            m_notification = " ";
             m_isEditing = false;
             m_player->stopEditor();
+
+            tree::Message *front = m_stage.messages.front();
+            if (front != nullptr) {
+                front->expire();
+            }
         }
 
         // Run editor.
@@ -153,8 +149,6 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
                 ),
                 m_stage
             );
-            m_notification = "Place the branch with your mouse.";
-            m_notificationPersist = true;
         }
     }
 
@@ -164,6 +158,13 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
         // Tree editor activated.
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
             m_isEditing = true;
+            m_stage.add(
+                new tree::Message(
+                    "Use your mouse to add the branch",
+                    MESSAGE::INFO,
+                    240
+                )
+            );
         }
 
         // Reset.
@@ -310,16 +311,22 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
     );
     m_window.draw(m_velocityText);
 
-    // Draw GUI.
-    for (auto gui : m_stage.guis) {
-        gui->draw(m_window, m_render_states);
-    }
+    // Show messages.
+    if (m_stage.messages.size() > 0) {
 
-    // Act GUI.
-    for (auto gui : m_stage.guis) {
-        if (!gui->act(m_stage)) {
-            m_stage.destroy(gui);
+        // Act if editing.
+        if (m_isEditing) {
+            m_stage.messages.front()->act(m_stage);
         }
+
+        // Expire old messages.
+        if (m_stage.messages.size() > 1) {
+            m_stage.messages.front()->expire();
+        }
+
+        // Draw top message.
+        m_stage.messages.front()->draw(m_window, m_render_states);
+        m_stage.messages.front()->tick();
     }
 
     // End this tick.

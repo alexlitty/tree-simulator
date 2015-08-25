@@ -28,12 +28,10 @@ void tree::Stage::update()
     // Add objects.
     for (auto object : this->newObjects) {
 
-        if (object->isGui()) {
-            this->guis.push_back(
-                dynamic_cast<tree::gui::Message*>(object)
+        if (object->isMessage()) {
+            this->messages.push_back(
+                dynamic_cast<tree::Message*>(object)
             );
-
-            continue;
         }
 
         if (object->isActor()) {
@@ -42,7 +40,7 @@ void tree::Stage::update()
             );
         }
 
-        if (object->isDrawable()) {
+        if (object->isDrawable() && !object->isMessage()) {
             this->drawables.push_back(
                 dynamic_cast<tree::Drawable*>(object)
             );
@@ -78,8 +76,8 @@ void tree::Stage::update()
         physical = dynamic_cast<tree::Physical*>(object);
 
         tree::remove(
-            this->guis,
-            dynamic_cast<tree::gui::Message*>(object)
+            this->messages,
+            dynamic_cast<tree::Message*>(object)
         );
 
         tree::remove(
@@ -123,8 +121,8 @@ void tree::Stage::clear()
     tree::collisions.clear();
 
     // Collect objects to destroy.
-    for (auto gui : this->guis) {
-        this->destroy(gui);
+    for (auto message : this->messages) {
+        this->destroy(message);
     }
     for (auto actor : this->actors) {
         this->destroy(actor);
