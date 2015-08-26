@@ -144,3 +144,11 @@ void tree::Stage::clear()
     this->newObjects.clear();
     this->update();
 }
+
+// Expires all messages.
+void tree::Stage::expireMessages()
+{
+    for (auto message : this->messages) {
+        message->expire();
+    }
+}

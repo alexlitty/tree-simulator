@@ -11,7 +11,7 @@ namespace tree
      */
     enum class MESSAGE {
         INFO,
-        ERROR,
+        BAD,
         SASSY
     };
 
@@ -31,7 +31,11 @@ namespace tree
 
         // Drawing shapes.
         sf::RectangleShape m_wrapper;
+        sf::RectangleShape m_wrapperShadow;
         sf::Text m_text;
+
+        // Whether this message is a priority to show.
+        bool m_prioritized;
 
     public:
 
@@ -42,6 +46,16 @@ namespace tree
          * Constructor.
          */
         Message(std::string msg, MESSAGE initStyle, unsigned int ticks, unsigned int level = 0);
+
+        /**
+         * Makes this message a priority to show.
+         */
+        void prioritize();
+
+        /**
+         * Whether this message is a priority to show.
+         */
+        bool isPrioritized() const;
 
         /**
          * Ages this message.

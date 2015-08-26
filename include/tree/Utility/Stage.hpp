@@ -65,6 +65,11 @@ namespace tree
          * Immediately destroys all objects from the stage.
          */
         void clear();
+
+        /**
+         * Expires all messages.
+         */
+        void expireMessages();
     };
 }
 

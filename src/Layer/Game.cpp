@@ -7,9 +7,6 @@
 #include <tree/Resource/Font.hpp>
 #include <tree/Resource/Shader.hpp>
 
-// @@@
-#include <iostream>
-
 // Constructor.
 tree::Layer::Game::Game(sf::RenderWindow &window)
 : m_window(window)
@@ -81,7 +78,7 @@ void tree::Layer::Game::updateViews(bool immediate)
     // Get goal size and angle.
     sf::Vector2f goalSize;
     float goalAngle;
-    if (m_isEditing) {
+    if (m_playerEditor) {
         goalSize.y = 50.0f;
         goalAngle = tree::Math::degrees(
             m_player->getAngle() + PI_HALF
@@ -122,22 +119,16 @@ void tree::Layer::Game::updateViews(bool immediate)
 bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
 {
     // Editor mode.
-    if (m_isEditing) {
+    if (m_playerEditor) {
 
         // Fade out non-editor objects.
         if (m_editingAlpha > 0.0f) {
             m_editingAlpha -= 0.1f;
         }
 
-        // Return to game.
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
-            m_isEditing = false;
-            m_player->stopEditor();
-
-            tree::Message *front = m_stage.messages.front();
-            if (front != nullptr) {
-                front->expire();
-            }
+        if (!m_playerEditor->execute(events)) {
+            delete m_playerEditor;
+            m_stage.expireMessages();
         }
 
         // Run editor.
@@ -153,7 +144,7 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
     }
 
     // Normal mode.
-    else {
+    if (!m_playerEditor) {
 
         // Tree editor activated.
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
@@ -214,18 +205,31 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
         // Perform physics.
         tree::world.Step(1.0 / 120.0f, 20, 20);
 
-        // Perform actions.
-        for (auto actor : m_stage.actors) {
-            if (!actor->act(m_stage)) {
-                m_stage.destroy(actor);
-            }
-        }
-
         // Expire objects.
         for (auto expirable : m_stage.expirables) {
             if (expirable->isExpired()) {
                 expirable->expire(m_stage);
                 m_stage.destroy(expirable);
+            }
+        }
+    }
+
+    // Expire old messages.
+    if (m_stage.messages.size() > 1) {
+        m_stage.messages.front()->expire();
+    }
+
+    // Perform actions.
+    if (!m_isEditing) {
+        for (auto actor : m_stage.actors) {
+            if (!actor->act(m_stage)) {
+                m_stage.destroy(actor);
+            }
+        }
+    } else {
+        if (m_stage.messages.size() > 0) {
+            if (!m_stage.messages.front()->act(m_stage)) {
+                m_stage.destroy(m_stage.messages.front());
             }
         }
     }
@@ -313,16 +317,6 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
 
     // Show messages.
     if (m_stage.messages.size() > 0) {
-
-        // Act if editing.
-        if (m_isEditing) {
-            m_stage.messages.front()->act(m_stage);
-        }
-
-        // Expire old messages.
-        if (m_stage.messages.size() > 1) {
-            m_stage.messages.front()->expire();
-        }
 
         // Draw top message.
         m_stage.messages.front()->draw(m_window, m_render_states);

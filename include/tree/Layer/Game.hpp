@@ -46,7 +46,7 @@ namespace tree
             sf::Text m_velocityText;
 
             // Editor information.
-            bool m_isEditing = false;
+            tree::Layer::PlayerEditor *m_playerEditor;
             float m_editingAlpha = 1.0f;
 
         public:
@@ -65,7 +65,7 @@ namespace tree
             /**
              * Execute the Game.
              */
-            virtual bool execute(std::vector<sf::Event> &events) override;
+            bool execute(std::vector<sf::Event> &events) override;
         };
     }
 }

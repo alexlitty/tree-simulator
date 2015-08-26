@@ -85,15 +85,6 @@ void tree::Player::runEditor(sf::Vector2f mouse, tree::Stage &stage)
     );
 }
 
-// Stop the tree editor.
-void tree::Player::stopEditor()
-{
-    if (m_newBranch != nullptr) {
-        delete m_newBranch;
-        m_newBranch = nullptr;
-    }
-}
-
 // Perform branch actions.
 bool tree::Player::act(tree::Stage &stage)
 {

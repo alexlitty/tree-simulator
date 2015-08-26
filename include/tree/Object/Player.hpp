@@ -42,16 +42,6 @@ namespace tree
         ~Player();
 
         /**
-         * Run the tree editor.
-         */
-        void runEditor(sf::Vector2f mouse, tree::Stage &stage);
-
-        /**
-         * Stop the tree editor.
-         */
-        void stopEditor();
-
-        /**
          * Perform branch actions.
          */
         bool act(tree::Stage &stage) override;
