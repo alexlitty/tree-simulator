@@ -27,9 +27,6 @@ namespace tree
         // Collection of branches.
         std::vector<tree::Branch*> m_branches;
 
-        // New branch to preview.
-        tree::Branch *m_newBranch = nullptr;
-
     public:
 
         // Color of test hat.

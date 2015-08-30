@@ -39,19 +39,24 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
     m_stage.add(m_player);
 
     // Create a gravity source.
-    tree::Planet *planet = new tree::Planet(50.0f, 3E10, b2Vec2(200.0f, 0));
+    tree::Planet *planet = new tree::Planet(b2Vec2(25.0f, 0));
+    planet->m_nuggets.add(tree::nugget::rock, 10);
+    planet->generate();
     m_stage.add(planet);
 
     // Create another gravity source.
-    planet = new tree::Planet(10.0f, 3E10, b2Vec2(200.0f, 100.0f));
-    b2Vec2 velocity(-150.0f, 0);
+    planet = new tree::Planet(
+        b2Vec2(25.0f, 15.0f),
+        tree::nugget::lava
+    );
+    b2Vec2 velocity(-5.0f, 0);
     planet->setLinearVelocity(velocity);
     m_stage.add(planet);
 
     // Create beaver.
-    m_stage.add(
+    /*m_stage.add(
         new tree::character::Beaver(b2Vec2(-50.0f, 0))
-    );
+    );*/
 
     this->updateViews(true);
 
@@ -118,6 +123,14 @@ void tree::Layer::Game::updateViews(bool immediate)
 // Execute a Game tick.
 bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
 {
+    // Update mouse target.
+    m_stage.mouse = tree::Math::vector(
+        m_window.mapPixelToCoords(
+            sf::Mouse::getPosition(),
+            m_viewGame
+        )
+    );
+
     // Editor mode.
     if (m_playerEditor) {
 
@@ -126,20 +139,11 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
             m_editingAlpha -= 0.1f;
         }
 
-        if (!m_playerEditor->execute(events)) {
-            delete m_playerEditor;
-            m_stage.expireMessages();
-        }
-
         // Run editor.
-        else {
-            m_player->runEditor(
-                m_window.mapPixelToCoords(
-                    sf::Mouse::getPosition(),
-                    m_viewGame
-                ),
-                m_stage
-            );
+        if (!m_playerEditor->act(m_stage)) {
+            delete m_playerEditor;
+            m_playerEditor = nullptr;
+            m_stage.expireMessages();
         }
     }
 
@@ -148,7 +152,7 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
 
         // Tree editor activated.
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
-            m_isEditing = true;
+            m_playerEditor = new tree::PlayerEditor(m_player);
             m_stage.add(
                 new tree::Message(
                     "Use your mouse to add the branch",
@@ -220,7 +224,7 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
     }
 
     // Perform actions.
-    if (!m_isEditing) {
+    if (!m_playerEditor) {
         for (auto actor : m_stage.actors) {
             if (!actor->act(m_stage)) {
                 m_stage.destroy(actor);
@@ -250,7 +254,7 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
     if (m_editingAlpha <= 1.0f) {
 
         // Fade-in as appropriate.
-        if (!m_isEditing) {
+        if (!m_playerEditor) {
             m_editingAlpha += 0.1f;
         }
 

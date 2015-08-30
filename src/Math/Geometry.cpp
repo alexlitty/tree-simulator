@@ -1,5 +1,17 @@
 #include <tree/Math/Geometry.hpp>
 
+// Generates the next highest power-of-two.
+unsigned int tree::nextPot(unsigned int value)
+{
+    --value;
+    value |= value >> 1;
+    value |= value >> 2;
+    value |= value >> 4;
+    value |= value >> 8;
+    value |= value >> 16;
+    return value+1;
+}
+
 // Finds the distance between two vectors.
 float tree::Math::distance(b2Vec2 left, b2Vec2 right)
 {

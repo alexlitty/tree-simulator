@@ -2,17 +2,25 @@
 #define TREESIMULATOR_RESOURCE_COLOR_HPP
 
 #include <SFML/Graphics.hpp>
+#include <tree/Object/Nugget.hpp>
 
 namespace tree
 {
-    namespace palette
+    enum class palette
     {
-        extern const unsigned char random;
-        extern const unsigned char fire;
-    }
+        random,
+        rock,
+        fire,
+    };
 
     // Generate a color, based on a predefined palette.
-    sf::Color paletteColor(const unsigned char palette);
+    sf::Color paletteColor(tree::palette palette = tree::palette::random);
+
+    // Get the palette of a nugget.
+    tree::palette nuggetPalette(tree::nugget nug);
+
+    // Generate a base nugget color.
+    sf::Color nuggetColor(tree::nugget nug);
 }
 
 #endif

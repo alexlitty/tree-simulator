@@ -6,6 +6,11 @@
 
 namespace tree
 {
+    /**
+     * Generates the next highest power-of-two.
+     */
+    unsigned int nextPot(unsigned int value);
+
     namespace Math
     {
         /**

@@ -74,6 +74,11 @@ namespace tree
         b2Fixture* addFixture(b2FixtureDef &fixtureDef);
 
         /**
+         * Updates the mass of this body.
+         */
+        void updateMass();
+
+        /**
          * Add a distance joint.
          */
         void distanceJoint(Physical &other, b2Vec2 thisPosition, b2Vec2 otherPosition, bool localize = true);

@@ -66,25 +66,6 @@ tree::Player::~Player()
     }
 }
 
-// Run the tree editor.
-void tree::Player::runEditor(sf::Vector2f mouse, tree::Stage &stage)
-{
-    // Make a new branch.
-    if (m_newBranch == nullptr) {
-        m_newBranch = new tree::branches::Birch;
-    }
-
-    // Preview branch.
-    m_newBranch->preview(
-        this,
-        this->getPosition(),
-        b2Vec2(
-            mouse.x,
-            mouse.y
-        )
-    );
-}
-
 // Perform branch actions.
 bool tree::Player::act(tree::Stage &stage)
 {
@@ -123,7 +104,7 @@ void tree::Player::thrust(bool direction)
                 engineVector,
                 this->getLinearVelocity() + tree::Math::createVector(
                     this->getAngle() + (((i==0) ? 1 : -1) * tree::random(-0.5f, 0.785f)),
-                    200 * (direction ? -m_thrustPower : m_thrustPower)
+                    0.001 * (direction ? -m_thrustPower : m_thrustPower)
                 ),
                 tree::paletteColor(palette::fire)
             );
@@ -134,11 +115,6 @@ void tree::Player::thrust(bool direction)
 // Draw the player.
 void tree::Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    // Draw preview branch.
-    if (m_newBranch != nullptr) {
-        m_newBranch->draw(target, states);
-    }
-
     // Draw engine particles.
     target.draw(engineParticles, states);
 

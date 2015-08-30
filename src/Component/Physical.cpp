@@ -50,6 +50,12 @@ b2Fixture* tree::Physical::addFixture(b2FixtureDef &fixtureDef)
     return m_body->CreateFixture(&fixtureDef);
 }
 
+// Updates the mass of this body.
+void tree::Physical::updateMass()
+{
+    m_body->ResetMassData();
+}
+
 // Add a distance joint.
 void tree::Physical::distanceJoint(Physical &other, b2Vec2 thisAnchor, b2Vec2 otherAnchor, bool localize)
 {

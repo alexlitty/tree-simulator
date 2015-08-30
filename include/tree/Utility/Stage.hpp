@@ -21,6 +21,11 @@ namespace tree
         sf::Vector2f windowSize;
 
         /**
+         * Mouse position.
+         */
+        b2Vec2 mouse;
+
+        /**
          * Newly created objects and objects to be destroyed.
          */
         std::vector<tree::Object*> newObjects;
