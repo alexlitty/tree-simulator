@@ -10,7 +10,11 @@ namespace tree
     {
         extern tree::palette palette;
 
+        void noise(sf::RenderTarget *target);
+
         void spots(sf::RenderTarget *target, unsigned int count, float minRadius, float maxRadius);
+
+        void lines(sf::RenderTarget *target);
     }
 }
 

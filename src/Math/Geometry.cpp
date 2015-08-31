@@ -9,7 +9,7 @@ unsigned int tree::nextPot(unsigned int value)
     value |= value >> 4;
     value |= value >> 8;
     value |= value >> 16;
-    return value+1;
+    return (value+1) * 2;
 }
 
 // Finds the distance between two vectors.

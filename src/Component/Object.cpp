@@ -39,3 +39,8 @@ bool tree::Object::isPhysical() const
 {
     return m_isPhysical;
 }
+
+bool tree::Object::isNuggetable() const
+{
+    return m_isNuggetable;
+}

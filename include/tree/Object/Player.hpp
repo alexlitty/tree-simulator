@@ -6,6 +6,7 @@
 #include <tree/Component/Lifeform.hpp>
 #include <tree/Component/Physical.hpp>
 #include <tree/Object/Branch.hpp>
+#include <tree/Object/NuggetLaser.hpp>
 #include <tree/Object/Particles.hpp>
 
 namespace tree
@@ -27,6 +28,9 @@ namespace tree
         // Collection of branches.
         std::vector<tree::Branch*> m_branches;
 
+        // Laser to fire nuggets.
+        tree::NuggetLaser m_laser;
+
     public:
 
         // Color of test hat.
@@ -39,7 +43,7 @@ namespace tree
         ~Player();
 
         /**
-         * Perform branch actions.
+         * Act.
          */
         bool act(tree::Stage &stage) override;
 

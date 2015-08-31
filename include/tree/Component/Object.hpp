@@ -18,6 +18,7 @@ namespace tree
         bool m_isLifeform = false;
         bool m_isMessage = false;
         bool m_isPhysical = false;
+        bool m_isNuggetable = false;
 
     public:
         virtual ~Object();
@@ -29,6 +30,7 @@ namespace tree
         bool isLifeform() const;
         bool isMessage() const;
         bool isPhysical() const;
+        bool isNuggetable() const;
     };
 
     /**

@@ -41,6 +41,14 @@ bool tree::Layer::Root::execute(std::vector<sf::Event> &events)
     if (!tree::Shader::ForceAlpha.loadFromFile("ForceAlpha.shader", sf::Shader::Vertex)) {
         throw tree::Error("Could not load alpha shader.");
     }
+    if (!tree::Shader::Fisheye.loadFromFile("Fisheye.shader", sf::Shader::Fragment)) {
+        throw tree::Error("Could not load fisheye shader.");
+    }
+    tree::Shader::Fisheye.setParameter("texture", sf::Shader::CurrentTexture);
+
+    if (!tree::Shader::NoiseSimple.loadFromFile("NoiseSimple.glsl", sf::Shader::Fragment)) {
+        throw tree::Error("Could not load simple noise shader.");
+    }
 
     // Main game loop.
     while (m_window.isOpen()) {

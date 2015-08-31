@@ -11,6 +11,7 @@ namespace tree
         random,
         rock,
         fire,
+        light,
     };
 
     // Generate a color, based on a predefined palette.

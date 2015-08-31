@@ -1,0 +1,14 @@
+void main()
+{
+    vec4 vertex = gl_ModelViewProjectionMatrix * gl_Vertex;
+    vec2 uv = vertex.xy;
+
+    vec2 center = vec2(0, 0);
+    vec2 distance = uv - center;
+    uv *= center + distance * sqrt(dot(distance, distance));
+    //uv = center + vec2(distance.x / abs(distance.x), distance.y / abs(distance.y));
+
+    gl_Position = vec4(uv, vertex.zw);
+    gl_TexCoord[0] = gl_TextureMatrix[0] * gl_MultiTexCoord0;
+    gl_FrontColor = gl_Color;
+}

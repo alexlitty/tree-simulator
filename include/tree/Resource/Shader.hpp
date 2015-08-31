@@ -8,6 +8,10 @@ namespace tree
     namespace Shader
     {
         extern sf::Shader ForceAlpha;
+
+        extern sf::Shader Fisheye;
+
+        extern sf::Shader NoiseSimple;
     }
 }
 

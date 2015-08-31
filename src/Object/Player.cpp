@@ -10,7 +10,8 @@
 // Constructor.
 tree::Player::Player()
 : tree::Lifeform::Lifeform(tree::Faction::wood, 10),
-  engineParticles(200, 1500)
+  engineParticles(200, 1500),
+  m_laser(this)
 {
     m_thrustPower = 25E4;
     // Initialize shape.
@@ -66,9 +67,13 @@ tree::Player::~Player()
     }
 }
 
-// Perform branch actions.
+// Act.
 bool tree::Player::act(tree::Stage &stage)
 {
+    // Perform laser actions.
+    m_laser.act(stage);
+
+    // Perform branch actions.
     for (auto branch : m_branches) {
         branch->act(stage);
     }
@@ -118,13 +123,16 @@ void tree::Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
     // Draw engine particles.
     target.draw(engineParticles, states);
 
-    addPhysicalTransform(states.transform);
+    // Draw laser.
+    target.draw(m_laser, states);
 
     // Draw branches.
+    addPhysicalTransform(states.transform);
     for (auto branch : m_branches) {
         branch->draw(target, states);
     }
 
+    // Draw player.
     target.draw(m_shape, states);
     target.draw(m_hat, states);
 }

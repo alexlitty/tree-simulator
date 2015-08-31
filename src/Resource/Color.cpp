@@ -18,6 +18,11 @@ sf::Color tree::paletteColor(tree::palette palette)
             b = 0;
             break;
 
+        case tree::palette::light:
+            r = g = tree::random(225, 255);
+            b = tree::random(150, 200);
+            break;
+
         default:
             r = tree::random(0, 255);
             g = tree::random(0, 255);
@@ -38,6 +43,9 @@ tree::palette tree::nuggetPalette(tree::nugget nug)
 
         case tree::nugget::lava:
             return palette::fire;
+
+        case tree::nugget::plasma:
+            return palette::light;
 
         default:
             return palette::random;

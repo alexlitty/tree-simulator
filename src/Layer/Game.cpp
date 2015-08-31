@@ -40,8 +40,9 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
 
     // Create a gravity source.
     tree::Planet *planet = new tree::Planet(b2Vec2(25.0f, 0));
-    planet->m_nuggets.add(tree::nugget::rock, 10);
+    planet->nuggets.add(tree::nugget::rock, 10);
     planet->generate();
+    planet->applyTorque(true);
     m_stage.add(planet);
 
     // Create another gravity source.
@@ -51,6 +52,13 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
     );
     b2Vec2 velocity(-5.0f, 0);
     planet->setLinearVelocity(velocity);
+    m_stage.add(planet);
+
+    // And another!
+    planet = new tree::Planet(b2Vec2(0, 25.0f));
+    planet->nuggets.add(tree::nugget::plasma, 20);
+    planet->nuggets.add(tree::nugget::lava, 15);
+    planet->generate();
     m_stage.add(planet);
 
     // Create beaver.
