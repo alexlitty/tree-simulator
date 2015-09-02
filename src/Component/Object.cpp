@@ -20,6 +20,11 @@ bool tree::Object::isDrawable() const
     return m_isDrawable;
 }
 
+bool tree::Object::isGui() const
+{
+    return m_isGui;
+}
+
 bool tree::Object::isExpirable() const
 {
     return m_isExpirable;

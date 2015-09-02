@@ -56,6 +56,10 @@ float tree::NuggetLaser::ReportFixture(b2Fixture *fixture, const b2Vec2 &positio
 // Fires the laser.
 void tree::NuggetLaser::fire(tree::nugget nugget)
 {
+    if (nugget == tree::nugget::invalid) {
+        return;
+    }
+
     if (m_cooldown.getElapsedTime().asSeconds() > 1.0f) {
         if (m_target) {
             m_cooldown.restart();
@@ -67,6 +71,19 @@ void tree::NuggetLaser::fire(tree::nugget nugget)
 // Act.
 bool tree::NuggetLaser::act(tree::Stage &stage)
 {
+    // Loop through events.
+    for (sf::Event event : stage.events) {
+        if (event.type == sf::Event::KeyPressed) {
+            if (event.key.code == sf::Keyboard::Q) {
+                this->active = !this->active;
+                if (!this->active) {
+                    this->swapTarget(nullptr);
+                }
+            }
+        }
+    }
+
+    // Laser actions.
     if (this->active) {
 
         // Reset laser target.
@@ -86,21 +103,7 @@ bool tree::NuggetLaser::act(tree::Stage &stage)
 
         // Fire laser.
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
-            this->fire(tree::nugget::lava);
-        }
-
-        // Deactivate laser.
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
-            this->active = false;
-            this->swapTarget(nullptr);
-        }
-    }
-
-    else {
-
-        // Activate laser.
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
-            this->active = true;
+            this->fire(stage.nugget);
         }
     }
     return true;

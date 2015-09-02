@@ -9,8 +9,11 @@ namespace tree
     enum class palette
     {
         random,
+        white,
+        water,
         rock,
         fire,
+        lava,
         light,
     };
 

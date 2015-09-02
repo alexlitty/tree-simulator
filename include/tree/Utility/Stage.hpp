@@ -26,6 +26,11 @@ namespace tree
         b2Vec2 mouse;
 
         /**
+         * Relevant events.
+         */
+        std::vector<sf::Event> events;
+
+        /**
          * Newly created objects and objects to be destroyed.
          */
         std::vector<tree::Object*> newObjects;
@@ -38,11 +43,17 @@ namespace tree
          */
         std::vector<tree::Actor*> actors;
         std::vector<tree::Drawable*> drawables;
+        std::vector<tree::Gui*> guis;
         std::vector<tree::Expirable*> expirables;
         std::vector<tree::Physical*> physicals;
         std::vector<tree::Physical*> gravities;
         std::vector<tree::Lifeform*> lifeforms;
         std::vector<tree::Message*> messages;
+
+        /**
+         * Currently selected nugget.
+         */
+        tree::nugget nugget = tree::nugget::lava;
 
         /**
          * Destructor.

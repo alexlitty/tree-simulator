@@ -3,6 +3,7 @@
 
 #include <tree/Component/Actor.hpp>
 #include <tree/Component/Drawable.hpp>
+#include <tree/Component/Gui.hpp>
 #include <tree/Component/Expirable.hpp>
 #include <tree/Component/Intel.hpp>
 #include <tree/Component/Lifeform.hpp>

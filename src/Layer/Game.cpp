@@ -1,5 +1,6 @@
 #include <cmath>
 #include <tree/Gui/Message.hpp>
+#include <tree/Gui/NuggetSelect.hpp>
 #include <tree/Layer/Game.hpp>
 #include <tree/Math.hpp>
 #include <tree/Object/Character/Beaver.hpp>
@@ -66,6 +67,8 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
         new tree::character::Beaver(b2Vec2(-50.0f, 0))
     );*/
 
+    // Initialize GUI.
+    m_stage.add(new tree::gui::NuggetSelect());
     this->updateViews(true);
 
     // Welcome our victim.
@@ -87,6 +90,10 @@ void tree::Layer::Game::updateViews(bool immediate)
     );
     m_stage.windowSize = windowSize;
     float resolution = windowSize.x / windowSize.y;
+
+    // Set interface view.
+    m_viewInterface.setSize(windowSize.x, windowSize.y);
+    m_viewInterface.setCenter(windowSize.x / 2.0f, windowSize.y / 2.0f);
 
     // Get goal size and angle.
     sf::Vector2f goalSize;
@@ -131,6 +138,10 @@ void tree::Layer::Game::updateViews(bool immediate)
 // Execute a Game tick.
 bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
 {
+    // Update events, for actors.
+    m_stage.events.clear();
+    m_stage.events = events;
+
     // Update mouse target.
     m_stage.mouse = tree::Math::vector(
         m_window.mapPixelToCoords(
@@ -273,7 +284,7 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
 
     // Draw objects.
     for (auto drawable : m_stage.drawables) {
-        if (drawable != m_player) {
+        if (!drawable->isGui() && drawable != m_player) {
             drawable->draw(m_window, m_render_states);
         }
     }
@@ -286,6 +297,11 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
 
     // Set interface view.
     m_window.setView(m_viewInterface);
+
+    // Draw interface.
+    for (auto gui : m_stage.guis) {
+        gui->draw(m_window, m_render_states);
+    }
 
     // Draw FPS information.
     m_frames++;

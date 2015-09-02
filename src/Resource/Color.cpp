@@ -8,6 +8,13 @@ sf::Color tree::paletteColor(tree::palette palette)
 
     switch (palette)
     {
+        case tree::palette::white:
+            r = g = b = tree::random(235, 245);
+
+        case tree::palette::water:
+            r = g = tree::random(0, 50);
+            b = tree::random(200, 225);
+
         case tree::palette::rock:
             r = g = b = tree::random(100, 175);
             break;
@@ -16,6 +23,16 @@ sf::Color tree::paletteColor(tree::palette palette)
             r = tree::random(255, 255);
             g = tree::random(0, 100);
             b = 0;
+            break;
+
+        case tree::palette::lava:
+            if (tree::random(0, 3) == 0) {
+                r = g = b = tree::random(10, 35);
+            } else {
+                r = tree::random(200, 225);
+                g = tree::random(0, 100);
+                b = 0;
+            }
             break;
 
         case tree::palette::light:
@@ -38,14 +55,20 @@ tree::palette tree::nuggetPalette(tree::nugget nug)
 {
     switch (nug)
     {
-        case tree::nugget::rock:
-            return palette::rock;
-
-        case tree::nugget::lava:
-            return palette::fire;
+        case tree::nugget::spore:
+            return palette::white;
 
         case tree::nugget::plasma:
             return palette::light;
+
+        case tree::nugget::rock:
+            return palette::rock;
+
+        case tree::nugget::water:
+            return palette::water;
+
+        case tree::nugget::lava:
+            return palette::fire;
 
         default:
             return palette::random;

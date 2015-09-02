@@ -46,6 +46,12 @@ void tree::Stage::update()
             );
         }
 
+        if (object->isGui()) {
+            this->guis.push_back(
+                dynamic_cast<tree::Gui*>(object)
+            );
+        }
+
         if (object->isExpirable()) {
             this->expirables.push_back(
                 dynamic_cast<tree::Expirable*>(object)
@@ -85,6 +91,7 @@ void tree::Stage::update()
             dynamic_cast<tree::Actor*>(object)
         );
 
+        // Drawables. Includes GUIs.
         tree::remove(
             this->drawables,
             dynamic_cast<tree::Drawable*>(object)
@@ -127,6 +134,8 @@ void tree::Stage::clear()
     for (auto actor : this->actors) {
         this->destroy(actor);
     }
+
+    // Drawables. Includes GUIs.
     for (auto drawable : this->drawables) {
         this->destroy(drawable);
     }
