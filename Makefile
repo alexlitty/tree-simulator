@@ -1,13 +1,16 @@
 #SOURCES=Main.cpp Object/Character/Beaver.cpp Component/Actor.cpp Component/Drawable.cpp Component/Expirable.cpp Component/Gui.cpp Component/Intel.cpp Component/Lifeform.cpp Component/Nuggetable.cpp Component/Object.cpp Component/Physical.cpp Engine/Constant.cpp Gui/Message.cpp Gui/NuggetSelect.cpp Intel/MaintainDistance.cpp Intel/MoveBlindly.cpp Object/Background/Stars.cpp Object/Internal/Editor.cpp Object/Nugget.cpp Object/NuggetLaser.cpp Object/Particles.cpp Object/Planet.cpp Object/Player.cpp Layer/Type.cpp Layer/Game.cpp Layer/Menu.cpp Layer/Root.cpp Math/Constant.cpp Math/Geometry.cpp Math/Random.cpp Math/Trigonometry.cpp Math/Vector.cpp Resource/Color.cpp Resource/Font.cpp Resource/Shader.cpp Engine/Error.cpp Object/Branch.cpp Object/Branch/Birch.cpp Physics/Collisions.cpp Physics/Pixels.cpp Physics/World.cpp Utility/Brush.cpp Utility/Float.cpp Utility/Stage.cpp
 SOURCES=$(shell find src/ -type f -name '*.cpp')
 OBJECTS=$(SOURCES:.cpp=.o)
+
+# Paths
 SRCPATH=src/
 INCPATHS=include/
 BINPATH=bin
-LDFLAGS=-lBox2D -lGLEW -lsfml-system -lsfml-window -lsfml-graphics
-CFLAGS=-Wall -std=c++11 -g
 
-# Compilers
+# Linker flags
+LDFLAGS=-Llib -lBox2D -lGLEW -lsfml-system -lsfml-window -lsfml-graphics
+
+# Background colors
 BG_WHITE=$$(tput setab 7)
 
 # Foreground colors
@@ -36,11 +39,18 @@ OBJECT_FILES=$(OBJECTS)
 
 # Compilers
 CC_linux64=g++
-CC_win32=/opt/mingw32/cross_win32/bin/i686-w64-mingw32-g++
+CC_win32=i686-w64-mingw32-g++
 CC = $(CC_$(GOAL))
 
+# Language-specific flags
+CFLAGS_linux64=-Wall -std=c++11 -g
+CFLAGS_win32=-Wall -std=c++0x -g
+CFLAGS=$(CFLAGS_$(GOAL))
+
 INCFLAGS=$(foreach TMP,$(INCPATHS),-I$(TMP))
-EXECUTABLE=treesimulator
+EXECUTABLE_linux64=treesimulator
+EXECUTABLE_win32=treesimulator.exe
+EXECUTABLE=$(EXECUTABLE_$(GOAL))
 
 # Initial Target
 $(GOAL): $(SOURCES_FILES) $(EXECUTABLE)

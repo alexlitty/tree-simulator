@@ -43,7 +43,7 @@ namespace tree
         ~Player();
 
         /**
-         * Act.
+         * Perform branch actions.
          */
         bool act(tree::Stage &stage) override;
 
