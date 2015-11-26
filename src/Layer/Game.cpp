@@ -186,33 +186,6 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
             return false;
         }
 
-        // Left key pressed. Rotate counter-clockwise.
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-            m_player->rotate(false);
-        }
-
-        // Right key pressed. Rotate clockwise.
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-            m_player->rotate(true);
-        }
-
-        // Up key pressed, thrust.
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-            m_player->thrust(true);
-        }
-
-        // Down key pressed, brake.
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-            m_player->thrust(false);
-        }
-
-        // Space key is pressed, shoot.
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-            m_player->toggleShooting(true);
-        } else {
-            m_player->toggleShooting(false);
-        }
-
         // Prepare physical objects for more steps.
         for (auto physical : m_stage.physicals) {
             physical->prepare();

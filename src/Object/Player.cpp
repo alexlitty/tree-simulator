@@ -70,6 +70,25 @@ tree::Player::~Player()
 // Act.
 bool tree::Player::act(tree::Stage &stage)
 {
+    // Rotate player.
+    this->setAngle(
+        tree::getAngle(
+            this->getPosition(), stage.mouse
+        )
+    );
+
+    // Thrust player.
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+        this->thrust(true);
+    }
+
+    // Activate branches.
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+        this->toggleShooting(true);
+    } else {
+        this->toggleShooting(false);
+    }
+
     // Perform laser actions.
     m_laser.act(stage);
 
