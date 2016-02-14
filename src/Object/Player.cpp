@@ -3,21 +3,21 @@
 #include <tree/Math/Geometry.hpp>
 #include <tree/Math/Random.hpp>
 #include <tree/Math/Vector.hpp>
-#include <tree/Object/Branch/Birch.hpp>
+#include <tree/Object/Branch.hpp>
 #include <tree/Object/Player.hpp>
 #include <tree/Resource/Color.hpp>
 
 // Constructor.
 tree::Player::Player()
 : tree::Lifeform::Lifeform(tree::Faction::wood, 10),
-  engineParticles(200, 1500),
-  m_laser(this)
+  engineParticles(200, 1500)
 {
     m_thrustPower = 25E4;
+    //m_rotationPower = 
+
     // Initialize shape.
     m_shape.setSize(tree::pixels(b2Vec2(2.0f, 1.0f)));
     m_shape.setFillColor(sf::Color::Green);
-    //Math::centerOrigin(m_shape);
 
     // Initialize hat.
     hatColor = sf::Color::Magenta;
@@ -50,61 +50,52 @@ tree::Player::Player()
     this->addFixture(fixtureDef);
 
     // Test branch.
-    /*m_branches.push_back(
-        new tree::branches::Birch(
-            this,
-            m_body->GetLocalPoint(getPosition() + b2Vec2(0.0f, 5.0f)),
-            m_body->GetLocalPoint(getPosition())
-        )
-    );*/
+    rootBranch = new tree::branch::Wood();
 }
 
 // Destructor.
 tree::Player::~Player()
 {
-    for (auto branch : m_branches) {
-        delete branch;
-    }
+    delete rootBranch;
 }
 
 // Act.
 bool tree::Player::act(tree::Stage &stage)
 {
-    // Rotate player.
-    this->setAngle(
-        tree::getAngle(
-            this->getPosition(), stage.mouse
-        )
-    );
+    // Rotate player counter-clockwise.
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+        this->rotate(false);
+    }
 
+    // Rotate player clockwise.
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+        this->rotate(true);
+    }
+    
     // Thrust player.
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
         this->thrust(true);
     }
 
+    // Apply space-brakes.
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+        this->thrust(false);
+    }
+
     // Activate branches.
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+    /*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
         this->toggleShooting(true);
     } else {
         this->toggleShooting(false);
-    }
+    }*/
 
-    // Perform laser actions.
-    m_laser.act(stage);
-
-    // Perform branch actions.
-    for (auto branch : m_branches) {
-        branch->act(stage);
-    }
+    rootBranch->act(stage);
     return true;
 }
 
 // Toggles shooting.
 void tree::Player::toggleShooting(bool isShooting)
 {
-    for (auto branch : m_branches) {
-        branch->activate(isShooting);
-    }
 }
 
 // Perform a thrust.
@@ -142,14 +133,9 @@ void tree::Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
     // Draw engine particles.
     target.draw(engineParticles, states);
 
-    // Draw laser.
-    target.draw(m_laser, states);
-
     // Draw branches.
     addPhysicalTransform(states.transform);
-    for (auto branch : m_branches) {
-        branch->draw(target, states);
-    }
+    rootBranch->draw(target, states);
 
     // Draw player.
     target.draw(m_shape, states);

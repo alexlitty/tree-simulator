@@ -6,7 +6,6 @@
 #include <tree/Component/Lifeform.hpp>
 #include <tree/Component/Physical.hpp>
 #include <tree/Object/Branch.hpp>
-#include <tree/Object/NuggetLaser.hpp>
 #include <tree/Object/Particles.hpp>
 
 namespace tree
@@ -25,13 +24,10 @@ namespace tree
         // Particles for engine thrust.
         Particles engineParticles;
 
-        // Collection of branches.
-        std::vector<tree::Branch*> m_branches;
-
-        // Laser to fire nuggets.
-        tree::NuggetLaser m_laser;
-
     public:
+
+        // Root of all branches.
+        Branch *rootBranch;
 
         // Color of test hat.
         sf::Color hatColor;

@@ -1,6 +1,5 @@
 #include <cmath>
 #include <tree/Gui/Message.hpp>
-#include <tree/Gui/NuggetSelect.hpp>
 #include <tree/Layer/Game.hpp>
 #include <tree/Math.hpp>
 #include <tree/Object/Character/Beaver.hpp>
@@ -67,8 +66,6 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
         new tree::character::Beaver(b2Vec2(-50.0f, 0))
     );*/
 
-    // Initialize GUI.
-    m_stage.add(new tree::gui::NuggetSelect());
     this->updateViews(true);
 
     // Welcome our victim.

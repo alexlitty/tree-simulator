@@ -1,32 +1,67 @@
 #include <tree/Object/Branch.hpp>
 
-// Activate the special abilities of this branch.
-void tree::Branch::activate(bool activated)
+// Constructor.
+tree::Branch::Branch()
+: abilityDirection(tree::Cardinal::None),
+  parent(nullptr)
 {
-    m_activated = activated;
+
 }
 
-// Show the preview of this branch.
-void tree::Branch::preview(tree::Physical *parent, b2Vec2 anchor, b2Vec2 position)
+// Destructor.
+tree::Branch::~Branch()
 {
-    m_parent = parent;
-    this->onPreview(anchor, position);
+    for (auto &kv : children) {
+        delete kv.second;
+    }
 }
 
-// Hide the preview of this branch.
-void tree::Branch::hidePreview()
+// Adds a child branch.
+bool tree::Branch::addChild(tree::BranchDirection direction, tree::Branch *child)
 {
-    m_parent = nullptr;
+    if (child == nullptr) {
+        return false;
+    }
+
+    // Ensure branch direction is free.
+    auto search = children.find(direction);
+    if (search != children.end()) {
+        return false;
+    }
+
+    // Add child to branch.
+    children[direction] = child;
+    child->parent = this;
+    return true;
 }
 
-// Whether this branch is being previewed.
-bool tree::Branch::isPreviewing() const
+// Removes a child branch, by direction.
+void tree::Branch::removeChild(tree::BranchDirection direction)
 {
-    return (m_parent != nullptr);
+    auto search = children.find(direction);
+    if (search != children.end()) {
+        delete search->second;
+        children.erase(search);
+    }
 }
 
-// Whether this branch has been permanently placed.
-bool tree::Branch::isPlaced() const
+// Removes a child branch, by pointer.
+void tree::Branch::removeChild(tree::Branch *branch)
 {
-    return m_placed;
+    for (auto &child : children) {
+        if (child.second == branch) {
+            children.erase(child.first);
+        }
+    }
+}
+
+// Toggle the direction this branch is using its active abilities.
+void tree::Branch::setAbilityDirection(tree::Cardinal direction)
+{
+    abilityDirection = direction;
+
+    // Pass direction to children.
+    for (auto &kv : children) {
+        kv.second->setAbilityDirection(direction);
+    }
 }

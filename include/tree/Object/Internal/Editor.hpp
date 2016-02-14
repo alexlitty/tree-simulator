@@ -9,9 +9,10 @@ namespace tree
 {
     class PlayerEditor : public Actor, public Drawable
     {
-        tree::Player *m_player;
-        tree::Branch *m_branch;
-        unsigned char m_mode;
+        tree::Player *player;
+        tree::Branch *currentBranch;
+        tree::Branch *previewBranch;
+        bool previewActive;
 
     public:
 
@@ -26,9 +27,10 @@ namespace tree
         ~PlayerEditor();
 
         /**
-         * Select new branch to add.
+         * Selects the next or parent branch.
          */
-        void select(tree::Branch *branch);
+        void selectNextBranch(tree::BranchDirection direction);
+        void selectParentBranch();
 
         /**
          * Perform editing.
