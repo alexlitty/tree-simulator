@@ -49,7 +49,7 @@ tree::Player::Player()
     fixtureDef.filter.maskBits = tree::COLLISION_WORLD;
     this->addFixture(fixtureDef);
 
-    // Test branch.
+    // Starting branch.
     rootBranch = new tree::branch::Wood();
 }
 

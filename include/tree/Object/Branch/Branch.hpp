@@ -34,6 +34,9 @@ namespace tree
         // Children branches.
         std::map<BranchDirection, Branch*> children;
 
+        // Anchor position.
+        sf::Vector2f anchorPosition;
+
         /**
          * Constructor.
          */
@@ -43,6 +46,16 @@ namespace tree
          * Destructor.
          */
         ~Branch();
+
+        /**
+         * Gets the next anchor position for a new branch.
+         */
+        virtual void getNextAnchor(BranchDirection direction, sf::Vector2f &a, sf::Vector2f &b) const;
+
+        /**
+         * Sets the anchor this branch should attach to.
+         */
+        virtual void setAnchor(sf::Vector2f &a, sf::Vector2f &b);
 
         /**
          * Adds a child branch.
@@ -55,13 +68,24 @@ namespace tree
         void removeChild(BranchDirection direction);
         void removeChild(Branch *branch);
 
-        
         /**
          * Toggle the direction this branch is using its active abilities.
          *
          * If direction is "none", then its active abilities are disabled.
          */
         void setAbilityDirection(tree::Cardinal direction);
+
+        /**
+         * Draw this branch and child branches.
+         *
+         * Calls drawSelf(...).
+         */
+        virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
+
+        /**
+         * Draws this branch.
+         */
+        virtual void drawSelf(sf::RenderTarget &target, sf::RenderStates states) const;
     };
 }
 

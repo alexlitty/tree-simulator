@@ -9,7 +9,23 @@ namespace tree
     {
         class Wood : public Branch
         {
-            virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
+            sf::ConvexShape shape;
+
+        public:
+            /**
+             * Constructor.
+             */
+            Wood();
+
+            /**
+             * Set anchor.
+             */
+            virtual void setAnchor(sf::Vector2f &a, sf::Vector2f &b);
+
+            /**
+             * Draw this branch.
+             */ 
+            virtual void drawSelf(sf::RenderTarget &target, sf::RenderStates states) const;
         };
     }
 }
