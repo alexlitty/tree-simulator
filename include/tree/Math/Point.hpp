@@ -4,6 +4,8 @@
 #include <Box2D/Box2D.h>
 #include <SFML/Graphics.hpp>
 
+#include <tree/Math/Angle.hpp>
+
 namespace tree
 {
     struct Point
@@ -24,8 +26,18 @@ namespace tree
         /**
          * Conversion constructors.
          */
-        Point(sf::Vector2f &other);
-        Point(b2Vec2 &other);
+        Point(const sf::Vector2f &other);
+        Point(const b2Vec2 &other);
+
+        /**
+         * Calculates the angle made by this point and another point.
+         */
+        Angle GetAngle(Point &other) const;
+
+        /**
+         * Extends this point at an angle.
+         */
+        void Extend(Angle angle, float magnitude);
 
         /**
          * Convert to SFML vector.
