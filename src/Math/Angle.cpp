@@ -29,7 +29,7 @@ void tree::Angle::SetRadians(float v)
 void tree::Angle::SetDegrees(float v)
 {
     SetRadians(
-        (v * 180.0f) / tree::Math::PI
+        (v * tree::Math::PI) / 180.0f
     );
 }
 
@@ -42,5 +42,5 @@ float tree::Angle::GetRadians() const
 // Retrieves this angle in degrees.
 float tree::Angle::GetDegrees() const
 {
-    return (radians * tree::Math::PI) / 180.0f;
+    return (radians * 180.0f) / tree::Math::PI;
 }

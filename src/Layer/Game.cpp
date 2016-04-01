@@ -174,11 +174,16 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
         m_stage.messages.front()->expire();
     }
 
-    // Perform actions.
+    // Perform message actions.
     if (m_stage.messages.size() > 0) {
         if (!m_stage.messages.front()->act(m_stage)) {
             m_stage.destroy(m_stage.messages.front());
         }
+    }
+
+    // Perform actions.
+    for (auto actor : m_stage.actors) {
+        actor->act(m_stage);
     }
 
     // Update the stage.

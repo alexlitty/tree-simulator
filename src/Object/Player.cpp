@@ -44,9 +44,12 @@ tree::Player::Player()
     fixtureDef.density = 500.0f;
     fixtureDef.friction = 0.05f;
     fixtureDef.restitution = 0.25f;
-    fixtureDef.filter.categoryBits = tree::COLLISION_NORMAL;
-    fixtureDef.filter.maskBits = tree::COLLISION_WORLD;
+    fixtureDef.filter.categoryBits = tree::COLLISION_FRIEND;
+    fixtureDef.filter.maskBits = tree::COLLISION_WORLD | tree::COLLISION_ENEMY;
     this->addFixture(fixtureDef);
+
+    // Add first leaf.
+    this->addLeaf();
 }
 
 // Destructor.
@@ -55,35 +58,78 @@ tree::Player::~Player()
 
 }
 
+// Adds a leaf to the player.
+void tree::Player::addLeaf()
+{
+    tree::Leaf* leaf = new tree::Leaf(this);
+    leaf->position.x = 1.5f;
+    leaf->position.y = 0.0f;
+
+    this->leaves.push_back(leaf);
+}
+
 // Act.
 bool tree::Player::act(tree::Stage &stage)
 {
-    // Rotate player counter-clockwise.
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-        this->rotate(false);
+    // Move the player.
+    bool moving = false;
+    Angle goal;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+        moving = true;
+        goal.SetDegrees(0);
     }
 
     // Rotate player clockwise.
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-        this->rotate(true);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+        moving = true;
+        goal.SetDegrees(90);
     }
     
     // Thrust player.
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-        this->thrust(true);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+        moving = true;
+        goal.SetDegrees(180);
     }
 
     // Apply space-brakes.
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-        this->thrust(false);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+        moving = true;
+        goal.SetDegrees(270);
+    }
+
+    this->setAngle(goal.GetRadians());
+    if (moving) {
+        this->thrust(true);
     }
 
     // Activate leaves.
-    /*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+    bool shooting = false;
+    Angle angle;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+        shooting = true;
+        angle.SetDegrees(270);
+    }
+
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+        shooting = true;
+        angle.SetDegrees(0);
+    }
+
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+        shooting = true;
+        angle.SetDegrees(90);
+    }
+
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+        shooting = true;
+        angle.SetDegrees(180);
+    }
+
+    if (shooting) {
         for (auto leaf : this->leaves) {
-            leaf->shoot(stage, 0, this->getLinearVelocity());
+            leaf->shoot(stage, angle);
         }
-    }*/
+    }
 
     return true;
 }
@@ -127,4 +173,9 @@ void tree::Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
     addPhysicalTransform(states.transform);
     target.draw(m_shape, states);
     target.draw(m_hat, states);
+
+    // Draw leaves.
+    for (auto leaf : this->leaves) {
+        target.draw(*leaf, states);
+    }
 }

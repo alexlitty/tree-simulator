@@ -5,9 +5,10 @@
  */
 
 tree::weapon::Seed::Seed(Point initialPoint, Point initialVelocity)
-: shape(0.2f, 6)
+: shape(0.4f, 6)
 {
     this->shape.setFillColor(sf::Color::Yellow);
+    Math::centerOrigin(this->shape);
 
     // Physical body.
     b2BodyDef body;
@@ -18,16 +19,16 @@ tree::weapon::Seed::Seed(Point initialPoint, Point initialVelocity)
 
     // Physical shape.
     b2PolygonShape pShape;
-    pShape.SetAsBox(0.2f, 0.2f);
+    pShape.SetAsBox(0.4f, 0.4f);
 
     // Physical fixture.
     b2FixtureDef fixture;
     fixture.shape = &pShape;
-    fixture.density = 50.0f;
+    fixture.density = 500.0f;
     fixture.friction = 0.05f;
     fixture.restitution = 1.0f;
-    fixture.filter.categoryBits = tree::COLLISION_NORMAL;
-    fixture.filter.maskBits = tree::COLLISION_WORLD;
+    fixture.filter.categoryBits = tree::COLLISION_FRIEND;
+    fixture.filter.maskBits = tree::COLLISION_WORLD | tree::COLLISION_ENEMY;
     this->addFixture(fixture);
 
     // Set initial velocity.
@@ -38,5 +39,5 @@ tree::weapon::Seed::Seed(Point initialPoint, Point initialVelocity)
 void tree::weapon::Seed::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     this->addPhysicalTransform(states.transform);
-    target.draw(this->shape);
+    target.draw(this->shape, states);
 }

@@ -8,26 +8,26 @@ namespace tree
 {
     class Leaf : public Drawable
     {
+        // Player this leaf is attached to.
+        Physical* parent;
+
         // Shape of the leaf.
         sf::CircleShape shape;
 
     public:
 
-        // Position of the leaf.
+        // Relative position of the leaf.
         Point position;
-
-        // Angle of the leaf.
-        Angle angle;
 
         /**
          * Constructor.
          */
-        Leaf();
+        Leaf(Physical* _parent);
 
         /**
          * Shoots seeds.
          */
-        void shoot(tree::Stage &stage, Angle angle, Point currentVelocity);
+        void shoot(tree::Stage &stage, Angle angle);
 
         /**
          * Draws the leaf.
