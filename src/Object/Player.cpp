@@ -3,7 +3,6 @@
 #include <tree/Math/Geometry.hpp>
 #include <tree/Math/Random.hpp>
 #include <tree/Math/Vector.hpp>
-#include <tree/Object/Branch.hpp>
 #include <tree/Object/Player.hpp>
 #include <tree/Resource/Color.hpp>
 
@@ -48,15 +47,12 @@ tree::Player::Player()
     fixtureDef.filter.categoryBits = tree::COLLISION_NORMAL;
     fixtureDef.filter.maskBits = tree::COLLISION_WORLD;
     this->addFixture(fixtureDef);
-
-    // Starting branch.
-    rootBranch = new tree::branch::Wood();
 }
 
 // Destructor.
 tree::Player::~Player()
 {
-    delete rootBranch;
+
 }
 
 // Act.
@@ -82,20 +78,14 @@ bool tree::Player::act(tree::Stage &stage)
         this->thrust(false);
     }
 
-    // Activate branches.
+    // Activate leaves.
     /*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-        this->toggleShooting(true);
-    } else {
-        this->toggleShooting(false);
+        for (auto leaf : this->leaves) {
+            leaf->shoot(stage, 0, this->getLinearVelocity());
+        }
     }*/
 
-    rootBranch->act(stage);
     return true;
-}
-
-// Toggles shooting.
-void tree::Player::toggleShooting(bool isShooting)
-{
 }
 
 // Perform a thrust.
@@ -133,11 +123,8 @@ void tree::Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
     // Draw engine particles.
     target.draw(engineParticles, states);
 
-    // Draw branches.
-    addPhysicalTransform(states.transform);
-    rootBranch->draw(target, states);
-
     // Draw player.
+    addPhysicalTransform(states.transform);
     target.draw(m_shape, states);
     target.draw(m_hat, states);
 }

@@ -135,7 +135,7 @@ sf::Vector2f tree::Physical::getPixelPosition() const
 }
 
 // Sets physical position.
-void tree::Physical::setPosition(b2Vec2 &pos)
+void tree::Physical::setPosition(b2Vec2 pos)
 {
     m_body->SetTransform(pos, this->getAngle());
 }
@@ -199,13 +199,13 @@ b2Vec2 tree::Physical::getLinearVelocity() const
 }
 
 // Sets linear velocity.
-void tree::Physical::setLinearVelocity(b2Vec2 &velocity)
+void tree::Physical::setLinearVelocity(b2Vec2 velocity)
 {
     m_body->SetLinearVelocity(velocity);
 }
 
 // Applies force to this object.
-void tree::Physical::applyForce(const b2Vec2 &force)
+void tree::Physical::applyForce(const b2Vec2 force)
 {
     m_totalForce += force;
     m_body->ApplyForceToCenter(force, true);

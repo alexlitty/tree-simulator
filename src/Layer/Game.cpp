@@ -95,15 +95,9 @@ void tree::Layer::Game::updateViews(bool immediate)
     // Get goal size and angle.
     sf::Vector2f goalSize;
     float goalAngle;
-    if (m_playerEditor) {
-        goalSize.y = 50.0f;
-        goalAngle = tree::Math::degrees(
-            m_player->getAngle() + PI_HALF
-        );
-    } else {
-        goalSize.y = 200.0f;
-        goalAngle = 0.0f;
-    }
+
+    goalSize.y = 200.0f;
+    goalAngle = 0.0f;
     goalSize.x = goalSize.y * resolution;
 
     // Set goal views immediately.
@@ -147,63 +141,31 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
         )
     );
 
-    // Editor mode.
-    if (m_playerEditor) {
+    // Reset.
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+        return false;
+    }
 
-        // Fade out non-editor objects.
-        if (m_editingAlpha > 0.0f) {
-            m_editingAlpha -= 0.1f;
-        }
+    // Prepare physical objects for more steps.
+    for (auto physical : m_stage.physicals) {
+        physical->prepare();
+    }
 
-        // Run editor.
-        if (!m_playerEditor->act(m_stage)) {
-            delete m_playerEditor;
-            m_playerEditor = nullptr;
-            m_stage.expireMessages();
+    // Perform gravity.
+    for (auto gravitySource : m_stage.gravities) {
+        for (auto gravityTarget : m_stage.physicals) {
+            gravityTarget->applyGravity(gravitySource);
         }
     }
 
-    // Normal mode.
-    if (!m_playerEditor) {
+    // Perform physics.
+    tree::world.Step(1.0 / 120.0f, 20, 20);
 
-        // Tree editor activated.
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
-            m_playerEditor = new tree::PlayerEditor(m_player);
-            m_stage.add(
-                new tree::Message(
-                    "Use your mouse to add the branch",
-                    MESSAGE::INFO,
-                    240
-                )
-            );
-        }
-
-        // Reset.
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-            return false;
-        }
-
-        // Prepare physical objects for more steps.
-        for (auto physical : m_stage.physicals) {
-            physical->prepare();
-        }
-
-        // Perform gravity.
-        for (auto gravitySource : m_stage.gravities) {
-            for (auto gravityTarget : m_stage.physicals) {
-                gravityTarget->applyGravity(gravitySource);
-            }
-        }
-
-        // Perform physics.
-        tree::world.Step(1.0 / 120.0f, 20, 20);
-
-        // Expire objects.
-        for (auto expirable : m_stage.expirables) {
-            if (expirable->isExpired()) {
-                expirable->expire(m_stage);
-                m_stage.destroy(expirable);
-            }
+    // Expire objects.
+    for (auto expirable : m_stage.expirables) {
+        if (expirable->isExpired()) {
+            expirable->expire(m_stage);
+            m_stage.destroy(expirable);
         }
     }
 
@@ -213,17 +175,9 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
     }
 
     // Perform actions.
-    if (!m_playerEditor) {
-        for (auto actor : m_stage.actors) {
-            if (!actor->act(m_stage)) {
-                m_stage.destroy(actor);
-            }
-        }
-    } else {
-        if (m_stage.messages.size() > 0) {
-            if (!m_stage.messages.front()->act(m_stage)) {
-                m_stage.destroy(m_stage.messages.front());
-            }
+    if (m_stage.messages.size() > 0) {
+        if (!m_stage.messages.front()->act(m_stage)) {
+            m_stage.destroy(m_stage.messages.front());
         }
     }
 
@@ -237,19 +191,6 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
     // Adjust backgrounds.
     for (unsigned int i = 0; i < m_background.size(); i++) {
         m_background[i]->setViewTarget(m_viewGame.getCenter());
-    }
-
-    // Use alpha shader if needed.
-    if (m_editingAlpha <= 1.0f) {
-
-        // Fade-in as appropriate.
-        if (!m_playerEditor) {
-            m_editingAlpha += 0.1f;
-        }
-
-        // Enable shader.
-        m_render_states.shader = &tree::Shader::ForceAlpha;
-        tree::Shader::ForceAlpha.setParameter("alpha", m_editingAlpha);
     }
 
     // Draw objects.

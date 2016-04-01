@@ -9,7 +9,7 @@
 #include <tree/Component.hpp>
 #include <tree/Layer/Type.hpp>
 #include <tree/Object/Background/Stars.hpp>
-#include <tree/Object/Internal/Editor.hpp>
+#include <tree/Object/Player.hpp>
 
 namespace tree
 {
@@ -44,10 +44,6 @@ namespace tree
             // Player information.
             sf::Text m_positionText;
             sf::Text m_velocityText;
-
-            // Editor information.
-            tree::PlayerEditor *m_playerEditor = nullptr;
-            float m_editingAlpha = 1.0f;
 
         public:
             /**

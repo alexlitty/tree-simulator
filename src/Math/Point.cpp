@@ -51,15 +51,23 @@ void tree::Point::Extend(Angle angle, float magnitude)
 }
 
 // Convert to SFML vector.
-tree::Point::operator sf::Vector2f() const
+sf::Vector2f tree::Point::toDrawable() const
 {
     return sf::Vector2f(x, y);
 }
+tree::Point::operator sf::Vector2f() const
+{
+    return this->toDrawable();
+}
 
 // Convert to Box2D vector.
-tree::Point::operator b2Vec2() const
+b2Vec2 tree::Point::toPhysical() const
 {
     return b2Vec2(x, y);
+}
+tree::Point::operator b2Vec2() const
+{
+    return this->toPhysical();
 }
 
 // Subtracts points.

@@ -108,7 +108,7 @@ namespace tree
          */
         b2Vec2 getPosition() const;
         sf::Vector2f getPixelPosition() const;
-        void setPosition(b2Vec2 &pos);
+        void setPosition(b2Vec2 pos);
 
         /**
          * Gets position, plus an angled distance.
@@ -137,12 +137,12 @@ namespace tree
          * Gets and sets velocity.
          */
         b2Vec2 getLinearVelocity() const;
-        void setLinearVelocity(b2Vec2 &velocity);
+        void setLinearVelocity(b2Vec2 velocity);
 
         /**
          * Applies force to this object.
          */
-        void applyForce(const b2Vec2 &force);
+        void applyForce(const b2Vec2 force);
 
         /**
          * Applies thrust to this object.

@@ -42,11 +42,13 @@ namespace tree
         /**
          * Convert to SFML vector.
          */
+        sf::Vector2f toDrawable() const;
         operator sf::Vector2f() const;
 
         /**
          * Convert to Box2D vector.
          */
+        b2Vec2 toPhysical() const;
         operator b2Vec2() const;
 
         /**

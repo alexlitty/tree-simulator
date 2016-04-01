@@ -5,8 +5,8 @@
 #include <tree/Component/Drawable.hpp>
 #include <tree/Component/Lifeform.hpp>
 #include <tree/Component/Physical.hpp>
-#include <tree/Object/Branch.hpp>
 #include <tree/Object/Particles.hpp>
+#include <tree/Object/Tree/Leaf.hpp>
 
 namespace tree
 {
@@ -24,10 +24,10 @@ namespace tree
         // Particles for engine thrust.
         Particles engineParticles;
 
-    public:
+        // Leaves on the player.
+        std::vector<Leaf*> leaves;
 
-        // Root of all branches.
-        Branch *rootBranch;
+    public:
 
         // Color of test hat.
         sf::Color hatColor;
@@ -39,14 +39,19 @@ namespace tree
         ~Player();
 
         /**
-         * Perform branch actions.
+         * Adds a leaf to the player.
          */
-        bool act(tree::Stage &stage) override;
+        void addLeaf();
 
         /**
-         * Toggles shooting.
+         * Generates the player based on its composition.
          */
-        void toggleShooting(bool isShooting);
+        void generate();
+
+        /**
+         * Perform actions.
+         */
+        bool act(tree::Stage &stage) override;
 
         /**
          * Performs a thrust.
