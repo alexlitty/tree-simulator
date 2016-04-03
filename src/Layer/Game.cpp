@@ -115,10 +115,11 @@ void tree::Layer::Game::updateViews(bool immediate)
         m_viewGame.setSize(goalSize);
 
         // Angle.
-        goalAngle = tree::angle(
-            goalAngle - m_viewGame.getRotation(),
-            false
-        );
+        Angle tempAngle;
+        tempAngle.degrees(goalAngle);
+
+        goalAngle = tempAngle.degrees() - m_viewGame.getRotation();
+
         if (goalAngle > 180.0f) {
             goalAngle = -(360.0f - goalAngle);
         }
@@ -132,14 +133,6 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
     // Update events, for actors.
     m_stage.events.clear();
     m_stage.events = events;
-
-    // Update mouse target.
-    m_stage.mouse = tree::Math::vector(
-        m_window.mapPixelToCoords(
-            sf::Mouse::getPosition(),
-            m_viewGame
-        )
-    );
 
     // Reset.
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
@@ -252,7 +245,7 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
         "Velocity: "
         + std::to_string(
             static_cast<int>(
-                std::round(m_player->getLinearVelocity().Length())
+                std::round(m_player->getLinearVelocity().getMagnitude())
             )
         )
         + " m/s"

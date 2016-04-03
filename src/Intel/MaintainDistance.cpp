@@ -2,11 +2,9 @@
 #include <tree/Math.hpp>
 
 // Maintains a distance from a target position.
-void tree::Intel::maintainDistance(b2Vec2 target, float distance)
+void tree::Intel::maintainDistance(tree::Vector target, float distance)
 {
-    float currentDistance = tree::Math::distance(
-        this->getPosition(), target
-    );
+    float currentDistance = this->getPosition().distance(target);
 
     if (!tree::similar(currentDistance, distance, 5.0f)) {
 
@@ -14,15 +12,15 @@ void tree::Intel::maintainDistance(b2Vec2 target, float distance)
         if (currentDistance < distance) {
 
             // Get facing-angle opposite of target.
-            float targetAngle = tree::Math::getAngle(
-                target
-            );
-            targetAngle -= PI;
+            /*float targetAngle = target.getAngle();
+            targetAngle -= PI;*/
 
             // Generate facing-away vector.
-            b2Vec2 newTarget = tree::Math::createVector(
-                tree::Math::getAngle(
-                    this->getTotalForce()) - PI,
+            Angle pi;
+            pi.radians(PI);
+
+            Vector newTarget(
+                this->getTotalForce().getAngle() - pi,
                 1.0f
             );
 
@@ -40,9 +38,7 @@ void tree::Intel::maintainDistance(b2Vec2 target, float distance)
             // Check if we're already moving toward target.
             if (estimateLength > 10.0f) {
 
-                float deltaAngle = tree::getAngle(
-                    this->getPosition(), target
-                );
+                float deltaAngle = this->getPosition().getAngle(target).radians();
 
                 // We are. Do nothing.
                 if (deltaAngle < PI_HALF && deltaAngle > -PI_HALF) {

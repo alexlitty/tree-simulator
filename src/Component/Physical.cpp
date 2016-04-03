@@ -1,8 +1,5 @@
 #include <tree/Component/Physical.hpp>
 #include <tree/Engine/Constant.hpp>
-#include <tree/Math/Geometry.hpp>
-#include <tree/Math/Trigonometry.hpp>
-#include <tree/Math/Vector.hpp>
 #include <tree/Utility/Collection.hpp>
 
 // Create a body and add it to the physics system.
@@ -57,7 +54,7 @@ void tree::Physical::updateMass()
 }
 
 // Add a distance joint.
-void tree::Physical::distanceJoint(Physical &other, b2Vec2 thisAnchor, b2Vec2 otherAnchor, bool localize)
+void tree::Physical::distanceJoint(Physical &other, Vector thisAnchor, Vector otherAnchor, bool localize)
 {
     // Localize points.
     thisAnchor = m_body->GetLocalPoint(thisAnchor);
@@ -121,7 +118,7 @@ float tree::Physical::getMass() const
 }
 
 // Get physical position.
-b2Vec2 tree::Physical::getPosition() const
+tree::Vector tree::Physical::getPosition() const
 {
     return m_body->GetWorldCenter();
 }
@@ -129,38 +126,42 @@ b2Vec2 tree::Physical::getPosition() const
 // Get pixel position.
 sf::Vector2f tree::Physical::getPixelPosition() const
 {
-    return tree::Math::vector(
-        tree::PIXELS_PER_METER * m_body->GetWorldCenter()
-    );
+    b2Vec2 result = tree::PIXELS_PER_METER * m_body->GetWorldCenter();
+    return Vector(result);
 }
 
 // Sets physical position.
-void tree::Physical::setPosition(b2Vec2 pos)
+void tree::Physical::setPosition(tree::Vector pos)
 {
-    m_body->SetTransform(pos, this->getAngle());
+    m_body->SetTransform(pos, this->getAngle().radians());
 }
 
 // Gets position, plus an angled distance.
-b2Vec2 tree::Physical::getAngledPosition(float magnitude, float angle) const
+tree::Vector tree::Physical::getAngledPosition(float magnitude, Angle angle) const
 {
-    return this->getPosition() + tree::Math::createVector(
-        this->getAngle() + angle, magnitude
+    Vector delta(
+        this->getAngle() + angle,
+        magnitude
     );
+
+    return this->getPosition() + delta;
 }
 
 // Gets current angle.
-float tree::Physical::getAngle() const
+tree::Angle tree::Physical::getAngle() const
 {
-    return tree::angle(m_body->GetAngle());
+    Angle angle;
+    angle.radians(m_body->GetAngle());
+    return angle;
 }
 
 // Sets current angle.
-void tree::Physical::setAngle(float angle)
+void tree::Physical::setAngle(Angle angle)
 {
-    angle = tree::angle(angle);
     bool originalValue = this->getFixedRotation();
     this->setFixedRotation(false);
-    m_body->SetTransform(this->getPosition(), angle);
+
+    m_body->SetTransform(this->getPosition(), angle.radians());
     this->setFixedRotation(originalValue);
 }
 
@@ -173,7 +174,7 @@ void tree::Physical::rotate(bool direction)
 }
 
 // Performs a rotation.
-void tree::Physical::rotate(float angle)
+void tree::Physical::rotate(Angle angle)
 {
     this->setAngle(
         this->getAngle() + angle
@@ -193,19 +194,19 @@ void tree::Physical::setFixedRotation(bool fixed)
 }
 
 // Gets current linear velocity.
-b2Vec2 tree::Physical::getLinearVelocity() const
+tree::Vector tree::Physical::getLinearVelocity() const
 {
     return m_body->GetLinearVelocity();
 }
 
 // Sets linear velocity.
-void tree::Physical::setLinearVelocity(b2Vec2 velocity)
+void tree::Physical::setLinearVelocity(Vector velocity)
 {
     m_body->SetLinearVelocity(velocity);
 }
 
 // Applies force to this object.
-void tree::Physical::applyForce(const b2Vec2 force)
+void tree::Physical::applyForce(const Vector force)
 {
     m_totalForce += force;
     m_body->ApplyForceToCenter(force, true);
@@ -215,13 +216,15 @@ void tree::Physical::applyForce(const b2Vec2 force)
 void tree::Physical::applyThrust(bool direction)
 {
     m_currentThrustPower = direction ? m_thrustPower : -m_thrustPower;
-    m_body->ApplyForceToCenter(
-        tree::Math::createVector(
-            this->getAngle(),
-            m_currentThrustPower
-        ),
-        true
+
+    // Create force vector to apply.
+    Vector force(
+        this->getAngle(),
+        m_currentThrustPower
     );
+
+    // Apply force.
+    m_body->ApplyForceToCenter(force, true);
 }
 
 // Whether this object is currently thrusting.
@@ -258,26 +261,30 @@ void tree::Physical::applyGravity(Physical *other)
         return;
     }
 
-    float distance = Math::distance(this->getPosition(), other->getPosition());
-
-    if (distance == 0) {
+    // Directly on the source. Impossible to escape.
+    float distance = this->getPosition().distance(other->getPosition());
+    if (distance == 0.0f) {
         return;
     }
 
-    this->applyForce(
-        Math::setMagnitude(
-            other->getPosition() - this->getPosition(),
+    // Calculate force magnitude.
+    float magnitude = tree::GRAVITATIONAL_CONSTANT
+                    * this->getMass()
+                    * other->getMass()
+                    / std::pow(distance, 2);
 
-            tree::GRAVITATIONAL_CONSTANT
-            * this->getMass()
-            * other->getMass()
-            / std::pow(distance, 2)
-        )
+    // Create force vector.
+    Vector force(
+        (other->getPosition() - this->getPosition()).getAngle(),
+        magnitude
     );
+
+    // Apply force.
+    this->applyForce(force);
 }
 
 // Gets the total force being applied next step.
-b2Vec2 tree::Physical::getTotalForce() const
+tree::Vector tree::Physical::getTotalForce() const
 {
     return m_totalForce;
 }
@@ -290,14 +297,18 @@ void tree::Physical::prepare()
 }
 
 // Estimates the next linear velocity.
-b2Vec2 tree::Physical::estimateLinearVelocity() const
+tree::Vector tree::Physical::estimateLinearVelocity() const
 {
-    return this->getLinearVelocity() + ((1 / 120.0f) * m_totalForce);
+    Vector stepForce((1 / 120.0f) * m_totalForce);
+    return this->getLinearVelocity() + stepForce;
 }
 
 // Adds the physical transform to a drawing transform.
 void tree::Physical::addPhysicalTransform(sf::Transform &transform) const
 {
     transform.translate(this->getPixelPosition());
-    transform.rotate(tree::Math::degrees(m_body->GetAngle()));
+
+    Angle angle;
+    angle.radians(m_body->GetAngle());
+    transform.rotate(angle.degrees());
 }

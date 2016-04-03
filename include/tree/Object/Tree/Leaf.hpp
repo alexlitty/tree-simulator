@@ -17,7 +17,7 @@ namespace tree
     public:
 
         // Relative position of the leaf.
-        Point position;
+        Vector position;
 
         /**
          * Constructor.

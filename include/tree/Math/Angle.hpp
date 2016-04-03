@@ -9,7 +9,7 @@ namespace tree
     class Angle
     {
         // Internal angle value, in radians.
-        float radians;
+        float _rads;
 
     public:
 
@@ -19,30 +19,31 @@ namespace tree
         Angle();
 
         /**
-         * Constructor.
-         */
-        Angle(float _radians);
-
-        /**
          * Sets this angle in radians.
          */
-        void SetRadians(float v);
+        void radians(float v);
 
         /**
          * Sets this angle in degrees.
          */
-        void SetDegrees(float v);
+        void degrees(float v);
 
         /**
          * Retrieves this angle in radians.
          */
-        float GetRadians() const;
+        float radians() const;
 
         /**
          * Retrieves this angle in degrees.
          */
-        float GetDegrees() const;
+        float degrees() const;
     };
+
+    /**
+     * Angle operators.
+     */
+    Angle operator -(Angle left, const Angle& rhs);
+    Angle operator +(Angle left, const Angle& rhs);
 }
 
 #endif

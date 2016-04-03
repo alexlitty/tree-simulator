@@ -2,15 +2,13 @@
 #include <tree/Math.hpp>
 
 // Attempt to face a target.
-void tree::Intel::faceTarget(b2Vec2 &target)
+void tree::Intel::faceTarget(Vector& target)
 {
-    float deltaAngle = tree::getAngle(
-        this->getPosition(), target
-    );
+    Angle deltaAngle = this->getPosition().getAngle(target);
 
-    float angle = tree::angle(this->getAngle() - deltaAngle);
-    if (!tree::similar(angle, 0.0f, 0.1f)) {
-        if (angle < 0.0f) {
+    Angle angle = this->getAngle() - deltaAngle;
+    if (!tree::similar(angle.radians(), 0.0f, 0.1f)) {
+        if (angle.radians() < 0.0f) {
             this->rotate(true);
         } else {
             this->rotate(false);
@@ -19,7 +17,7 @@ void tree::Intel::faceTarget(b2Vec2 &target)
 }
 
 // Blindly move toward a target position.
-void tree::Intel::moveBlindly(b2Vec2 &target)
+void tree::Intel::moveBlindly(Vector &target)
 {
     this->faceTarget(target);
     this->applyThrust(true);

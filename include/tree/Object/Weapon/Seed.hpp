@@ -17,7 +17,7 @@ namespace tree
             /**
              * Constructor.
              */
-            Seed(Point initialPoint, Point initialVelocity);
+            Seed(Vector initialPoint, Vector initialVelocity);
 
             /**
              * Draws the seed.

@@ -4,11 +4,11 @@
  * Constructor.
  */
 
-tree::weapon::Seed::Seed(Point initialPoint, Point initialVelocity)
+tree::weapon::Seed::Seed(Vector initialPoint, Vector initialVelocity)
 : shape(0.4f, 6)
 {
     this->shape.setFillColor(sf::Color::Yellow);
-    Math::centerOrigin(this->shape);
+    tree::centerOrigin(this->shape);
 
     // Physical body.
     b2BodyDef body;

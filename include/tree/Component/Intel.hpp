@@ -23,17 +23,17 @@ namespace tree
         /**
          * Attempt to face a target.
          */
-        void faceTarget(b2Vec2 &target);
+        void faceTarget(Vector& target);
 
         /**
          * Blindly move toward a target position.
          */
-        void moveBlindly(b2Vec2 &target);
+        void moveBlindly(Vector& target);
 
         /**
          * Maintains a distance from a target position.
          */
-        void maintainDistance(b2Vec2 target, float distance);
+        void maintainDistance(Vector target, float distance);
     };
 }
 

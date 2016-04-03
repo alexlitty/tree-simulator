@@ -8,9 +8,10 @@ tree::character::Beaver::Beaver(b2Vec2 position)
     m_thrustPower = 1E5;
 
     // Initialize shape.
-    m_tempShape.setSize(tree::pixels(b2Vec2(3.0f, 1.5f)));
+    sf::Vector2f shapeSize(3.0f, 1.5f);
+    m_tempShape.setSize(shapeSize);
     m_tempShape.setFillColor(sf::Color::Yellow);
-    tree::Math::centerOrigin(m_tempShape);
+    tree::centerOrigin(m_tempShape);
 
     // Physical body.
     b2BodyDef bodyDef;

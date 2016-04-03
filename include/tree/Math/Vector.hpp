@@ -1,64 +1,106 @@
-#ifndef TREESIMULATOR_MATH_VECTOR
-#define TREESIMULATOR_MATH_VECTOR
+#ifndef TREESIMULATOR_MATH_VECTOR_HPP
+#define TREESIMULATOR_MATH_VECTOR_HPP
 
-#include <SFML/Graphics.hpp>
 #include <Box2D/Box2D.h>
+#include <SFML/Graphics.hpp>
+
+#include <tree/Math/Angle.hpp>
 
 namespace tree
 {
-    /**
-     * Simplifies an angle.
-     */
-    float angle(float a, bool radians = true);
-
-    /**
-     * Finds the angle between two points.
-     */
-    float getAngle(b2Vec2 point, b2Vec2 target);
-
-    /**
-     * Calculates the dot product of two vectors.
-     */
-    float dot(b2Vec2& left, b2Vec2& right);
-
-    namespace Math
+    struct Vector
     {
-        /**
-         * Converts drawing vectors and physical vectors.
-         */
-        sf::Vector2f vector(const b2Vec2 &vec);
-        b2Vec2 vector(const sf::Vector2f &vec);
+        float x;
+        float y;
 
         /**
-         * Computes the magnitude of a vector.
+         * Default constructor.
          */
-        float magnitude(b2Vec2 vector);
+        Vector();
 
         /**
-         * Changes the magnitude of a vector.
+         * Constructors.
          */
-        b2Vec2 setMagnitude(b2Vec2 vector, float magnitude);
+        Vector(float _x, float _y);
+        Vector(Angle angle, float magnitude);
 
         /**
-         * Finds the angle of a vector's direction.
+         * Conversion constructors.
          */
-        float getAngle(b2Vec2 vector);
+        Vector(const sf::Vector2f &other);
+        Vector(const b2Vec2 &other);
 
         /**
-         * Computes a vector given an angle and magnitude.
+         * Calculates the angle made by this vector alone.
          */
-        b2Vec2 createVector(float angle, float magnitude);
+        Angle getAngle() const;
 
         /**
-         * Calculates the cross product of two vectors.
+         * Calculates the angle made by this vector and another vector.
          */
-        float cross(b2Vec2& left, b2Vec2& right);
+        Angle getAngle(Vector &other) const;
 
         /**
-         * Calculates the normal of a vector.
+         * Calculates and sets the magnitude of this vector.
          */
-        b2Vec2 normal(b2Vec2& a, b2Vec2& b, bool topRight);
-    }
+        float getMagnitude() const;
+        void setMagnitude(float magnitude);
+
+        /**
+         * Extends this vector at an angle.
+         */
+        void extend(Angle angle, float magnitude);
+
+        /**
+         * Finds the distance between this and another vector.
+         */
+        float distance(Vector other) const;
+
+        /**
+         * Finds the center between this and another vector.
+         */
+        Vector center(Vector other) const;
+
+        /**
+         * Calculates vector normals, alone or with another vector.
+         */
+        Vector normal() const;
+        Vector normal(tree::Vector& other) const;
+
+        /**
+         * Calculates the dot product of this and another vector.
+         */
+        float dot(Vector& other) const;
+
+        /**
+         * Calculates the cross product of this and another vector.
+         */
+        float cross(Vector& other) const;
+
+        /**
+         * Convert to SFML vector.
+         */
+        sf::Vector2f toDrawable() const;
+        operator sf::Vector2f() const;
+
+        /**
+         * Convert to Box2D vector.
+         */
+        b2Vec2 toPhysical() const;
+        operator b2Vec2() const;
+
+        /**
+         * Mathematical operators.
+         */
+        Vector& operator -=(const Vector &rhs);
+        Vector& operator +=(const Vector &rhs);
+    };
+
+    /**
+     * Mathematical operators.
+     */
+    Vector operator -(Vector lhs, const Vector &rhs);
+    Vector operator +(Vector lhs, const Vector &rhs);
 }
 
 #endif

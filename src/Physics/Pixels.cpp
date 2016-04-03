@@ -8,11 +8,3 @@ float tree::pixels(float distance)
 {
     return tree::PIXELS_PER_METER * distance;
 }
-
-// Convert physical vector to pixel vector.
-sf::Vector2f tree::pixels(b2Vec2 vector)
-{
-    return tree::Math::vector(
-        tree::PIXELS_PER_METER * vector
-    );
-}

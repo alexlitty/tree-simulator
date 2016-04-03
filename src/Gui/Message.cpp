@@ -73,6 +73,7 @@ void tree::Message::expire()
 }
 
 // Shows and hides the message.
+#include <iostream>
 bool tree::Message::act(tree::Stage &stage)
 {
     sf::FloatRect bounds = m_wrapper.getGlobalBounds();

@@ -79,7 +79,7 @@ void tree::brush::lines(sf::RenderTarget *target)
     }
     sf::CircleShape test(25.0f, 60);
     test.setFillColor(sf::Color::Blue);
-    tree::Math::centerOrigin(test);
+    tree::centerOrigin(test);
     test.setPosition(size.x / 2, size.y / 2);
     target->draw(test, states);
 }

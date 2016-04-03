@@ -4,6 +4,7 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include <tree/Component/Object.hpp>
+#include <tree/Math.hpp>
 #include <tree/Physics/World.hpp>
 
 namespace tree
@@ -81,7 +82,7 @@ namespace tree
         /**
          * Add a distance joint.
          */
-        void distanceJoint(Physical &other, b2Vec2 thisPosition, b2Vec2 otherPosition, bool localize = true);
+        void distanceJoint(Physical &other, Vector thisPosition, Vector otherPosition, bool localize = true);
 
         /**
          * Adds a joint to be tracked.
@@ -106,26 +107,26 @@ namespace tree
         /**
          * Gets and sets position.
          */
-        b2Vec2 getPosition() const;
+        Vector getPosition() const;
         sf::Vector2f getPixelPosition() const;
-        void setPosition(b2Vec2 pos);
+        void setPosition(Vector pos);
 
         /**
          * Gets position, plus an angled distance.
          */
-        b2Vec2 getAngledPosition(float magnitude, float angle = 0) const;
+        Vector getAngledPosition(float magnitude, Angle angle) const;
 
         /**
          * Gets and sets angle.
          */
-        float getAngle() const;
-        void setAngle(float angle);
+        Angle getAngle() const;
+        void setAngle(Angle angle);
 
         /**
          * Performs a rotation.
          */
         void rotate(bool direction);
-        void rotate(float angle);
+        void rotate(Angle angle);
 
         /**
          * Gets and sets fixed rotation.
@@ -136,13 +137,13 @@ namespace tree
         /**
          * Gets and sets velocity.
          */
-        b2Vec2 getLinearVelocity() const;
-        void setLinearVelocity(b2Vec2 velocity);
+        Vector getLinearVelocity() const;
+        void setLinearVelocity(Vector velocity);
 
         /**
          * Applies force to this object.
          */
-        void applyForce(const b2Vec2 force);
+        void applyForce(const Vector force);
 
         /**
          * Applies thrust to this object.
@@ -175,9 +176,9 @@ namespace tree
         void applyGravity(Physical *other);
 
         /**
-         * Gets and resets the total force being applied next step.
+         * Gets the total force being applied next step.
          */
-        b2Vec2 getTotalForce() const;
+        Vector getTotalForce() const;
 
         /**
          * Prepares this object for another physics step.
@@ -187,12 +188,7 @@ namespace tree
         /**
          * Estimates the next linear velocity.
          */
-        b2Vec2 estimateLinearVelocity() const;
-
-        /**
-         * Retrieve a point along the current trajectory.
-         */
-        //b2Vec2 trajectoryPoint(unsigned int steps);
+        Vector estimateLinearVelocity() const;
 
         /**
          * Adds the physical transform to a drawing state.

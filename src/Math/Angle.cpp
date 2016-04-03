@@ -7,14 +7,8 @@ tree::Angle::Angle()
 
 }
 
-// Constructor.
-tree::Angle::Angle(float _radians)
-{
-    SetRadians(_radians);
-}
-
 // Sets this angle in radians.
-void tree::Angle::SetRadians(float v)
+void tree::Angle::radians(float v)
 {
     // Reduce a redundant value.
     if (v < 0.0f || v > TWO_PI) {
@@ -22,25 +16,39 @@ void tree::Angle::SetRadians(float v)
     }
 
     // Set the internal value.
-    radians = v;
+    _rads = v;
 }
 
 // Sets this angle in degrees.
-void tree::Angle::SetDegrees(float v)
+void tree::Angle::degrees(float v)
 {
-    SetRadians(
-        (v * tree::Math::PI) / 180.0f
+    this->radians(
+        (v * tree::PI) / 180.0f
     );
 }
 
 // Retrieves this angle in radians.
-float tree::Angle::GetRadians() const
+float tree::Angle::radians() const
 {
-    return radians;
+    return _rads;
 }
 
 // Retrieves this angle in degrees.
-float tree::Angle::GetDegrees() const
+float tree::Angle::degrees() const
 {
-    return (radians * 180.0f) / tree::Math::PI;
+    return (_rads * 180.0f) / tree::PI;
+}
+
+// Angle subtraction operator.
+tree::Angle tree::operator -(tree::Angle lhs, const tree::Angle& rhs)
+{
+    lhs.radians(lhs.radians() - rhs.radians());
+    return lhs;
+}
+
+// Angle addition operator.
+tree::Angle tree::operator +(tree::Angle lhs, const tree::Angle& rhs)
+{
+    lhs.radians(lhs.radians() + rhs.radians());
+    return lhs;
 }

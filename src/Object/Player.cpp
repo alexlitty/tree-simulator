@@ -1,8 +1,5 @@
 #include <tree/Engine/Constant.hpp>
-#include <tree/Math/Constant.hpp>
-#include <tree/Math/Geometry.hpp>
-#include <tree/Math/Random.hpp>
-#include <tree/Math/Vector.hpp>
+#include <tree/Math.hpp>
 #include <tree/Object/Player.hpp>
 #include <tree/Resource/Color.hpp>
 
@@ -15,16 +12,9 @@ tree::Player::Player()
     //m_rotationPower = 
 
     // Initialize shape.
-    m_shape.setSize(tree::pixels(b2Vec2(2.0f, 1.0f)));
+    sf::Vector2f shapeSize(2.0f, 1.0f);
+    m_shape.setSize(shapeSize);
     m_shape.setFillColor(sf::Color::Green);
-
-    // Initialize hat.
-    hatColor = sf::Color::Magenta;
-    m_hat.setSize(tree::pixels(b2Vec2(1.0f, 0.2f)));
-    m_hat.move(tree::pixels(b2Vec2(0, 0.3f)));
-    m_hat.setFillColor(hatColor);
-    Math::centerOrigin(m_shape);
-    m_hat.setOrigin(m_shape.getOrigin());
 
     // Physical body definition.
     b2BodyDef bodyDef;
@@ -76,28 +66,36 @@ bool tree::Player::act(tree::Stage &stage)
     Angle goal;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
         moving = true;
-        goal.SetDegrees(0);
+        goal.degrees(0);
     }
 
-    // Rotate player clockwise.
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
         moving = true;
-        goal.SetDegrees(90);
+        goal.degrees(90);
     }
     
-    // Thrust player.
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
         moving = true;
-        goal.SetDegrees(180);
+        goal.degrees(180);
     }
 
-    // Apply space-brakes.
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
         moving = true;
-        goal.SetDegrees(270);
+        goal.degrees(270);
     }
 
-    this->setAngle(goal.GetRadians());
+    else {
+        moving = false;
+        goal = this->getAngle();
+    }
+
+    // Rotate toward goal direction.
+    Angle deltaAngle = goal - this->getAngle();
+    deltaAngle.radians(deltaAngle.radians() / 3);
+
+    this->rotate(deltaAngle);
+
+    // Thrust if moving.
     if (moving) {
         this->thrust(true);
     }
@@ -107,22 +105,22 @@ bool tree::Player::act(tree::Stage &stage)
     Angle angle;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
         shooting = true;
-        angle.SetDegrees(270);
+        angle.degrees(270);
     }
 
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
         shooting = true;
-        angle.SetDegrees(0);
+        angle.degrees(0);
     }
 
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
         shooting = true;
-        angle.SetDegrees(90);
+        angle.degrees(90);
     }
 
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
         shooting = true;
-        angle.SetDegrees(180);
+        angle.degrees(180);
     }
 
     if (shooting) {
@@ -139,24 +137,43 @@ void tree::Player::thrust(bool direction)
 {
     this->applyThrust(direction);
 
-    b2Vec2 baseEngineVector = this->getPosition() - tree::Math::createVector(this->getAngle(), 0.1f);
+    Vector baseEngineVector(this->getAngle(), 0.1f);
+    baseEngineVector = this->getPosition() - baseEngineVector;
 
     for (unsigned int j = 0; j < 2; j++) {
         float displacement = tree::random(0.0f, 0.5f);
 
         for (unsigned int i = 0; i < 2; i++) {
 
-            b2Vec2 engineVector = baseEngineVector - tree::Math::createVector(
-                m_body->GetAngle() - (tree::Math::PI / 2),
-                (i == 0) ? -displacement : displacement
+            // Calculate engine angle.
+            Angle engineAngle;
+            engineAngle.radians(
+                m_body->GetAngle() - (PI / 2)
             );
 
+            // Create engine vector.
+            Vector engineVector(
+                engineAngle,
+                (i == 0) ? -displacement : displacement
+            );
+            engineVector = baseEngineVector - engineVector;
+
+            // Calculate particle angle.
+            Angle particleAngle;
+            particleAngle.radians(
+                (((i == 0) ? 1 : -1) * tree::random(-0.5f, 0.785f))
+            );
+
+            // Create particle vector.
+            Vector particleVector(
+                this->getAngle() + particleAngle,
+                0.001 * (direction ? -m_thrustPower : m_thrustPower)
+            );
+
+            // Create particle.
             engineParticles.add(
                 engineVector,
-                this->getLinearVelocity() + tree::Math::createVector(
-                    this->getAngle() + (((i==0) ? 1 : -1) * tree::random(-0.5f, 0.785f)),
-                    0.001 * (direction ? -m_thrustPower : m_thrustPower)
-                ),
+                particleVector,
                 tree::paletteColor(palette::fire)
             );
         }
@@ -172,7 +189,6 @@ void tree::Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
     // Draw player.
     addPhysicalTransform(states.transform);
     target.draw(m_shape, states);
-    target.draw(m_hat, states);
 
     // Draw leaves.
     for (auto leaf : this->leaves) {

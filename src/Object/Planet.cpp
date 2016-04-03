@@ -1,5 +1,5 @@
 #include <tree/Engine/Constant.hpp>
-#include <tree/Math/Geometry.hpp>
+#include <tree/Math.hpp>
 #include <tree/Object/Planet.hpp>
 #include <tree/Resource/Color.hpp>
 #include <tree/Resource/Shader.hpp>
@@ -87,10 +87,10 @@ void tree::Planet::generate()
     m_shape.setPointCount(
         (std::floor(radius / 30) + 1) * 60
     );
-    Math::centerOrigin(m_shape);
+    tree::centerOrigin(m_shape);
 
     // Calculate new texture size.
-    unsigned int textureSize = tree::nextPot(
+    unsigned int textureSize = tree::nextPowerOfTwo(
         static_cast<unsigned int>(radius)
     );
 
@@ -134,7 +134,7 @@ void tree::Planet::generate()
     // Update highlight.
     m_highlight.setPointCount(m_shape.getPointCount());
     m_highlight.setRadius(m_shape.getRadius());
-    tree::Math::centerOrigin(m_highlight);
+    tree::centerOrigin(m_highlight);
     m_highlight.setFillColor(sf::Color(0, 0, 0, 25));
     m_highlight.setOutlineColor(sf::Color(225, 225, 225, 50));
     m_highlight.setOutlineThickness(-1.0f);
