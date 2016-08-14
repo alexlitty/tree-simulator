@@ -20,7 +20,7 @@ namespace tree
             Beaver(b2Vec2 position);
 
             // Be a beaver.
-            bool act(tree::Stage &stage) override;
+            void act();
 
             // Draw beaver.
             void draw(sf::RenderTarget &target, sf::RenderStates states) const;

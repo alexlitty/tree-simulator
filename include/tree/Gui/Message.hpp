@@ -18,7 +18,7 @@ namespace tree
     /**
      * An object which relays information to the player.
      */
-    class Message : virtual public Actor, virtual public Drawable
+    class Message : virtual public Drawable
     {
         // Ticks remaining to display this message.
         unsigned int m_ticks;
@@ -66,11 +66,6 @@ namespace tree
          * Immediately expires the message.
          */
         void expire();
-
-        /**
-         * Shows and hides the message.
-         */
-        bool act(tree::Stage &stage);
 
         /**
          * Draws the message.

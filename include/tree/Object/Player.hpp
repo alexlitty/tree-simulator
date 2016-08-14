@@ -13,7 +13,7 @@ namespace tree
     /**
      * Representation of a Player in the game.
      */
-    class Player : public Actor, public Lifeform, public Drawable
+    class Player : public Lifeform, public Drawable
     {
         // Test shape for Player.
         sf::RectangleShape m_shape;
@@ -51,7 +51,7 @@ namespace tree
         /**
          * Perform actions.
          */
-        bool act(tree::Stage &stage) override;
+        void act(std::vector<tree::weapon::Seed*> &seeds);
 
         /**
          * Performs a thrust.

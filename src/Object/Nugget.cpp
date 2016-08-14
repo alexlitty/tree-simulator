@@ -1,9 +1,15 @@
+#include <tree/Engine/Error.hpp>
 #include <tree/Object/Nugget.hpp>
 
 // Adds a nugget to this collection.
 void tree::Nuggets::add(tree::nugget newNugget, unsigned int quantity)
 {
     unsigned int i = 0;
+
+    // Quantity must be non-zero.
+    if (quantity == 0) {
+        throw new tree::Error("Can't add zero nuggets");
+    }
 
     // Find nugget.
     while (i < this->list.size()) {

@@ -6,7 +6,7 @@ namespace tree
     /**
      * An object which is part of the GUI.
      */
-    class Gui : virtual public Actor, virtual public Drawable
+    class Gui : virtual public Drawable
     {
 
     public:
@@ -14,11 +14,6 @@ namespace tree
          * Constructor.
          */
         Gui();
-
-        /**
-         * Act.
-         */
-        virtual bool act(tree::Stage &stage) = 0;
 
         /**
          * Draws the GUI object.

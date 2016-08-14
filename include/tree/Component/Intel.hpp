@@ -1,7 +1,6 @@
 #ifndef TREESIMULATOR_COMPONENT_INTEL_HPP
 #define TREESIMULATOR_COMPONENT_INTEL_HPP
 
-#include <tree/Component/Actor.hpp>
 #include <tree/Component/Physical.hpp>
 
 namespace tree
@@ -9,7 +8,7 @@ namespace tree
     /**
      * A being of intelligence.
      */
-    class Intel : virtual public Actor, virtual public Physical
+    class Intel : virtual public Physical
     {
 
         b2Vec2 m_intelTarget;

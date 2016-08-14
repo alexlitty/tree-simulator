@@ -7,11 +7,6 @@
 namespace tree
 {
     /**
-     * Forward-declare stage.
-     */
-    class Stage;
-
-    /**
      * An object which has a timed life.
      *
      * At the end of its lifetime, it should be destroyed.
@@ -41,7 +36,7 @@ namespace tree
         /**
          * Action to occur upon expiration.
          */
-        virtual void expire(tree::Stage &stage);
+        virtual void expire();
     };
 }
 

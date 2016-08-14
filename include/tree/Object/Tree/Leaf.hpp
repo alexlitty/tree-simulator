@@ -3,6 +3,7 @@
 
 #include <tree/Component.hpp>
 #include <tree/Math.hpp>
+#include <tree/Object/Weapon/Seed.hpp>
 
 namespace tree
 {
@@ -27,7 +28,7 @@ namespace tree
         /**
          * Shoots seeds.
          */
-        void shoot(tree::Stage &stage, Angle angle);
+        void shoot(std::vector<tree::weapon::Seed*> &seeds, Angle angle);
 
         /**
          * Draws the leaf.

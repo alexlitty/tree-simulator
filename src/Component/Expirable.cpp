@@ -14,7 +14,7 @@ bool tree::Expirable::isExpired() const
 }
 
 // Action to occur upon expiration.
-void tree::Expirable::expire(tree::Stage &stage)
+void tree::Expirable::expire()
 {
 
 }

@@ -59,7 +59,7 @@ void tree::Player::addLeaf()
 }
 
 // Act.
-bool tree::Player::act(tree::Stage &stage)
+void tree::Player::act(std::vector<tree::weapon::Seed*> &seeds)
 {
     // Move the player.
     bool moving = false;
@@ -125,11 +125,9 @@ bool tree::Player::act(tree::Stage &stage)
 
     if (shooting) {
         for (auto leaf : this->leaves) {
-            leaf->shoot(stage, angle);
+            leaf->shoot(seeds, angle);
         }
     }
-
-    return true;
 }
 
 // Perform a thrust.

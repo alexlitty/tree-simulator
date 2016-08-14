@@ -1,37 +1,46 @@
 #ifndef TREESIMULATOR_ENGINE_UNIVERSE_GALAXY_HPP
 #define TREESIMULATOR_ENGINE_UNIVERSE_GALAXY_HPP
 
-#include <tree/Component/Actor.hpp>
 #include <tree/Object/Planet.hpp>
+#include <tree/Object/Player.hpp>
+#include <tree/Object/Weapon/Seed.hpp>
 
 namespace tree
 {
-    class Galaxy : public Actor
+    class Galaxy
     {
-        // Global origin of this galaxy.
-        Vector origin;
+        // Reference to players.
+        std::vector<tree::Player*> players;
 
         // Planets in this galaxy.
         std::vector<Planet*> planets;
 
-        // Whether this galaxi is enabled.
-        bool enabled;
+        // @@@ seeds
+        std::vector<tree::weapon::Seed*> seeds;
 
     public:
 
-        Galaxy();
-        ~Galaxy();
+        /**
+         * Constructor.
+         */
+        Galaxy(std::vector<tree::Player*> &initPlayers);
 
         /**
-         * Enables and disables galaxy activity.
+         * Destructor.
+         *
+         * Assumes the galaxy is already disabled.
          */
-        virtual void enable(Stage &stage);
-        virtual void disable();
+        virtual ~Galaxy();
 
         /**
          * Emulates the galaxy.
          */
-        bool act(Stage &stage);
+        void act();
+
+        /**
+         * Draws the galaxy.
+         */
+        virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
     };
 }
 

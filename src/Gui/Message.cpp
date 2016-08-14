@@ -3,7 +3,6 @@
 #include <tree/Resource/Font.hpp>
 
 // Constructor.
-#include <iostream>
 tree::Message::Message(std::string msg, tree::MESSAGE initStyle, unsigned int ticks, unsigned int level)
 : m_ticks(ticks),
   m_level(level),
@@ -70,64 +69,6 @@ void tree::Message::tick()
 void tree::Message::expire()
 {
     m_ticks = 0;
-}
-
-// Shows and hides the message.
-#include <iostream>
-bool tree::Message::act(tree::Stage &stage)
-{
-    sf::FloatRect bounds = m_wrapper.getGlobalBounds();
-    float right = bounds.left + bounds.width;
-
-    // Align message.
-    m_wrapper.setPosition(
-        m_wrapper.getPosition().x,
-        (m_level == 0)
-            ? stage.windowSize.y - 48
-            : m_level * 24
-    );
-
-    // Message needs to be hidden.
-    if (m_ticks == 0) {
-
-        // Hide it.
-        if (right > 0.05f) {
-            m_wrapper.move(
-                -75.0f * std::abs((bounds.width -(-bounds.left)) / bounds.width),
-                0.0f
-            );
-        }
-
-        // Fully hidden. Remove it.
-        else {
-            return false;
-        }
-    }
-
-    // Message needs to be shown.
-    else {
-
-        // Keep message extended.
-        if (bounds.left >= -0.5f) {
-            m_wrapper.setPosition(
-                0.0f,
-                m_wrapper.getPosition().y
-            );
-        }
-        
-        // Extend message.
-        else if (bounds.left < -0.5f) {
-            m_wrapper.move(
-                150.0f * std::abs((bounds.width - right) / bounds.width),
-                0.0f
-            );
-        }
-    }
-
-    // Align text and shadow.
-    m_wrapperShadow.setPosition(m_wrapper.getPosition());
-    m_text.setPosition(m_wrapper.getPosition());
-    return true;
 }
 
 // Draws the message.

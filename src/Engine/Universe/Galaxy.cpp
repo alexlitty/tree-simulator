@@ -1,10 +1,8 @@
 #include <tree/Engine/Universe/Galaxy.hpp>
 
-/**
- * Constructor.
- */
-tree::Galaxy::Galaxy()
-: enabled(false)
+// Constructor.
+tree::Galaxy::Galaxy(std::vector<tree::Player*> &initPlayers)
+: players(initPlayers)
 {
     for (unsigned int i = 0; i < 10; i++) {
 
@@ -34,60 +32,66 @@ tree::Galaxy::Galaxy()
                 break;
 
             default:
-                planet->nuggets.add(tree::nugget::lava, amount / 4);
+                planet->nuggets.add(tree::nugget::lava, 2);
                 planet->nuggets.add(tree::nugget::plasma, amount);
                 planet->nuggets.add(tree::nugget::rock, 1);
         }
 
         // Generate planet.
         planet->generate();
-        planets.push_back(planet);
+        planet->enablePhysics();
+        this->planets.push_back(planet);
+
     }
 }
 
-/**
- * Destructor.
- */
+// Destructor.
 tree::Galaxy::~Galaxy()
 {
+    for (auto planet : this->planets) {
+        delete planet;
+    }
 
-}
-
-/**
- * Enables the galaxy.
- */
-void tree::Galaxy::enable(tree::Stage &stage)
-{
-    this->enabled = true;
-    this->stage = &stage;
-
-    for (auto planet : planets) {
-        planet->enablePhysics();
-        this->stage->add(planet);
+    for (auto seed : this->seeds) {
+        delete seed;
     }
 }
 
-/**
- * Disables the galaxy.
- */
-void tree::Galaxy::disable()
+// Simulates the galaxy.
+void tree::Galaxy::act()
 {
-    enabled = false;
+    // Prepare physicals.
+    for (auto planet : this->planets) {
+        planet->prepare();
+    }
+    for (auto seed : this->seeds) {
+        seed->prepare();
+    }
+    for (auto player : this->players) {
+        player->prepare();
+    }
 
-    for (auto planet : planets) {
-        planet->disablePhysics();
-        this->stage->remove(planet);
+    // Player acting.
+    for (auto player : this->players) {
+        player->act(this->seeds);
     }
 }
 
-/**
- * Emulates the galaxy.
- */
-bool tree::Galaxy::act(tree::Stage &stage)
+// Draws the galaxy.
+void tree::Galaxy::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-    if (!enabled) {
-        this->enable(stage);
+    // Draw planets.
+    for (auto planet : this->planets) {
+        planet->draw(target, states);
     }
 
-    return true;
+    // Draw weapons.
+    for (auto seed : this->seeds) {
+        seed->draw(target, states);
+    }
+
+    // Draw players.
+    for (auto player : this->players) {
+        player->draw(target, states);
+    }
 }

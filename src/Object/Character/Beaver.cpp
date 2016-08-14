@@ -37,11 +37,11 @@ tree::character::Beaver::Beaver(b2Vec2 position)
 }
 
 // Be a beaver.
-bool tree::character::Beaver::act(tree::Stage &stage)
+void tree::character::Beaver::act()
 {
     /*// Find an enemy.
     tree::Physical *enemy = nullptr;
-    for (auto lifeform : stage.lifeforms) {
+    for (auto lifeform : sta!ge.lifeforms) {
         if (this->isHostile(*lifeform)) {
             enemy = lifeform;
             break;
@@ -55,9 +55,9 @@ bool tree::character::Beaver::act(tree::Stage &stage)
     }*/
 
     // Find a planet.
-    tree::Physical *planet = stage.gravities[0];
+    /*tree::Physical *planet = sta!ge.gravities[0];
     this->maintainDistance(planet->getPosition(), 200.0f);
-    return true;
+    return true;*/
 }
 
 // Draw beaver.

@@ -28,14 +28,11 @@ namespace tree
             sf::View m_viewGame;
             sf::View m_viewInterface;
 
-            // Stage of objects.
-            tree::Stage m_stage;
-
             // Game universe.
             tree::Universe universe;
 
-            // Quick pointer to player.
-            Player *m_player;
+            // Collection of players.
+            std::vector<tree::Player*> players;
 
             // Background stars.
             std::vector<tree::Background::Stars*> m_background;
@@ -45,15 +42,16 @@ namespace tree
             unsigned int m_frames;
             sf::Clock m_framesClock;
 
-            // Player information.
-            sf::Text m_positionText;
-            sf::Text m_velocityText;
-
         public:
             /**
              * Constructor.
              */
             Game(sf::RenderWindow &window);
+
+            /**
+             * Destructor.
+             */
+            ~Game();
 
             /**
              * Updates views.

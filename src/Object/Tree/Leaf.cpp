@@ -11,7 +11,7 @@ tree::Leaf::Leaf(Physical* _parent)
 }
 
 // Shoots seeds.
-void tree::Leaf::shoot(tree::Stage &stage, Angle angle)
+void tree::Leaf::shoot(std::vector<tree::weapon::Seed*> &seeds, Angle angle)
 {
     Vector newPosition = this->position + this->parent->getPosition();
     newPosition.x = (newPosition.x - 0.25f) + tree::random(0.0f, 0.5f);
@@ -22,8 +22,8 @@ void tree::Leaf::shoot(tree::Stage &stage, Angle angle)
         newPosition,
         localVelocity + this->parent->getLinearVelocity()
     );
-    
-    stage.add(seed);
+
+    seeds.push_back(seed);
 }
 
 // Draws leaf.
