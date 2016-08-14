@@ -3,7 +3,7 @@
 
 #include <list>
 #include <Box2D/Box2D.h>
-#include <tree/Component/Physical.hpp>
+#include <tree/Component.hpp>
 
 namespace tree
 {

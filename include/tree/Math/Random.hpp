@@ -2,6 +2,7 @@
 #define TREESIMULATOR_MATH_RANDOM_HPP
 
 #include <SFML/Graphics.hpp>
+#include <tree/Math.hpp>
 
 namespace tree
 {
@@ -24,6 +25,11 @@ namespace tree
      * Generate a random position, given a rendering size. 
      */
     sf::Vector2f random(float offset, sf::Vector2u right);
+
+    /**
+     * Generates a random point on a circle's border.
+     */
+    Vector randomPointOnBorder(sf::CircleShape shape);
 }
 
 #endif

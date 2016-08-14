@@ -8,7 +8,7 @@ namespace tree
 {
     namespace weapon
     {
-        class Seed : public Drawable, public Physical
+        class Seed : public Drawable, public Expirable, public Physical
         {
             sf::CircleShape shape;
 

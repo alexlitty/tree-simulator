@@ -1,6 +1,7 @@
 #ifndef TREESIMULATOR_UTILITY_COLLECTION_HPP
 #define TREESIMULATOR_UTILITY_COLLECTION_HPP
 
+#include <algorithm>
 #include <vector>
 
 namespace tree

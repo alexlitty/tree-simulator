@@ -7,6 +7,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <tree/Component.hpp>
+#include <tree/Engine/Universe/Universe.hpp>
 #include <tree/Layer/Type.hpp>
 #include <tree/Object/Background/Stars.hpp>
 #include <tree/Object/Player.hpp>
@@ -29,6 +30,9 @@ namespace tree
 
             // Stage of objects.
             tree::Stage m_stage;
+
+            // Game universe.
+            tree::Universe universe;
 
             // Quick pointer to player.
             Player *m_player;

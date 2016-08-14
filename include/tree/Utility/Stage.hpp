@@ -3,6 +3,7 @@
 
 #include <set>
 #include <vector>
+#include <tree/Component.hpp>
 
 namespace tree
 {
@@ -34,6 +35,7 @@ namespace tree
          * Newly created objects and objects to be destroyed.
          */
         std::vector<tree::Object*> newObjects;
+        std::set<tree::Object*> removeObjects;
         std::set<tree::Object*> destroyObjects;
 
         /**
@@ -65,10 +67,15 @@ namespace tree
         /**
          * Queues an object to be added on the stage.
          */
-        void add(tree::Object *object);
+        void add(tree::Object *object, bool assignStage = true);
 
         /**
-         * Queues an object to be destroyed from the stage.
+         * Queues an object to be removed from the stage.
+         */
+        void remove(tree::Object *object);
+
+        /**
+         * Queues an object to be destroyed from the whole game.
          */
         void destroy(tree::Object *object);
 
@@ -90,5 +97,6 @@ namespace tree
 }
 
 #include <tree/Gui/Message.hpp>
+#include <tree/Component/Object.hpp>
 
 #endif

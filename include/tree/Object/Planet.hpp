@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <tree/Component.hpp>
+#include <tree/Object/PlanetBranches.hpp>
 
 namespace tree
 {
@@ -21,6 +22,9 @@ namespace tree
 
         // Main texture for this planet.
         sf::RenderTexture *m_texture = nullptr;
+
+        // Branches to appear while being drained.
+        PlanetBranches *branches;
 
     public:
 
@@ -49,6 +53,11 @@ namespace tree
          * Receives a new nugget.
          */
         void receiveNugget(tree::nugget nugget) override;
+
+        /**
+         * Be drained by an external force.
+         */
+        //bool drain(Player &player, unsigned int level);
 
         /**
          * Generates this planet. Based on nugget composition.

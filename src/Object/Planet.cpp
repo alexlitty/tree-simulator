@@ -7,6 +7,7 @@
 
 // Main constructor.
 tree::Planet::Planet(b2Vec2 position)
+: branches(nullptr)
 {
     this->createsGravity = true;
 
@@ -59,7 +60,7 @@ float tree::Planet::getRadius() const
 // Gets the density of this planet.
 float tree::Planet::getNuggetDensity() const
 {
-    return 3E8 * this->nuggets.total();
+    return 3E4 * this->nuggets.total();
 }
 
 // Receives a new nugget.
@@ -138,6 +139,12 @@ void tree::Planet::generate()
     m_highlight.setFillColor(sf::Color(0, 0, 0, 25));
     m_highlight.setOutlineColor(sf::Color(225, 225, 225, 50));
     m_highlight.setOutlineThickness(-1.0f);
+    
+    // Generate branches.
+    this->branches = new PlanetBranches(
+        tree::randomPointOnBorder(m_shape),
+        tree::randomPointOnBorder(m_shape)
+    );
 }
 
 // Draw the planet.
@@ -153,5 +160,10 @@ void tree::Planet::draw(sf::RenderTarget &target, sf::RenderStates states) const
     states.shader = nullptr;
     if (this->isNuggetableTarget()) {
         target.draw(m_highlight, states);
+    }
+
+    // Draw branches.
+    if (branches) {
+        branches->draw(target, states);
     }
 }

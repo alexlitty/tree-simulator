@@ -1,5 +1,5 @@
-#include <tree/Component.hpp>
 #include <tree/Physics/Collisions.hpp>
+#include <tree/Utility/Stage.hpp>
 #include <tree/Utility/Collection.hpp>
 
 // Destructor.
@@ -9,12 +9,21 @@ tree::Stage::~Stage()
 }
 
 // Queues an object to be added on the stage.
-void tree::Stage::add(tree::Object *object)
+void tree::Stage::add(tree::Object *object, bool assignStage)
 {
+    if (assignStage) {
+        object->assignStage(this);
+    }
     this->newObjects.push_back(object);
 }
 
 // Queues an object to be removed from the stage.
+void tree::Stage::remove(tree::Object *object)
+{
+    this->removeObjects.insert(object);
+}
+
+// Queues an object to be destroyed from the entire game.
 void tree::Stage::destroy(tree::Object *object)
 {
     this->destroyObjects.insert(object);
@@ -76,6 +85,47 @@ void tree::Stage::update()
     }
     this->newObjects.clear();
 
+    // Remove objects.
+    for (auto object : this->removeObjects) {
+
+        physical = dynamic_cast<tree::Physical*>(object);
+
+        tree::remove(
+            this->messages,
+            dynamic_cast<tree::Message*>(object)
+        );
+
+        tree::remove(
+            this->actors,
+            dynamic_cast<tree::Actor*>(object)
+        );
+
+        // Drawables. Includes GUIs.
+        tree::remove(
+            this->drawables,
+            dynamic_cast<tree::Drawable*>(object)
+        );
+
+        tree::remove(
+            this->expirables,
+            dynamic_cast<tree::Expirable*>(object)
+        );
+
+        tree::remove(
+            this->physicals, physical
+        );
+
+        tree::remove(
+            this->gravities, physical
+        );
+
+        tree::remove(
+            this->lifeforms,
+            dynamic_cast<tree::Lifeform*>(object)
+        );
+    }
+    this->removeObjects.clear();
+
     // Destroy objects.
     for (auto object : this->destroyObjects) {
 
@@ -118,6 +168,7 @@ void tree::Stage::update()
         // Destroy object.
         delete object;
     }
+
     this->destroyObjects.clear();
 }
 

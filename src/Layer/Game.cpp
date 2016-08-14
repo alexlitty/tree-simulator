@@ -39,7 +39,7 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
     m_stage.add(m_player);
 
     // Create a gravity source.
-    tree::Planet *planet = new tree::Planet(b2Vec2(25.0f, 0));
+    /*tree::Planet *planet = new tree::Planet(b2Vec2(25.0f, 0));
     planet->nuggets.add(tree::nugget::rock, 10);
     planet->generate();
     planet->applyTorque(true);
@@ -59,7 +59,7 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
     planet->nuggets.add(tree::nugget::plasma, 20);
     planet->nuggets.add(tree::nugget::lava, 15);
     planet->generate();
-    m_stage.add(planet);
+    m_stage.add(planet);*/
 
     // Create beaver.
     /*m_stage.add(
@@ -138,6 +138,9 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
         return false;
     }
+
+    // Update universe.
+    universe.act(m_stage);
 
     // Prepare physical objects for more steps.
     for (auto physical : m_stage.physicals) {

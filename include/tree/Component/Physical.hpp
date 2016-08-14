@@ -70,6 +70,12 @@ namespace tree
         virtual ~Physical();
 
         /**
+         * Enables and disables physics.
+         */
+        void enablePhysics();
+        void disablePhysics();
+
+        /**
          * Add a fixture.
          */
         b2Fixture* addFixture(b2FixtureDef &fixtureDef);

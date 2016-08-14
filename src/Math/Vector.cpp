@@ -190,3 +190,14 @@ tree::Vector tree::operator +(tree::Vector lhs, const tree::Vector &rhs)
     lhs += rhs;
     return lhs;
 }
+
+// Compare the equality of vectors.
+bool tree::operator ==(const tree::Vector &lhs, const tree::Vector &rhs)
+{
+    return (lhs.x == rhs.x && lhs.y == rhs.y);
+}
+
+bool tree::operator !=(const tree::Vector &lhs, const tree::Vector &rhs)
+{
+    return !(lhs == rhs);
+}

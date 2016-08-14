@@ -101,6 +101,12 @@ namespace tree
      */
     Vector operator -(Vector lhs, const Vector &rhs);
     Vector operator +(Vector lhs, const Vector &rhs);
+
+    /**
+     * Logical operators.
+     */
+    bool operator ==(const Vector& lhs, const Vector &rhs);
+    bool operator !=(const Vector& lhs, const Vector &rhs);
 }
 
 #endif

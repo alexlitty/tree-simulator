@@ -6,11 +6,20 @@
 namespace tree
 {
     /**
+     * Forward declarations.
+     */
+    class Stage;
+
+    /**
      * An object inside the game.
      */
     class Object
     {
     protected:
+
+        // Stage this object is assigned to.
+        tree::Stage* stage;
+
         bool m_isActor = false;
         bool m_isDrawable = false;
         bool m_isGui = false;
@@ -22,7 +31,30 @@ namespace tree
         bool m_isNuggetable = false;
 
     public:
+        /**
+         * Constructor.
+         */
+        Object();
+        
+        /**
+         * Destructor.
+         */
         virtual ~Object();
+
+        /**
+         * Assigns this object to a stage.
+         */
+        void assignStage(tree::Stage* assignedStage);
+
+        /**
+         * Adds this object to the stage.
+         */
+        virtual void enable();
+
+        /**
+         * Removes this object from the stage.
+         */
+        virtual void disable();
 
         bool isActor() const;
         bool isDrawable() const;

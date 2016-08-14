@@ -34,3 +34,14 @@ sf::Vector2f tree::random(float offset, sf::Vector2u size)
         )
     );
 }
+
+// Generates a random point on a circle's border.
+tree::Vector tree::randomPointOnBorder(sf::CircleShape shape)
+{
+    Angle angle;
+    angle.radians(tree::random(-PI, PI));
+
+    float magnitude = shape.getRadius();
+
+    return Vector(angle, magnitude);
+}
