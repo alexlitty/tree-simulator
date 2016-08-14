@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <tree/Component.hpp>
-#include <tree/Object/PlanetBranches.hpp>
 
 namespace tree
 {
@@ -22,9 +21,6 @@ namespace tree
 
         // Main texture for this planet.
         sf::RenderTexture *m_texture = nullptr;
-
-        // Branches to appear while being drained.
-        PlanetBranches *branches;
 
     public:
 
