@@ -15,14 +15,6 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
     m_framesText.setColor(sf::Color::White);
     m_framesText.setFont(tree::Font::Standard);
 
-    // Initialize backgrounds.
-    for (unsigned int i = 0; i < 10; i++) {
-
-        tree::Background::Stars *bg = new tree::Background::Stars(
-            10000, std::pow((i + 2)*1.0f, 2));
-        m_background.push_back(bg);
-    }
-
     // Initialize view.
     this->updateViews(true);
 }
@@ -30,7 +22,7 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
 // Destructor.
 tree::Layer::Game::~Game()
 {
-    //delete m_player;
+
 }
 
 // Updates views.
@@ -111,11 +103,6 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
     // Set game view.
     this->updateViews();
     m_window.setView(m_viewGame);
-
-    // Adjust backgrounds.
-    for (unsigned int i = 0; i < m_background.size(); i++) {
-        m_background[i]->setViewTarget(m_viewGame.getCenter());
-    }
 
     // Disable any shaders.
     m_render_states.shader = nullptr;

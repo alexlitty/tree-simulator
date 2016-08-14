@@ -26,10 +26,9 @@ tree::Universe::~Universe()
 }
 
 // Get the center of camera focus.
-// @@@ update when multiplayer
 tree::Vector tree::Universe::getFocusCenter() const
 {
-    return this->players[0]->getPixelPosition();
+    return this->galaxies[0]->getFocusCenter();
 }
 
 // Emulate the universe.

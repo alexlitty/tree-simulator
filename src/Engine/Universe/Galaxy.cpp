@@ -4,9 +4,18 @@
 tree::Galaxy::Galaxy(std::vector<tree::Player*> &initPlayers)
 : players(initPlayers)
 {
+    // Initialize backgrounds.
     for (unsigned int i = 0; i < 10; i++) {
+        tree::Background::Stars *bg = new tree::Background::Stars(
+            10000,
+            std::pow((i + 2)*1.0f, 2)
+        );
 
-        // Create new planet's position.
+        this->backgrounds.push_back(bg);
+    }
+
+    // Create planets.
+    for (unsigned int i = 0; i < 10; i++) {
         Vector planetPosition(
             tree::random(-100.0f, 100.0f),
             tree::random(-100.0f, 100.0f)
@@ -41,13 +50,16 @@ tree::Galaxy::Galaxy(std::vector<tree::Player*> &initPlayers)
         planet->generate();
         planet->enablePhysics();
         this->planets.push_back(planet);
-
     }
 }
 
 // Destructor.
 tree::Galaxy::~Galaxy()
 {
+    for (auto background : this->backgrounds) {
+        delete background;
+    }
+
     for (auto planet : this->planets) {
         delete planet;
     }
@@ -57,9 +69,20 @@ tree::Galaxy::~Galaxy()
     }
 }
 
+// Get the center of camera focus.
+tree::Vector tree::Galaxy::getFocusCenter() const
+{
+    return this->players[0]->getPixelPosition();
+}
+
 // Simulates the galaxy.
 void tree::Galaxy::act()
 {
+    // Adjust backgrounds.
+    for (auto background : this->backgrounds) {
+        background->setViewTarget(this->getFocusCenter());
+    }
+
     // Prepare physicals.
     for (auto planet : this->planets) {
         planet->prepare();
@@ -80,6 +103,11 @@ void tree::Galaxy::act()
 // Draws the galaxy.
 void tree::Galaxy::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
+    // Draw backgrounds.
+    for (auto background : this->backgrounds) {
+        background->draw(target, states);
+    }
+
     // Draw planets.
     for (auto planet : this->planets) {
         planet->draw(target, states);

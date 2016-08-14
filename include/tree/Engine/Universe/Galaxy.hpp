@@ -1,6 +1,7 @@
 #ifndef TREESIMULATOR_ENGINE_UNIVERSE_GALAXY_HPP
 #define TREESIMULATOR_ENGINE_UNIVERSE_GALAXY_HPP
 
+#include <tree/Object/Background/Stars.hpp>
 #include <tree/Object/Planet.hpp>
 #include <tree/Object/Player.hpp>
 #include <tree/Object/Weapon/Seed.hpp>
@@ -11,6 +12,9 @@ namespace tree
     {
         // Reference to players.
         std::vector<tree::Player*> players;
+
+        // Backgrounds.
+        std::vector<tree::Background::Stars*> backgrounds;
 
         // Planets in this galaxy.
         std::vector<Planet*> planets;
@@ -31,6 +35,11 @@ namespace tree
          * Assumes the galaxy is already disabled.
          */
         virtual ~Galaxy();
+
+        /**
+         * Get the center of camera focus.
+         */
+        tree::Vector getFocusCenter() const;
 
         /**
          * Emulates the galaxy.
