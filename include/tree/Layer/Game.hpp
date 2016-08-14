@@ -34,9 +34,6 @@ namespace tree
             // Collection of players.
             std::vector<tree::Player*> players;
 
-            // Background stars.
-            std::vector<tree::Background::Stars*> m_background;
-
             // FPS information.
             sf::Text m_framesText;
             unsigned int m_frames;
