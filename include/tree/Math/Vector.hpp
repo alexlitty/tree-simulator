@@ -94,6 +94,10 @@ namespace tree
          */
         Vector& operator -=(const Vector &rhs);
         Vector& operator +=(const Vector &rhs);
+        Vector& operator *=(const int rhs);
+        Vector& operator *=(const float rhs);
+        Vector& operator /=(const int rhs);
+        Vector& operator /=(const float rhs);
     };
 
     /**
@@ -101,6 +105,10 @@ namespace tree
      */
     Vector operator -(Vector lhs, const Vector &rhs);
     Vector operator +(Vector lhs, const Vector &rhs);
+    Vector operator *(Vector lhs, const int rhs);
+    Vector operator *(Vector lhs, const float rhs);
+    Vector operator /(Vector lhs, const int rhs);
+    Vector operator /(Vector lhs, const float rhs);
 
     /**
      * Logical operators.

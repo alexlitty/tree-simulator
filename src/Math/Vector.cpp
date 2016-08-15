@@ -86,6 +86,8 @@ void tree::Vector::setMagnitude(float magnitude)
     }
 }
 
+
+
 // Extends this vector at an angle.
 void tree::Vector::extend(Angle angle, float magnitude)
 {
@@ -166,7 +168,6 @@ tree::Vector& tree::Vector::operator -=(const Vector &rhs)
 {
     this->x -= rhs.x;
     this->y -= rhs.y;
-
     return *this;
 }
 
@@ -177,17 +178,88 @@ tree::Vector tree::operator -(tree::Vector lhs, const tree::Vector &rhs)
 }
 
 // Add vectors.
-tree::Vector& tree::Vector::operator +=(const Vector &rhs)
+tree::Vector& tree::Vector::operator +=(const tree::Vector &rhs)
 {
     this->x += rhs.x;
     this->y += rhs.y;
-
     return *this;
 }
 
 tree::Vector tree::operator +(tree::Vector lhs, const tree::Vector &rhs)
 {
     lhs += rhs;
+    return lhs;
+}
+
+// Multiply vector by an integer.
+tree::Vector& tree::Vector::operator *=(const int rhs)
+{
+    this->x *= rhs;
+    this->y *= rhs;
+    return *this;
+}
+tree::Vector tree::operator *(tree::Vector lhs, const int rhs)
+{
+    lhs *= rhs;
+    return lhs;
+}
+
+// Multiply vector by a float.
+tree::Vector& tree::Vector::operator *=(const float rhs)
+{
+    this->x *= rhs;
+    this->y *= rhs;
+    return *this;
+}
+tree::Vector tree::operator *(tree::Vector lhs, const float rhs)
+{
+    lhs *= rhs;
+    return lhs;
+}
+
+// Divide vector by an integer.
+tree::Vector& tree::Vector::operator /=(const int rhs)
+{
+    if (rhs == 0) {
+        return *this;
+    }
+
+    if (this->x != 0) {
+        this->x /= rhs;
+    }
+
+    if (this->y != 0) {
+        this->y /= rhs;
+    }
+
+    return *this;
+}
+tree::Vector tree::operator /(tree::Vector lhs, const int rhs)
+{
+    lhs /= rhs;
+    return lhs;
+}
+
+// Divide vector by a float.
+tree::Vector& tree::Vector::operator /=(const float rhs)
+{
+    if (rhs == 0) {
+        return *this;
+    }
+
+    if (this->x != 0) {
+        this->x /= rhs;
+    }
+
+    if (this->y != 0) {
+        this->y /= rhs;
+    }
+
+    return *this;
+}
+tree::Vector tree::operator /(tree::Vector lhs, const float rhs)
+{
+    lhs /= rhs;
     return lhs;
 }
 

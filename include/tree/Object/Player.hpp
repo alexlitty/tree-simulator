@@ -49,6 +49,11 @@ namespace tree
         void generate();
 
         /**
+         * Checks whether the brake is engaged.
+         */
+        bool isBrakeEngaged() const;
+
+        /**
          * Perform actions.
          */
         void act(std::vector<tree::weapon::Seed*> &seeds);
@@ -56,7 +61,7 @@ namespace tree
         /**
          * Performs a thrust.
          *
-         * If parameter is false, performs a brake.
+         * If parameter is false, performs a thrust in reverse.
          */
         void thrust(bool direction);
 

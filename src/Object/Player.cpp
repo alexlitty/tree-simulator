@@ -58,6 +58,12 @@ void tree::Player::addLeaf()
     this->leaves.push_back(leaf);
 }
 
+// Checks whether the brake is engaged.
+bool tree::Player::isBrakeEngaged() const
+{
+    return sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
+}
+
 // Act.
 void tree::Player::act(std::vector<tree::weapon::Seed*> &seeds)
 {
@@ -95,9 +101,18 @@ void tree::Player::act(std::vector<tree::weapon::Seed*> &seeds)
 
     this->rotate(deltaAngle);
 
-    // Thrust if moving.
-    if (moving) {
-        this->thrust(true);
+    // Engage brakes.
+    if (this->isBrakeEngaged()) {
+        tree::Vector brakingVelocity = this->getLinearVelocity();
+        brakingVelocity *= 0.85f;
+        this->setLinearVelocity(brakingVelocity);
+    }
+
+    // Thrust.
+    else {
+        if (moving) {
+            this->thrust(true);
+        }
     }
 
     // Activate leaves.
