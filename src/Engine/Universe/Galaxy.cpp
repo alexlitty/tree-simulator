@@ -1,3 +1,4 @@
+#include <limits>
 #include <tree/Engine/Universe/Galaxy.hpp>
 
 // Constructor.
@@ -92,6 +93,53 @@ void tree::Galaxy::act()
     }
     for (auto player : this->players) {
         player->prepare();
+    }
+
+    // Handle planet absorptions.
+    for (auto player : this->players) {
+        player->resetAbsorptionTarget();
+
+        // Try to absorb a planet.
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+
+            // Find something to absorb.
+            if (!player->isAbsorbing()) {
+
+                // Find nearest planet.
+                int currentDistance;
+                int smallestDistance = std::numeric_limits<int>::max();
+                tree::Planet *closestPlanet = nullptr;
+                for (auto planet : this->planets) {
+                    currentDistance = planet->getPosition().distance(
+                        this->players[0]->getPosition()
+                    );
+
+                    if (smallestDistance > currentDistance) {
+                        smallestDistance = currentDistance;
+                        closestPlanet = planet;
+                    }
+                }
+
+                // Start absorbing from planet.
+                player->setAbsorptionTarget(closestPlanet);
+            }
+
+            // Absorb.
+            tree::Planet *absorptionTarget = player->getAbsorptionTarget();
+            if (absorptionTarget->canCrumble()) {
+                player->absorb();
+            }
+
+            // Planet totally absorbed. Destroy it.
+            else {
+                // @@@
+            }
+        }
+
+        // Stop absorbing.
+        else {
+            player->resetAbsorptionTarget();
+        }
     }
 
     // Player acting.

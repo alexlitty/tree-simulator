@@ -62,6 +62,11 @@ namespace tree
         Vector center(Vector other) const;
 
         /**
+         * Eases toward another vector.
+         */
+        void easeToward(Vector &other, float percent = 0.3f);
+
+        /**
          * Calculates vector normals, alone or with another vector.
          */
         Vector normal() const;

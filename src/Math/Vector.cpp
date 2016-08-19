@@ -113,6 +113,16 @@ tree::Vector tree::Vector::center(tree::Vector other) const
     );
 }
 
+// Eases toward another vector.
+void tree::Vector::easeToward(tree::Vector &other, float percent)
+{
+    float x = other.x - this->x;
+    float y = other.y - this->y;
+
+    this->x = x + (this->x * percent);
+    this->y = y + (this->y * percent);
+}
+
 // Calculates the normal of this vector.
 tree::Vector tree::Vector::normal() const
 {

@@ -140,6 +140,26 @@ void tree::Planet::generate()
     m_highlight.setOutlineThickness(-1.0f);
 }
 
+// Check if the planet can crumble further.
+bool tree::Planet::canCrumble() const
+{
+    return true;
+}
+
+// Crumble away from absorption.
+void tree::Planet::crumble(std::vector<tree::NuggetCrumb*> &crumbs)
+{
+    crumbs.push_back(
+        new tree::NuggetCrumb()
+    );
+}
+
+// Restores any damage from crumbling.
+void tree::Planet::uncrumble()
+{
+
+}
+
 // Draw the planet.
 void tree::Planet::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {

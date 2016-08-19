@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <tree/Component.hpp>
+#include <tree/Object/NuggetCrumb.hpp>
 
 namespace tree
 {
@@ -51,14 +52,24 @@ namespace tree
         void receiveNugget(tree::nugget nugget) override;
 
         /**
-         * Be drained by an external force.
-         */
-        //bool drain(Player &player, unsigned int level);
-
-        /**
          * Generates this planet. Based on nugget composition.
          */
         void generate();
+
+        /**
+         * Check if the planet can crumble further.
+         */
+        bool canCrumble() const;
+
+        /**
+         * Crumble away from absorption.
+         */
+        void crumble(std::vector<tree::NuggetCrumb*> &crumbs);
+
+        /**
+         * Restores any damage from crumbling.
+         */
+        void uncrumble();
 
         /**
          * Draw the planet.

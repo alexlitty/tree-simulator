@@ -2,10 +2,9 @@
 #define TREESIMULATOR_OBJECT_PLAYER_HPP
 
 #include <SFML/Graphics.hpp>
-#include <tree/Component/Drawable.hpp>
-#include <tree/Component/Lifeform.hpp>
-#include <tree/Component/Physical.hpp>
+#include <tree/Component.hpp>
 #include <tree/Object/Particles.hpp>
+#include <tree/Object/Planet.hpp>
 #include <tree/Object/Tree/Leaf.hpp>
 
 namespace tree
@@ -13,7 +12,7 @@ namespace tree
     /**
      * Representation of a Player in the game.
      */
-    class Player : public Lifeform, public Drawable
+    class Player : public Lifeform, public Drawable, public Nuggetable
     {
         // Test shape for Player.
         sf::RectangleShape m_shape;
@@ -26,6 +25,22 @@ namespace tree
 
         // Leaves on the player.
         std::vector<Leaf*> leaves;
+
+        // Planet that is currently being absorbed.
+        tree::Planet *absorptionTarget = nullptr;
+
+        // Crumbs from the planet being absorbed.
+        std::vector<tree::NuggetCrumb*> crumbs;
+
+        /**
+         * Destroys nugget crumbs.
+         */
+        void destroyCrumbs();
+
+        /**
+         * Attract nugget crumbs.
+         */
+        void attractCrumbs();
 
     public:
 
@@ -47,6 +62,19 @@ namespace tree
          * Generates the player based on its composition.
          */
         void generate();
+
+        /**
+         * Sets, resets, gets, and checks for an absorption target.
+         */
+        void setAbsorptionTarget(tree::Planet *target);
+        void resetAbsorptionTarget();
+        tree::Planet* getAbsorptionTarget() const;
+        bool isAbsorbing() const;
+
+        /**
+         * Absorbs from the currently targeted planet.
+         */
+        void absorb();
 
         /**
          * Checks whether the brake is engaged.

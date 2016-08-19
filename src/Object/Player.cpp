@@ -45,7 +45,28 @@ tree::Player::Player()
 // Destructor.
 tree::Player::~Player()
 {
+    for (auto leaf : this->leaves) {
+        delete leaf;
+    }
 
+    this->destroyCrumbs();
+}
+
+// Destroys nugget crumbs.
+void tree::Player::destroyCrumbs()
+{
+    for (auto crumb : this->crumbs) {
+        delete crumb;
+    }
+    this->crumbs.clear();
+}
+
+// Attracts nugget crumbs.
+void tree::Player::attractCrumbs()
+{
+    for (auto crumb : this->crumbs) {
+        crumb->moveToward(this->getPosition());
+    }
 }
 
 // Adds a leaf to the player.
@@ -58,10 +79,44 @@ void tree::Player::addLeaf()
     this->leaves.push_back(leaf);
 }
 
+// Sets the absorption target.
+void tree::Player::setAbsorptionTarget(tree::Planet *planet)
+{
+    this->absorptionTarget = planet;
+}
+
+
+// Resets the absorption target.
+void tree::Player::resetAbsorptionTarget()
+{
+    this->absorptionTarget->uncrumble();
+    this->setAbsorptionTarget(nullptr);
+}
+
+// Gets the absorption target.
+tree::Planet* tree::Player::getAbsorptionTarget() const
+{
+    return this->absorptionTarget;
+}
+
+// Checks whether the tree is absorbing something.
+bool tree::Player::isAbsorbing() const
+{
+    return this->absorptionTarget != nullptr;
+}
+
+// Absorbs from the currently targeted planet.
+void tree::Player::absorb()
+{
+    if (this->isAbsorbing()) {
+        this->absorptionTarget->crumble(this->crumbs);
+    }
+}
+
 // Checks whether the brake is engaged.
 bool tree::Player::isBrakeEngaged() const
 {
-    return sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
+    return this->isAbsorbing();
 }
 
 // Act.
@@ -104,7 +159,7 @@ void tree::Player::act(std::vector<tree::weapon::Seed*> &seeds)
     // Engage brakes.
     if (this->isBrakeEngaged()) {
         tree::Vector brakingVelocity = this->getLinearVelocity();
-        brakingVelocity *= 0.85f;
+        brakingVelocity *= 0.875f;
         this->setLinearVelocity(brakingVelocity);
     }
 
@@ -143,6 +198,8 @@ void tree::Player::act(std::vector<tree::weapon::Seed*> &seeds)
             leaf->shoot(seeds, angle);
         }
     }
+
+    this->attractCrumbs();
 }
 
 // Perform a thrust.
@@ -198,6 +255,11 @@ void tree::Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     // Draw engine particles.
     target.draw(engineParticles, states);
+
+    // Draw crumbs.
+    for (auto crumb : this->crumbs) {
+        target.draw(*crumb, states);
+    }
 
     // Draw player.
     addPhysicalTransform(states.transform);

@@ -1,11 +1,11 @@
-#ifndef TREESIMULATOR_OBJECT_PLANETCRUMB
-#define TREESIMULATOR_OBJECT_PLANETCRUMB
+#ifndef TREESIMULATOR_OBJECT_NUGGETCRUMB
+#define TREESIMULATOR_OBJECT_NUGGETCRUMB
 
 #include <tree/Component.hpp>
 
 namespace tree
 {
-    class PlanetCrumb : virtual public Drawable
+    class NuggetCrumb : virtual public Drawable
     {
     protected:
         sf::CircleShape shape;
@@ -15,7 +15,12 @@ namespace tree
         /**
          * Constructor.
          */
-        PlanetCrumb();
+        NuggetCrumb();
+
+        /**
+         * Moves the crumb towards a vector.
+         */
+        void moveToward(tree::Vector vector);
 
         /**
          * Draw this crumb.
