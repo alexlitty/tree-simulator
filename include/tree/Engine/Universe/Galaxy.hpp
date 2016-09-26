@@ -2,7 +2,6 @@
 #define TREESIMULATOR_ENGINE_UNIVERSE_GALAXY_HPP
 
 #include <tree/Object/Background/Stars.hpp>
-#include <tree/Object/NuggetCrumb.hpp>
 #include <tree/Object/Planet.hpp>
 #include <tree/Object/Player.hpp>
 #include <tree/Object/Weapon/Seed.hpp>

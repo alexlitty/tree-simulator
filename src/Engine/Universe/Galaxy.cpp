@@ -97,7 +97,6 @@ void tree::Galaxy::act()
 
     // Handle planet absorptions.
     for (auto player : this->players) {
-        player->resetAbsorptionTarget();
 
         // Try to absorb a planet.
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {

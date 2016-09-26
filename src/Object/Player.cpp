@@ -48,25 +48,6 @@ tree::Player::~Player()
     for (auto leaf : this->leaves) {
         delete leaf;
     }
-
-    this->destroyCrumbs();
-}
-
-// Destroys nugget crumbs.
-void tree::Player::destroyCrumbs()
-{
-    for (auto crumb : this->crumbs) {
-        delete crumb;
-    }
-    this->crumbs.clear();
-}
-
-// Attracts nugget crumbs.
-void tree::Player::attractCrumbs()
-{
-    for (auto crumb : this->crumbs) {
-        crumb->moveToward(this->getPosition());
-    }
 }
 
 // Adds a leaf to the player.
@@ -89,8 +70,8 @@ void tree::Player::setAbsorptionTarget(tree::Planet *planet)
 // Resets the absorption target.
 void tree::Player::resetAbsorptionTarget()
 {
-    this->absorptionTarget->uncrumble();
     this->setAbsorptionTarget(nullptr);
+    nuggetCrumbs.clear();
 }
 
 // Gets the absorption target.
@@ -109,7 +90,15 @@ bool tree::Player::isAbsorbing() const
 void tree::Player::absorb()
 {
     if (this->isAbsorbing()) {
-        this->absorptionTarget->crumble(this->crumbs);
+        this->absorptionTarget->crumble();
+
+        tree::Vector position = this->absorptionTarget->getPosition();
+        tree::Vector velocity(
+            this->getPosition().getAngle(position),
+            100.0f
+        );
+
+        this->nuggetCrumbs.add(position, velocity, sf::Color::White);
     }
 }
 
@@ -199,7 +188,8 @@ void tree::Player::act(std::vector<tree::weapon::Seed*> &seeds)
         }
     }
 
-    this->attractCrumbs();
+    // Particle animations.
+    nuggetCrumbs.animate(this->getPosition());
 }
 
 // Perform a thrust.
@@ -253,13 +243,9 @@ void tree::Player::thrust(bool direction)
 // Draw the player.
 void tree::Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    // Draw engine particles.
+    // Draw particles.
     target.draw(engineParticles, states);
-
-    // Draw crumbs.
-    for (auto crumb : this->crumbs) {
-        target.draw(*crumb, states);
-    }
+    target.draw(nuggetCrumbs, states);
 
     // Draw player.
     addPhysicalTransform(states.transform);

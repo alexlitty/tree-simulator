@@ -120,6 +120,7 @@ namespace tree
      */
     bool operator ==(const Vector& lhs, const Vector &rhs);
     bool operator !=(const Vector& lhs, const Vector &rhs);
+    bool similar(const Vector& lhs, const Vector& rhs, float epsilon = 0.001f);
 }
 
 #endif

@@ -60,9 +60,13 @@ tree::Particles::Particles(int max_count, int lifetime)
 // Particle system destructor.
 tree::Particles::~Particles()
 {
-    for (unsigned int i = 0; i < m_particles.size(); i++) {
-        this->pop();
-    }
+    this->clear();
+}
+
+// Returns the number of particles in the system.
+unsigned int tree::Particles::count() const
+{
+    return m_particles.size();
 }
 
 // Adds a new particle to the system.
@@ -92,6 +96,14 @@ void tree::Particles::pop() const
     Particle *particle = m_particles.front();
     delete particle;
     m_particles.pop_front();
+}
+
+// Clears all particles from the system.
+void tree::Particles::clear() const
+{
+    while (!m_particles.empty()) {
+        this->pop();
+    }
 }
 
 // Checks if the top particle needs culling.

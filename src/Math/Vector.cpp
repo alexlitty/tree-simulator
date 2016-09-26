@@ -1,3 +1,4 @@
+#include <tree/Math/Misc.hpp>
 #include <tree/Math/Vector.hpp>
 
 // Default constructor.
@@ -116,11 +117,11 @@ tree::Vector tree::Vector::center(tree::Vector other) const
 // Eases toward another vector.
 void tree::Vector::easeToward(tree::Vector &other, float percent)
 {
-    float x = other.x - this->x;
-    float y = other.y - this->y;
+    float x = this->x - other.x;
+    float y = this->y - other.y;
 
-    this->x = x + (this->x * percent);
-    this->y = y + (this->y * percent);
+    this->x = this->x - (x * percent);
+    this->y = this->y - (y * percent);
 }
 
 // Calculates the normal of this vector.
@@ -282,4 +283,9 @@ bool tree::operator ==(const tree::Vector &lhs, const tree::Vector &rhs)
 bool tree::operator !=(const tree::Vector &lhs, const tree::Vector &rhs)
 {
     return !(lhs == rhs);
+}
+
+bool tree::similar(const tree::Vector &lhs, const tree::Vector &rhs, float epsilon)
+{
+    return tree::similar(lhs.x, rhs.x, epsilon) && tree::similar(lhs.y, rhs.y, epsilon);
 }

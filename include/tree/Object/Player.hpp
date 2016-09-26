@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <tree/Component.hpp>
-#include <tree/Object/Particles.hpp>
+#include <tree/Object/Particles/NuggetCrumbs.hpp>
 #include <tree/Object/Planet.hpp>
 #include <tree/Object/Tree/Leaf.hpp>
 
@@ -30,17 +30,7 @@ namespace tree
         tree::Planet *absorptionTarget = nullptr;
 
         // Crumbs from the planet being absorbed.
-        std::vector<tree::NuggetCrumb*> crumbs;
-
-        /**
-         * Destroys nugget crumbs.
-         */
-        void destroyCrumbs();
-
-        /**
-         * Attract nugget crumbs.
-         */
-        void attractCrumbs();
+        tree::NuggetCrumbs nuggetCrumbs;
 
     public:
 

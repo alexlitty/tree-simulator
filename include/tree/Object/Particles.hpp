@@ -84,6 +84,11 @@ namespace tree
         ~Particles();
 
         /**
+         * Returns the number of particles in the system.
+         */
+        unsigned int count() const;
+
+        /**
          * Adds a new particle to the system.
          */
         void add(b2Vec2 position, b2Vec2 velocity, sf::Color color);
@@ -92,6 +97,11 @@ namespace tree
          * Removes the oldest particle from the system.
          */
         void pop() const;
+
+        /**
+         * Clears all particles from the system.
+         */
+        void clear() const;
 
         /**
          * Checks if the top particle needs culling.

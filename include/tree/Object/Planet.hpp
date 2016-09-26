@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <tree/Component.hpp>
-#include <tree/Object/NuggetCrumb.hpp>
 
 namespace tree
 {
@@ -64,7 +63,7 @@ namespace tree
         /**
          * Crumble away from absorption.
          */
-        void crumble(std::vector<tree::NuggetCrumb*> &crumbs);
+        void crumble();
 
         /**
          * Restores any damage from crumbling.

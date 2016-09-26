@@ -147,11 +147,9 @@ bool tree::Planet::canCrumble() const
 }
 
 // Crumble away from absorption.
-void tree::Planet::crumble(std::vector<tree::NuggetCrumb*> &crumbs)
+void tree::Planet::crumble()
 {
-    crumbs.push_back(
-        new tree::NuggetCrumb()
-    );
+
 }
 
 // Restores any damage from crumbling.
