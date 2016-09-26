@@ -71,6 +71,11 @@ namespace tree
         void uncrumble();
 
         /**
+         * Gets a random position on this planet.
+         */
+        tree::Vector getRandomPosition() const;
+
+        /**
          * Draw the planet.
          */
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;

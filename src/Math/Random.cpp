@@ -35,6 +35,25 @@ sf::Vector2f tree::random(float offset, sf::Vector2u size)
     );
 }
 
+// Generates a random angle.
+tree::Angle tree::randomAngle()
+{
+    Angle angle;
+    angle.radians(tree::random(0.0f, TWO_PI));
+    return angle;
+}
+
+// Generates a random point on a circle.
+tree::Vector tree::randomPointOnCircle(float radius, tree::Vector origin)
+{
+    tree::Vector localPoint(
+        tree::randomAngle(),
+        tree::random(0.0f, radius)
+    );
+
+    return localPoint + origin;
+}
+
 // Generates a random point on a circle's border.
 tree::Vector tree::randomPointOnBorder(sf::CircleShape shape)
 {
@@ -44,4 +63,10 @@ tree::Vector tree::randomPointOnBorder(sf::CircleShape shape)
     float magnitude = shape.getRadius();
 
     return Vector(angle, magnitude);
+}
+
+// Generates a float that varies from another float.
+float tree::vary(float x, float amount)
+{
+    return tree::random(x - amount, x + amount);
 }

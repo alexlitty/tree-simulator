@@ -11,15 +11,8 @@ tree::NuggetCrumbs::NuggetCrumbs()
 void tree::NuggetCrumbs::animate(tree::Vector target)
 {
     for (auto crumb : this->m_particles) {
-        tree::Vector crumbPosition = crumb->getPosition();
-
-        if (tree::similar(crumbPosition, target, 1.0f)) {
+        if (tree::similar(crumb->getPosition(), target, 1.0f)) {
             crumb->setLinearVelocity(tree::Vector(0, 0));
-            continue;
         }
-
-        /*tree::Angle angle = crumbPosition.getAngle(target);
-        tree::Vector velocity(angle, 5.0f);
-        crumb->setLinearVelocity(velocity);*/
     }
 }

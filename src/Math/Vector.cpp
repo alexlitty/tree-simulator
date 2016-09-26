@@ -289,3 +289,6 @@ bool tree::similar(const tree::Vector &lhs, const tree::Vector &rhs, float epsil
 {
     return tree::similar(lhs.x, rhs.x, epsilon) && tree::similar(lhs.y, rhs.y, epsilon);
 }
+
+// Common vectors.
+const tree::Vector tree::VectorZero(0.0f, 0.0f);

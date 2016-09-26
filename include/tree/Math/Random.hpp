@@ -7,29 +7,44 @@
 namespace tree
 {
     /**
-     * Seed the random number generator.
+     * Seeds the random number generator.
      */
     void seedRandom(unsigned int number);
 
     /**
-     * Generate a random float.
+     * Generates a random float.
      */
     float random(float min, float max);
 
     /**
-     * Generate a random integer.
+     * Generates a random integer.
      */
     int random(int min, int max);
 
     /**
-     * Generate a random position, given a rendering size. 
+     * Generates a random position, given a rendering size. 
      */
     sf::Vector2f random(float offset, sf::Vector2u right);
+
+    /**
+     * Generates a random angle.
+     */
+    Angle randomAngle();
+
+    /**
+     * Generates a random point on a circle.
+     */
+    Vector randomPointOnCircle(float radius, tree::Vector origin = tree::VectorZero);
 
     /**
      * Generates a random point on a circle's border.
      */
     Vector randomPointOnBorder(sf::CircleShape shape);
+
+    /**
+     * Generates a float that varies from another float.
+     */
+    float vary(float x, float amount);
 }
 
 #endif

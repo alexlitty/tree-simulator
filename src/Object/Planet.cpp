@@ -158,6 +158,12 @@ void tree::Planet::uncrumble()
 
 }
 
+// Gets a random position on this planet.
+tree::Vector tree::Planet::getRandomPosition() const
+{
+    return tree::randomPointOnCircle(m_shape.getRadius(), this->getPosition());
+}
+
 // Draw the planet.
 void tree::Planet::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {

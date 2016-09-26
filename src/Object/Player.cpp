@@ -92,7 +92,7 @@ void tree::Player::absorb()
     if (this->isAbsorbing()) {
         this->absorptionTarget->crumble();
 
-        tree::Vector position = this->absorptionTarget->getPosition();
+        tree::Vector position = this->absorptionTarget->getRandomPosition();
         tree::Vector velocity(
             this->getPosition().getAngle(position),
             100.0f
