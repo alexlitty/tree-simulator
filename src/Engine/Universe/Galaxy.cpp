@@ -1,5 +1,6 @@
 #include <limits>
 #include <tree/Engine/Universe/Galaxy.hpp>
+#include <tree/Utility/Collection.hpp>
 
 // Constructor.
 tree::Galaxy::Galaxy(std::vector<tree::Player*> &initPlayers)
@@ -99,7 +100,7 @@ void tree::Galaxy::act()
     for (auto player : this->players) {
 
         // Try to absorb a planet.
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+        if (planets.size() && sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
 
             // Find something to absorb.
             if (!player->isAbsorbing()) {
@@ -131,7 +132,10 @@ void tree::Galaxy::act()
 
             // Planet totally absorbed. Destroy it.
             else {
-                // @@@
+                tree::remove(this->planets, absorptionTarget);
+                delete absorptionTarget;
+
+                player->resetAbsorptionTarget();
             }
         }
 
