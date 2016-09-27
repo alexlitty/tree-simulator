@@ -138,24 +138,29 @@ void tree::Planet::generate()
     m_highlight.setFillColor(sf::Color(0, 0, 0, 25));
     m_highlight.setOutlineColor(sf::Color(225, 225, 225, 50));
     m_highlight.setOutlineThickness(-1.0f);
+
+    // Initialize health.
+    this->restoreHealth();
 }
 
 // Check if the planet can crumble further.
 bool tree::Planet::canCrumble() const
 {
-    return true;
+    return this->health > 0;
 }
 
 // Crumble away from absorption.
 void tree::Planet::crumble()
 {
-
+    if (this->canCrumble()) {
+        this->health--;
+    }
 }
 
 // Restores any damage from crumbling.
-void tree::Planet::uncrumble()
+void tree::Planet::restoreHealth()
 {
-
+    this->health = this->nuggets.total() * 5;
 }
 
 // Gets a random position on this planet.

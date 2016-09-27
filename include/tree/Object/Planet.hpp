@@ -22,6 +22,9 @@ namespace tree
         // Main texture for this planet.
         sf::RenderTexture *m_texture = nullptr;
 
+        // Health of the planet. Lowered when planet crumbles
+        unsigned int health = 0;
+
     public:
 
         /**
@@ -68,7 +71,7 @@ namespace tree
         /**
          * Restores any damage from crumbling.
          */
-        void uncrumble();
+        void restoreHealth();
 
         /**
          * Gets a random position on this planet.

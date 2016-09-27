@@ -137,7 +137,12 @@ void tree::Galaxy::act()
 
         // Stop absorbing.
         else {
-            player->resetAbsorptionTarget();
+            tree::Planet *absorptionTarget = player->getAbsorptionTarget();
+
+            if (absorptionTarget) {
+                absorptionTarget->restoreHealth();
+                player->resetAbsorptionTarget();
+            }
         }
     }
 
