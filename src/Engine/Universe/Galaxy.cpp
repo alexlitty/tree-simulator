@@ -132,10 +132,11 @@ void tree::Galaxy::act()
 
             // Planet totally absorbed. Destroy it.
             else {
+                player->takeNuggets(absorptionTarget);
+                player->resetAbsorptionTarget();
+
                 tree::remove(this->planets, absorptionTarget);
                 delete absorptionTarget;
-
-                player->resetAbsorptionTarget();
             }
         }
 

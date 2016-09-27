@@ -20,7 +20,7 @@ namespace tree
     };
 
     /**
-     * Explaination of nugget composition.
+     * Explanation of nugget composition.
      */
     struct NuggetComposition
     {
@@ -44,9 +44,19 @@ namespace tree
         std::vector<NuggetComposition> list;
 
         /**
+         * Clears the nuggets in this collection.
+         */
+        void clear();
+
+        /**
          * Adds a nugget to this collection.
          */
         void add(tree::nugget newNugget, unsigned int quantity = 1);
+
+        /**
+         * Adds another collection of nuggets to this collection.
+         */
+        void add(tree::Nuggets &other);
 
         /**
          * Gets the total number of nuggets in this collection.

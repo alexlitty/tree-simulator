@@ -190,6 +190,9 @@ void tree::Player::act(std::vector<tree::weapon::Seed*> &seeds)
 
     // Particle animations.
     nuggetCrumbs.animate(this->getPosition());
+
+    // @@@
+    std::cout << this->nuggets.total() << std::endl;
 }
 
 // Perform a thrust.

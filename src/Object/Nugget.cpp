@@ -1,6 +1,12 @@
 #include <tree/Engine/Error.hpp>
 #include <tree/Object/Nugget.hpp>
 
+// Clears the nuggets in this collection.
+void tree::Nuggets::clear()
+{
+    this->list.clear();
+}
+
 // Adds a nugget to this collection.
 void tree::Nuggets::add(tree::nugget newNugget, unsigned int quantity)
 {
@@ -34,6 +40,14 @@ void tree::Nuggets::add(tree::nugget newNugget, unsigned int quantity)
     // Update nugget composition.
     this->list[i].percent = this->list[i].count / this->total();
     std::sort(this->list.begin(), this->list.end());
+}
+
+// Adds another collection of nuggets to this collection.
+void tree::Nuggets::add(tree::Nuggets &other)
+{
+    for (auto composition : other.list) {
+        this->add(composition.type, composition.count);
+    }
 }
 
 // Gets the total number of nuggets in this collection.

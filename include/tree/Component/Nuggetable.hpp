@@ -28,6 +28,11 @@ namespace tree
         virtual void receiveNugget(tree::nugget nugget);
 
         /**
+         * Takes nuggets from another nuggetable object.
+         */
+        void takeNuggets(tree::Nuggetable *other);
+
+        /**
          * Whether this object is highlighted by the nugget laser.
          */
         bool isNuggetableTarget() const;
