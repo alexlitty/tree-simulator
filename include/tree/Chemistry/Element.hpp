@@ -42,6 +42,11 @@ namespace tree
         void clear();
 
         /**
+         * Whether this collection contains all the elements in another.
+         */
+        bool contains(ElementCollection &other);
+
+        /**
          * Accesses element counts.
          */
         unsigned int operator [](Element element);
