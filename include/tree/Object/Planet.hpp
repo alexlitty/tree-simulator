@@ -2,6 +2,7 @@
 #define TREESIMULATOR_OBJECT_PLANET_HPP
 
 #include <vector>
+#include <tree/Chemistry.hpp>
 #include <tree/Component.hpp>
 
 namespace tree
