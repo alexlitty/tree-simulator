@@ -6,6 +6,14 @@ void tree::ElementCollection::add(tree::Element element, unsigned int amount)
     this->elements[element] += amount;
 }
 
+// Adds elements from another collection.
+void tree::ElementCollection::add(tree::ElementCollection &other)
+{
+    for (auto &kv : other.elements) {
+        this->add(kv.first, kv.second);
+    }
+}
+
 // Removes an element from the collection.
 void tree::ElementCollection::remove(tree::Element element, unsigned int amount)
 {
@@ -15,6 +23,14 @@ void tree::ElementCollection::remove(tree::Element element, unsigned int amount)
 
     else {
         this->elements[element] -= amount;
+    }
+}
+
+// Removes elements from this collection that are in another.
+void tree::ElementCollection::remove(tree::ElementCollection &other)
+{
+    for (auto &kv : other.elements) {
+        this->remove(kv.first, kv.second);
     }
 }
 

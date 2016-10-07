@@ -1,11 +1,5 @@
 #include <tree/Chemistry/Molecule.hpp>
 
-// Constructor.
-tree::Molecule::Molecule(ElementCollection &elements)
-{
-
-}
-
 // Recipe constructor.
 tree::MoleculeRecipe::MoleculeRecipe(std::string _name, std::vector<tree::Element> _elements)
 : name(_name)
@@ -36,3 +30,15 @@ std::vector<tree::MoleculeRecipe> tree::MoleculeRecipes = {
         { tree::Element::Oxygen }
     )
 };
+
+// Molecule constructor.
+tree::Molecule::Molecule(ElementCollection &inventory)
+{
+    for (auto recipe : tree::MoleculeRecipes) {
+        if (inventory.contains(recipe.elements)) {
+            inventory.remove(recipe.elements);
+            this->elements.add(recipe.elements);
+            break;
+        }
+    }
+}

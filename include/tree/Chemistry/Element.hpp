@@ -32,9 +32,19 @@ namespace tree
         void add(Element element, unsigned int amount = 1);
 
         /**
+         * Adds elements from another collection.
+         */
+        void add(ElementCollection &other);
+
+        /**
          * Removes an element from the collection.
          */
         void remove(Element element, unsigned int amount = 1);
+
+        /**
+         * Removes elements from this collection that are in another.
+         */
+        void remove(ElementCollection &other);
 
         /**
          * Clears the collection of all elements.

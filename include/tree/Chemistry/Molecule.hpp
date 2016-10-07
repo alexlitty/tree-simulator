@@ -8,21 +8,6 @@
 
 namespace tree
 {
-    class Molecule
-    {
-        std::string name;
-
-    public:
-        /**
-         * Constructor.
-         *
-         * Takes a collection of elements and generates the most interesting
-         * molecule possible, removing the required elements out of the
-         * collection.
-         */
-        Molecule(ElementCollection &elements);
-    };
-
     // Information about a particular kind of molecule.
     struct MoleculeRecipe
     {
@@ -34,6 +19,24 @@ namespace tree
 
     // Global list of molecule recipes.
     extern std::vector<MoleculeRecipe> MoleculeRecipes;
+
+    // A named group of elements.
+    class Molecule
+    {
+        std::string name;
+
+        tree::ElementCollection elements;
+
+    public:
+        /**
+         * Constructor.
+         *
+         * Takes a collection of elements and generates the most interesting
+         * molecule possible, removing the required elements out of the
+         * collection.
+         */
+        Molecule(ElementCollection &inventory);
+    };
 }
 
 #endif
