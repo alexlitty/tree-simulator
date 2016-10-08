@@ -28,12 +28,13 @@ tree::Galaxy::Galaxy(std::vector<tree::Player*> &initPlayers)
         planet->applyTorque(true);
 
         ElementCollection elements;
-        elements.add(Element::Hydrogen, 2);
-
-        Molecule molecule(elements);
+        elements.add(Element::Hydrogen, 10);
 
         MoleculeCollection molecules;
-        molecules.add(molecule);
+        while (!elements.isEmpty()) {
+            Molecule molecule(elements);
+            molecules.add(molecule);
+        }
 
         planet->receiveMolecules(molecules);
 

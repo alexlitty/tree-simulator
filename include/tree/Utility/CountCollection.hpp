@@ -62,6 +62,19 @@ namespace tree
         }
 
         /**
+         * Whether this collection is empty.
+         */
+        bool isEmpty()
+        {
+            for (auto &kv : this->collection) {
+                if (kv.second) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /**
          * Whether this collection contains all the items in another.
          */
         bool contains(CountCollection<T> &other)

@@ -111,6 +111,8 @@ void tree::Planet::generate()
 
     // Clear texture.
     m_texture->clear();
+    tree::brush::palette = tree::palette::white;
+    tree::brush::noise(m_texture);
     //tree::brush::palette = tree::nuggetPalette(nuggets.list[0].type);
     //tree::brush::noise(m_texture);
 
