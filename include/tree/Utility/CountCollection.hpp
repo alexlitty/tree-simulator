@@ -75,6 +75,18 @@ namespace tree
         }
 
         /**
+         * Returns a total count of all items.
+         */
+        unsigned int count() const
+        {
+            unsigned int result = 0;
+            for (auto &kv : this->collection) {
+                result += kv.second;
+            }
+            return result;
+        }
+
+        /**
          * Accesses item counts.
          */
         unsigned int operator [](T item)

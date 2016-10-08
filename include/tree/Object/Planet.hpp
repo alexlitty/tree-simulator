@@ -9,13 +9,13 @@ namespace tree
 {
     class Planet
     : public Drawable,
-      public Nuggetable
+      public Physical
     {
+        // Molecules that compose this planet.
+        MoleculeCollection molecules;
+
         // Simple shape for this planet.
         sf::CircleShape m_shape;
-
-        // Highlighting shape.
-        sf::CircleShape m_highlight;
 
         // Main fixture for this planet.
         b2Fixture *m_fixture;
@@ -27,12 +27,10 @@ namespace tree
         unsigned int health = 0;
 
     public:
-
         /**
          * Constructors.
          */
         Planet(b2Vec2 position);
-        Planet(b2Vec2 position, tree::nugget initialNugget);
 
         /**
          * Destructor.
@@ -45,17 +43,17 @@ namespace tree
         float getRadius() const;
 
         /**
-         * Gets the density of this planet, influenced by nuggets.
+         * Gets the density of this planet, influenced by molecules.
          */
-        float getNuggetDensity() const;
+        float getMoleculeDensity() const;
 
         /**
-         * Receives a new nugget.
+         * Receives a new set of molecules.
          */
-        void receiveNugget(tree::nugget nugget) override;
+        void receiveMolecules(MoleculeCollection newMolecules);
 
         /**
-         * Generates this planet. Based on nugget composition.
+         * Generates this planet based on molecule composition.
          */
         void generate();
 

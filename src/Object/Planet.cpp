@@ -36,14 +36,6 @@ tree::Planet::Planet(b2Vec2 position)
     m_fixture = this->addFixture(fixtureDef);
 }
 
-// Constructor, with initial nugget.
-tree::Planet::Planet(b2Vec2 position, tree::nugget initialNugget)
-: tree::Planet::Planet(position)
-{
-    nuggets.add(initialNugget);
-    this->generate();
-}
-
 // Destructor.
 tree::Planet::~Planet()
 {
@@ -53,30 +45,30 @@ tree::Planet::~Planet()
 // Gets the radius of this planet.
 float tree::Planet::getRadius() const
 {
-    return nuggets.total() * 1.0f;
+    return this->molecules.count() * 1.0f;
 }
 
 // Gets the density of this planet.
-float tree::Planet::getNuggetDensity() const
+float tree::Planet::getMoleculeDensity() const
 {
-    return 3E4 * this->nuggets.total();
+    return 3E4 * this->molecules.count();
 }
 
-// Receives a new nugget.
-void tree::Planet::receiveNugget(tree::nugget nugget)
+// Receives a new set of molecules.
+void tree::Planet::receiveMolecules(tree::MoleculeCollection newMolecules)
 {
-    this->nuggets.add(nugget, 10);
+    this->molecules.add(newMolecules);
     this->generate();
 }
 
-// Generates this planet.
+// Generates this planet based on molecule composition.
 void tree::Planet::generate()
 {
     float radius = this->getRadius();
 
     // Update physical shape.
     m_fixture->GetShape()->m_radius = radius;
-    m_fixture->SetDensity(this->getNuggetDensity());
+    m_fixture->SetDensity(this->getMoleculeDensity());
     this->updateMass();
 
     // Update physical settings.
@@ -113,11 +105,11 @@ void tree::Planet::generate()
 
     // Clear texture.
     m_texture->clear();
-    tree::brush::palette = tree::nuggetPalette(nuggets.list[0].type);
-    tree::brush::noise(m_texture);
+    //tree::brush::palette = tree::nuggetPalette(nuggets.list[0].type);
+    //tree::brush::noise(m_texture);
 
-    // Generate planet, based on nugget composition.
-    for (auto comp : nuggets.list) {
+    /*
+    for (auto &kv : nuggets.list) {
         tree::brush::palette = tree::nuggetPalette(comp.type);
         tree::brush::spots(
             m_texture,
@@ -126,18 +118,11 @@ void tree::Planet::generate()
             textureSize / 2
         );
     }
+    */
     m_texture->display();
 
     // Apply new texture to shape.
     m_shape.setTexture(&m_texture->getTexture(), true);
-
-    // Update highlight.
-    m_highlight.setPointCount(m_shape.getPointCount());
-    m_highlight.setRadius(m_shape.getRadius());
-    tree::centerOrigin(m_highlight);
-    m_highlight.setFillColor(sf::Color(0, 0, 0, 25));
-    m_highlight.setOutlineColor(sf::Color(225, 225, 225, 50));
-    m_highlight.setOutlineThickness(-1.0f);
 
     // Initialize health.
     this->restoreHealth();
@@ -160,7 +145,7 @@ void tree::Planet::crumble()
 // Restores any damage from crumbling.
 void tree::Planet::restoreHealth()
 {
-    this->health = this->nuggets.total() * 5;
+    this->health = this->molecules.count() * 5;
 }
 
 // Gets a random position on this planet.
@@ -177,10 +162,4 @@ void tree::Planet::draw(sf::RenderTarget &target, sf::RenderStates states) const
     // Draw planet.
     states.shader = &tree::Shader::Fisheye;
     target.draw(m_shape, states);
-
-    // Draw planet highlight.
-    states.shader = nullptr;
-    if (this->isNuggetableTarget()) {
-        target.draw(m_highlight, states);
-    }
 }

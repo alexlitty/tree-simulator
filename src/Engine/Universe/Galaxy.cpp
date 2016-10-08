@@ -27,8 +27,18 @@ tree::Galaxy::Galaxy(std::vector<tree::Player*> &initPlayers)
         Planet *planet = new Planet(planetPosition);
         planet->applyTorque(true);
 
-        // Set nugget makeup.
-        unsigned int amount = tree::random(1, 20);
+        ElementCollection elements;
+        elements.add(Element::Hydrogen, 2);
+
+        Molecule molecule(elements);
+
+        MoleculeCollection molecules;
+        molecules.add(molecule);
+
+        planet->receiveMolecules(molecules);
+
+        // Set molecule makeup.
+        /*unsigned int amount = tree::random(1, 20);
         switch (tree::random(1, 4)) {
             case 1:
                 planet->nuggets.add(tree::nugget::lava, amount);
@@ -46,7 +56,7 @@ tree::Galaxy::Galaxy(std::vector<tree::Player*> &initPlayers)
                 planet->nuggets.add(tree::nugget::lava, 2);
                 planet->nuggets.add(tree::nugget::plasma, amount);
                 planet->nuggets.add(tree::nugget::rock, 1);
-        }
+        }*/
 
         // Generate planet.
         planet->generate();
@@ -132,7 +142,7 @@ void tree::Galaxy::act()
 
             // Planet totally absorbed. Destroy it.
             else {
-                player->takeNuggets(absorptionTarget);
+                //player->takeNuggets(absorptionTarget);
                 player->resetAbsorptionTarget();
 
                 tree::remove(this->planets, absorptionTarget);
