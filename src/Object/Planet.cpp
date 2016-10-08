@@ -3,7 +3,8 @@
 #include <tree/Object/Planet.hpp>
 #include <tree/Resource/Color.hpp>
 #include <tree/Resource/Shader.hpp>
-#include <tree/Utility/Brush.hpp>
+#include <tree/Brush.hpp>
+#include <tree/Sprite.hpp>
 
 // Main constructor.
 tree::Planet::Planet(b2Vec2 position)
@@ -113,6 +114,7 @@ void tree::Planet::generate()
     m_texture->clear();
     tree::brush::palette = tree::palette::white;
     tree::brush::noise(m_texture);
+
     //tree::brush::palette = tree::nuggetPalette(nuggets.list[0].type);
     //tree::brush::noise(m_texture);
 
@@ -130,7 +132,9 @@ void tree::Planet::generate()
     m_texture->display();
 
     // Apply new texture to shape.
-    m_shape.setTexture(&m_texture->getTexture(), true);
+    tree::sprite::Hydrogen sprite;
+    sprite.setTexture(m_texture);
+    m_shape.setTexture(sprite, true);
 
     // Initialize health.
     this->restoreHealth();
