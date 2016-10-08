@@ -14,6 +14,9 @@ namespace tree
      */
     class Player : public Lifeform, public Drawable
     {
+        // Molecular composition.
+        MoleculeCollection molecules;
+
         // Test shape for Player.
         sf::RectangleShape m_shape;
 
@@ -65,6 +68,11 @@ namespace tree
          * Absorbs from the currently targeted planet.
          */
         void absorb();
+
+        /**
+         * Finalizes an absorption.
+         */
+        void takeAbsorptionTarget();
 
         /**
          * Checks whether the brake is engaged.

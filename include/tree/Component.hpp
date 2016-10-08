@@ -7,7 +7,6 @@
 #include <tree/Component/Intel.hpp>
 #include <tree/Component/Lifeform.hpp>
 #include <tree/Component/Physical.hpp>
-#include <tree/Component/Nuggetable.hpp>
 
 // @@@
 #include <tree/Utility/Debug.hpp>

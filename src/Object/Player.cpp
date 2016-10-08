@@ -101,6 +101,13 @@ void tree::Player::absorb()
     }
 }
 
+// Finalizes an absorption.
+void tree::Player::takeAbsorptionTarget()
+{
+    this->molecules.add(this->absorptionTarget->getMolecules());
+    this->resetAbsorptionTarget();
+}
+
 // Checks whether the brake is engaged.
 bool tree::Player::isBrakeEngaged() const
 {

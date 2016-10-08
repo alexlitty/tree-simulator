@@ -11,7 +11,7 @@ namespace tree
     : public Drawable,
       public Physical
     {
-        // Molecules that compose this planet.
+        // Molecular composition.
         MoleculeCollection molecules;
 
         // Simple shape for this planet.
@@ -36,6 +36,11 @@ namespace tree
          * Destructor.
          */
         ~Planet();
+
+        /**
+         * Get the molecules that compose this planet.
+         */
+        MoleculeCollection& getMolecules();
 
         /**
          * Gets the normal radius of this planet.

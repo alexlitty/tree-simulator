@@ -49,34 +49,3 @@ sf::Color tree::paletteColor(tree::palette palette)
 
     return sf::Color(r, g, b);
 }
-
-// Get the palette of a nugget.
-tree::palette tree::nuggetPalette(tree::nugget nug)
-{
-    switch (nug)
-    {
-        case tree::nugget::spore:
-            return palette::white;
-
-        case tree::nugget::plasma:
-            return palette::light;
-
-        case tree::nugget::rock:
-            return palette::rock;
-
-        case tree::nugget::water:
-            return palette::water;
-
-        case tree::nugget::lava:
-            return palette::fire;
-
-        default:
-            return palette::random;
-    }
-}
-
-// Generate a base nugget color.
-sf::Color tree::nuggetColor(tree::nugget nug)
-{
-    return tree::paletteColor(tree::nuggetPalette(nug));
-}

@@ -42,6 +42,12 @@ tree::Planet::~Planet()
     delete m_texture;
 }
 
+// Get the molecules that compose this planet.
+tree::MoleculeCollection& tree::Planet::getMolecules()
+{
+    return this->molecules;
+}
+
 // Gets the radius of this planet.
 float tree::Planet::getRadius() const
 {
