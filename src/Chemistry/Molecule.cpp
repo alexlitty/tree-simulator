@@ -11,3 +11,9 @@ tree::Molecule::Molecule(ElementCollection &inventory)
         }
     }
 }
+
+// Convert to string.
+tree::Molecule::operator std::string() const
+{
+    return this->name;
+}

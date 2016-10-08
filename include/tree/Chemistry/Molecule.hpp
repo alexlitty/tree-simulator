@@ -23,6 +23,11 @@ namespace tree
          * given collection.
          */
         Molecule(ElementCollection &inventory);
+
+        /**
+         * Convert to string.
+         */
+        operator std::string() const;
     };
 
     typedef CountCollection<std::string> MoleculeCollection;
