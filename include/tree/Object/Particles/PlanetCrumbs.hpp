@@ -1,17 +1,17 @@
-#ifndef TREESIMULATOR_OBJECT_PARTICLES_NUGGET_CRUMBS
-#define TREESIMULATOR_OBJECT_PARTICLES_NUGGET_CRUMBS
+#ifndef TREESIMULATOR_OBJECT_PARTICLES_PLANET_CRUMBS
+#define TREESIMULATOR_OBJECT_PARTICLES_PLANET_CRUMBS
 
 #include <tree/Object/Particles.hpp>
 
 namespace tree
 {
-    class NuggetCrumbs : public Particles
+    class PlanetCrumbs : public Particles
     {
     public:
         /**
          * Constructor.
          */
-        NuggetCrumbs();
+        PlanetCrumbs();
 
         /**
          * Animates the crumbs.

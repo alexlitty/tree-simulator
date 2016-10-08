@@ -1,14 +1,14 @@
-#include <tree/Object/Particles/NuggetCrumbs.hpp>
+#include <tree/Object/Particles/PlanetCrumbs.hpp>
 
 // Constructor.
-tree::NuggetCrumbs::NuggetCrumbs()
+tree::PlanetCrumbs::PlanetCrumbs()
 : tree::Particles::Particles(500, 1000)
 {
     m_fixtureTemplate.filter.maskBits = 0;
 }
 
 // Animates the crumbs.
-void tree::NuggetCrumbs::animate(tree::Vector target)
+void tree::PlanetCrumbs::animate(tree::Vector target)
 {
     for (auto crumb : this->m_particles) {
         if (tree::similar(crumb->getPosition(), target, 1.0f)) {

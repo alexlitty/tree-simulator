@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <tree/Component.hpp>
-#include <tree/Object/Particles/NuggetCrumbs.hpp>
+#include <tree/Object/Particles/PlanetCrumbs.hpp>
 #include <tree/Object/Planet.hpp>
 #include <tree/Object/Tree/Leaf.hpp>
 
@@ -12,7 +12,7 @@ namespace tree
     /**
      * Representation of a Player in the game.
      */
-    class Player : public Lifeform, public Drawable, public Nuggetable
+    class Player : public Lifeform, public Drawable
     {
         // Test shape for Player.
         sf::RectangleShape m_shape;
@@ -30,7 +30,7 @@ namespace tree
         tree::Planet *absorptionTarget = nullptr;
 
         // Crumbs from the planet being absorbed.
-        tree::NuggetCrumbs nuggetCrumbs;
+        tree::PlanetCrumbs planetCrumbs;
 
     public:
 

@@ -9,7 +9,6 @@ tree::Player::Player()
   engineParticles(200, 1500)
 {
     m_thrustPower = 25E4;
-    //m_rotationPower = 
 
     // Initialize shape.
     sf::Vector2f shapeSize(2.0f, 1.0f);
@@ -71,7 +70,7 @@ void tree::Player::setAbsorptionTarget(tree::Planet *planet)
 void tree::Player::resetAbsorptionTarget()
 {
     this->setAbsorptionTarget(nullptr);
-    nuggetCrumbs.clear();
+    planetCrumbs.clear();
 }
 
 // Gets the absorption target.
@@ -98,7 +97,7 @@ void tree::Player::absorb()
             100.0f
         );
 
-        this->nuggetCrumbs.add(position, velocity, sf::Color::White);
+        this->planetCrumbs.add(position, velocity, sf::Color::White);
     }
 }
 
@@ -189,7 +188,7 @@ void tree::Player::act(std::vector<tree::weapon::Seed*> &seeds)
     }
 
     // Particle animations.
-    nuggetCrumbs.animate(this->getPosition());
+    planetCrumbs.animate(this->getPosition());
 }
 
 // Perform a thrust.
@@ -245,7 +244,7 @@ void tree::Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     // Draw particles.
     target.draw(engineParticles, states);
-    target.draw(nuggetCrumbs, states);
+    target.draw(planetCrumbs, states);
 
     // Draw player.
     addPhysicalTransform(states.transform);
