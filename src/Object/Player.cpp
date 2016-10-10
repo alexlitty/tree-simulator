@@ -55,8 +55,7 @@ tree::Player::Player()
             elements.add(Element::Oxygen, 1);
             break;
     }
-    Molecule molecule(elements);
-    this->molecules.add(molecule);
+    this->molecules.add(tree::generateMolecule(elements));
     this->generate();
 }
 
@@ -84,7 +83,7 @@ void tree::Player::generate()
     m_shape.setOutlineThickness(0);
     sf::Color color;
 
-    if (this->molecules["water"]) {
+    if (this->molecules[Molecule::Water]) {
         color = sf::Color(
             tree::random(10, 50),
             tree::random(0, 150),
@@ -94,7 +93,7 @@ void tree::Player::generate()
         m_shape.setFillColor(color);
     }
 
-    else if (this->molecules["oxygen"]) {
+    else if (this->molecules[Molecule::Oxygen]) {
         m_shape.setOutlineThickness(1.0f);
 
         color = sf::Color(200, 200, 200);

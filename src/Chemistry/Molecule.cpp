@@ -1,20 +1,15 @@
 #include <tree/Chemistry/MoleculeRecipes.hpp>
+#include <tree/Engine/Error.hpp>
 
-// Constructor.
-tree::Molecule::Molecule(ElementCollection &inventory)
+// Generates the most interesting molecule possible.
+tree::Molecule tree::generateMolecule(ElementCollection &elements)
 {
-    for (auto recipe : tree::MoleculeRecipes) {
-        if (inventory.contains(recipe.elements)) {
-            inventory.remove(recipe.elements);
-            this->elements.add(recipe.elements);
-            this->name = recipe.name;
-            break;
+    for (auto &kv : tree::MoleculeRecipes) {
+        if (elements.contains(kv.second)) {
+            elements.remove(kv.second);
+            return kv.first;
         }
     }
-}
 
-// Convert to string.
-tree::Molecule::operator std::string() const
-{
-    return this->name;
+    throw new Error("No molecule can be generated!");
 }

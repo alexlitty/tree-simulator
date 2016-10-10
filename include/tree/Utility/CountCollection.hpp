@@ -2,6 +2,7 @@
 #define TREESIMULATOR_UTILITY_COUNT_COLLECTION_HPP
 
 #include <map>
+#include <initializer_list>
 
 namespace tree
 {
@@ -11,6 +12,24 @@ namespace tree
         std::map<T, unsigned int> collection;
 
     public:
+        /**
+         * Default constructor.
+         */
+        CountCollection()
+        {
+
+        }
+
+        /**
+         * Constructor for vectors.
+         */
+        CountCollection(std::initializer_list<T> items)
+        {
+            for (auto item : items) {
+                this->add(item);
+            }
+        }
+
         /**
          * Adds an item to the collection.
          */

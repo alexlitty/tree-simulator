@@ -8,29 +8,19 @@
 
 namespace tree
 {
-    class Molecule
+    enum class Molecule
     {
-        std::string name;
-
-        tree::ElementCollection elements;
-
-    public:
-        /**
-         * Constructor.
-         *
-         * Takes a collection of elements and generates the most interesting
-         * molecule possible, removing the required elements out of the
-         * given collection.
-         */
-        Molecule(ElementCollection &inventory);
-
-        /**
-         * Convert to string.
-         */
-        operator std::string() const;
+        Water,
+        Oxygen,
+        Hydrogen
     };
+    typedef CountCollection<Molecule> MoleculeCollection;
 
-    typedef CountCollection<std::string> MoleculeCollection;
+    /**
+     * Generates the most interesting molecule possible, removing the required
+     * elements out of the given collection.
+     */
+    Molecule generateMolecule(ElementCollection &elements);
 }
 
 

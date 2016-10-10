@@ -47,8 +47,7 @@ tree::Galaxy::Galaxy(std::vector<tree::Player*> &initPlayers)
 
         MoleculeCollection molecules;
         while (!elements.isEmpty()) {
-            Molecule molecule(elements);
-            molecules.add(molecule);
+            molecules.add(tree::generateMolecule(elements));
         }
 
         planet->receiveMolecules(molecules);

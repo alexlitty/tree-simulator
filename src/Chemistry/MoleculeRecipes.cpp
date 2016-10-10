@@ -1,32 +1,26 @@
 #include <tree/Chemistry/MoleculeRecipes.hpp>
 
-// Recipe constructor.
-tree::MoleculeRecipe::MoleculeRecipe(std::string _name, std::vector<tree::Element> _elements)
-: name(_name)
-{
-    for (auto element : _elements) {
-        this->elements.add(element);
-    }
-}
-
-// Global list of molecule recipes.
-std::vector<tree::MoleculeRecipe> tree::MoleculeRecipes = {
-    MoleculeRecipe(
-        "water",
+std::map<tree::Molecule, tree::ElementCollection> tree::MoleculeRecipes = {
+    {
+        Molecule::Water,
         {
             tree::Element::Hydrogen,
             tree::Element::Hydrogen,
             tree::Element::Oxygen
         }
-    ),
+    },
 
-    MoleculeRecipe(
-        "hydrogen",
-        { tree::Element::Hydrogen }
-    ),
+    {
+        Molecule::Hydrogen,
+        {
+            tree::Element::Hydrogen
+        }
+    },
 
-    MoleculeRecipe(
-        "oxygen",
-        { tree::Element::Oxygen }
-    )
+    {
+        Molecule::Oxygen,
+        {
+            tree::Element::Oxygen
+        }
+    }
 };

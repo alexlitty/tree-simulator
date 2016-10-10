@@ -85,11 +85,11 @@ void tree::Planet::generate()
         delete this->sprite;
     }
 
-    if (this->molecules["water"]) {
+    if (this->molecules[Molecule::Water]) {
         this->sprite = new tree::sprite::WaterPlanet(radius);
     }
 
-    else if (this->molecules["oxygen"]) {
+    else if (this->molecules[Molecule::Oxygen]) {
         this->sprite = new tree::sprite::OxygenPlanet(radius);
     }
 
