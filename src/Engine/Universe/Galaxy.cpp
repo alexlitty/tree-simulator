@@ -38,27 +38,6 @@ tree::Galaxy::Galaxy(std::vector<tree::Player*> &initPlayers)
 
         planet->receiveMolecules(molecules);
 
-        // Set molecule makeup.
-        /*unsigned int amount = tree::random(1, 20);
-        switch (tree::random(1, 4)) {
-            case 1:
-                planet->nuggets.add(tree::nugget::lava, amount);
-                break;
-
-            case 2:
-                planet->nuggets.add(tree::nugget::rock, amount);
-                break;
-
-            case 3:
-                planet->nuggets.add(tree::nugget::plasma, amount);
-                break;
-
-            default:
-                planet->nuggets.add(tree::nugget::lava, 2);
-                planet->nuggets.add(tree::nugget::plasma, amount);
-                planet->nuggets.add(tree::nugget::rock, 1);
-        }*/
-
         // Generate planet.
         planet->generate();
         planet->enablePhysics();
@@ -159,6 +138,11 @@ void tree::Galaxy::act()
                 player->resetAbsorptionTarget();
             }
         }
+    }
+
+    // Planet acting.
+    for (auto planet : this->planets) {
+        planet->act();
     }
 
     // Player acting.

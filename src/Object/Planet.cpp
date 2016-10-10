@@ -4,10 +4,11 @@
 #include <tree/Resource/Color.hpp>
 #include <tree/Resource/Shader.hpp>
 #include <tree/Brush.hpp>
-#include <tree/Sprite.hpp>
+#include <tree/Sprite/Planets/Sun.hpp>
 
 // Main constructor.
 tree::Planet::Planet(b2Vec2 position)
+: sprite(nullptr)
 {
     this->createsGravity = true;
 
@@ -21,10 +22,6 @@ tree::Planet::Planet(b2Vec2 position)
     // Physical shape.
     b2CircleShape pShape;
     pShape.m_radius = 1.0f;
-
-    // Visual shape.
-    m_shape.setPointCount(60);
-    m_shape.setRadius(1.0f);
 
     // Physical fixture.
     b2FixtureDef fixtureDef;
@@ -40,7 +37,7 @@ tree::Planet::Planet(b2Vec2 position)
 // Destructor.
 tree::Planet::~Planet()
 {
-    delete m_texture;
+    delete this->sprite;
 }
 
 // Get the molecules that compose this planet.
@@ -81,60 +78,11 @@ void tree::Planet::generate()
     // Update physical settings.
     m_torquePower = 3E15;
 
-    // Update visual shape.
-    m_shape.setRadius(radius);
-    m_shape.setPointCount(
-        (std::floor(radius / 30) + 1) * 60
-    );
-    tree::centerOrigin(m_shape);
-
-    // Calculate new texture size.
-    unsigned int textureSize = tree::nextPowerOfTwo(
-        static_cast<unsigned int>(radius)
-    );
-
-    // New texture required.
-    if (!m_texture || textureSize != m_texture->getSize().x) {
-
-        // Delete old texture, create new texture.
-        delete m_texture;
-        m_texture = new sf::RenderTexture;
-        m_texture->create(textureSize, textureSize);
-        m_texture->setSmooth(false);
-
-        // Set new texture view.
-        m_texture->setView(
-            sf::View(
-                sf::FloatRect(0, 0, textureSize, textureSize)
-            )
-        );
+    // Update sprite.
+    if (this->sprite) {
+        delete this->sprite;
     }
-
-    // Clear texture.
-    m_texture->clear();
-    tree::brush::palette = tree::palette::white;
-    tree::brush::noise(m_texture);
-
-    //tree::brush::palette = tree::nuggetPalette(nuggets.list[0].type);
-    //tree::brush::noise(m_texture);
-
-    /*
-    for (auto &kv : nuggets.list) {
-        tree::brush::palette = tree::nuggetPalette(comp.type);
-        tree::brush::spots(
-            m_texture,
-            120,
-            textureSize / 3,
-            textureSize / 2
-        );
-    }
-    */
-    m_texture->display();
-
-    // Apply new texture to shape.
-    tree::sprite::Hydrogen sprite;
-    sprite.setTexture(m_texture);
-    m_shape.setTexture(sprite, true);
+    this->sprite = new tree::sprite::Sun(radius);
 
     // Initialize health.
     this->restoreHealth();
@@ -163,7 +111,13 @@ void tree::Planet::restoreHealth()
 // Gets a random position on this planet.
 tree::Vector tree::Planet::getRandomPosition() const
 {
-    return tree::randomPointOnCircle(m_shape.getRadius(), this->getPosition());
+    return tree::randomPointOnCircle(this->getRadius(), this->getPosition());
+}
+
+// Perform actions over time.
+void tree::Planet::act()
+{
+    this->sprite->animate();
 }
 
 // Draw the planet.
@@ -172,6 +126,5 @@ void tree::Planet::draw(sf::RenderTarget &target, sf::RenderStates states) const
     this->addPhysicalTransform(states.transform);
 
     // Draw planet.
-    states.shader = &tree::Shader::Fisheye;
-    target.draw(m_shape, states);
+    this->sprite->draw(target, states);
 }

@@ -4,6 +4,7 @@
 #include <vector>
 #include <tree/Chemistry.hpp>
 #include <tree/Component.hpp>
+#include <tree/Sprite/Sprite.hpp>
 
 namespace tree
 {
@@ -14,14 +15,11 @@ namespace tree
         // Molecular composition.
         MoleculeCollection molecules;
 
-        // Simple shape for this planet.
-        sf::CircleShape m_shape;
-
         // Main fixture for this planet.
         b2Fixture *m_fixture;
 
-        // Main texture for this planet.
-        sf::RenderTexture *m_texture = nullptr;
+        // Sprite for this planet.
+        Sprite *sprite;
 
         // Health of the planet. Lowered when planet crumbles
         unsigned int health = 0;
@@ -81,6 +79,11 @@ namespace tree
          * Gets a random position on this planet.
          */
         tree::Vector getRandomPosition() const;
+
+        /**
+         * Perform actions over time.
+         */
+        void act();
 
         /**
          * Draw the planet.
