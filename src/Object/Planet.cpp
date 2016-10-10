@@ -5,6 +5,8 @@
 #include <tree/Resource/Shader.hpp>
 #include <tree/Brush.hpp>
 #include <tree/Sprite/Planets/Sun.hpp>
+#include <tree/Sprite/Planets/Oxygen.hpp>
+#include <tree/Sprite/Planets/Water.hpp>
 
 // Main constructor.
 tree::Planet::Planet(b2Vec2 position)
@@ -82,7 +84,18 @@ void tree::Planet::generate()
     if (this->sprite) {
         delete this->sprite;
     }
-    this->sprite = new tree::sprite::Sun(radius);
+
+    if (this->molecules["water"]) {
+        this->sprite = new tree::sprite::WaterPlanet(radius);
+    }
+
+    else if (this->molecules["oxygen"]) {
+        this->sprite = new tree::sprite::OxygenPlanet(radius);
+    }
+
+    else {
+        this->sprite = new tree::sprite::Sun(radius);
+    }
 
     // Initialize health.
     this->restoreHealth();

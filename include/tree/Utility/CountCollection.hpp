@@ -79,8 +79,8 @@ namespace tree
          */
         bool contains(CountCollection<T> &other)
         {
-            for (auto &kv : this->collection) {
-                if (kv.second < other[kv.first]) {
+            for (auto &kv : other.collection) {
+                if (this->collection[kv.first] < kv.second) {
                     return false;
                 }
             }

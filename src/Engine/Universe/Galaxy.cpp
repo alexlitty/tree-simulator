@@ -28,7 +28,22 @@ tree::Galaxy::Galaxy(std::vector<tree::Player*> &initPlayers)
         planet->applyTorque(true);
 
         ElementCollection elements;
-        elements.add(Element::Hydrogen, 10);
+        switch (tree::random(0, 5)) {
+            case 0:
+                elements.add(Element::Oxygen, tree::random(10, 20));
+                break;
+
+            case 1:
+            case 2:
+                elements.add(Element::Hydrogen, tree::random(10, 20));
+                break;
+
+            default:
+                int result = tree::random(10, 20);
+                elements.add(Element::Hydrogen, result * 2);
+                elements.add(Element::Oxygen, result);
+                break;
+        }
 
         MoleculeCollection molecules;
         while (!elements.isEmpty()) {
@@ -37,9 +52,6 @@ tree::Galaxy::Galaxy(std::vector<tree::Player*> &initPlayers)
         }
 
         planet->receiveMolecules(molecules);
-
-        // Generate planet.
-        planet->generate();
         planet->enablePhysics();
         this->planets.push_back(planet);
     }

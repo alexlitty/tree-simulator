@@ -7,6 +7,7 @@ tree::Molecule::Molecule(ElementCollection &inventory)
         if (inventory.contains(recipe.elements)) {
             inventory.remove(recipe.elements);
             this->elements.add(recipe.elements);
+            this->name = recipe.name;
             break;
         }
     }

@@ -1,5 +1,5 @@
-#ifndef TREESIMULATOR_SPRITE_PLANETS_SUN_HPP
-#define TREESIMULATOR_SPRITE_PLANETS_SUN_HPP
+#ifndef TREESIMULATOR_SPRITE_PLANETS_OXYGEN_HPP
+#define TREESIMULATOR_SPRITE_PLANETS_OXYGEN_HPP
 
 #include <tree/Sprite/Sprite.hpp>
 
@@ -7,13 +7,13 @@ namespace tree
 {
     namespace sprite
     {
-        class Sun : public Sprite
+        class OxygenPlanet : public Sprite
         {
             sf::CircleShape planetShape;
             sf::Color planetColor;
 
         public:
-            Sun(float radius);
+            OxygenPlanet(float radius);
 
             void animate() override;
             void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
