@@ -13,7 +13,6 @@ tree::Player::Player()
     // Initialize shape.
     sf::Vector2f shapeSize(2.0f, 1.0f);
     m_shape.setSize(shapeSize);
-    m_shape.setFillColor(sf::Color::Green);
 
     // Physical body definition.
     b2BodyDef bodyDef;
@@ -39,6 +38,26 @@ tree::Player::Player()
 
     // Add first leaf.
     this->addLeaf();
+
+    // Initial molecule.
+    ElementCollection elements;
+    switch (tree::random(0, 2)) {
+        case 0:
+            elements.add(Element::Hydrogen, 1);
+            break;
+
+        case 1:
+            elements.add(Element::Oxygen, 1);
+            break;
+
+        default:
+            elements.add(Element::Hydrogen, 2);
+            elements.add(Element::Oxygen, 1);
+            break;
+    }
+    Molecule molecule(elements);
+    this->molecules.add(molecule);
+    this->generate();
 }
 
 // Destructor.
@@ -57,6 +76,42 @@ void tree::Player::addLeaf()
     leaf->position.y = 0.0f;
 
     this->leaves.push_back(leaf);
+}
+
+// Generates the player based on its composition.
+void tree::Player::generate()
+{
+    m_shape.setOutlineThickness(0);
+    sf::Color color;
+
+    if (this->molecules["water"]) {
+        color = sf::Color(
+            tree::random(10, 50),
+            tree::random(0, 150),
+            tree::random(150, 225)
+        );
+
+        m_shape.setFillColor(color);
+    }
+
+    else if (this->molecules["oxygen"]) {
+        m_shape.setOutlineThickness(1.0f);
+
+        color = sf::Color(200, 200, 200);
+        m_shape.setOutlineColor(color);
+
+        color = sf::Color(25, 25, 25);
+        m_shape.setFillColor(color);
+    }
+
+    else {
+        color = sf::Color(
+            tree::random(150, 255),
+            tree::random(150, 175),
+            0
+        );
+        m_shape.setFillColor(color);
+    }
 }
 
 // Sets the absorption target.
@@ -106,6 +161,7 @@ void tree::Player::takeAbsorptionTarget()
 {
     this->molecules.add(this->absorptionTarget->getMolecules());
     this->resetAbsorptionTarget();
+    this->generate();
 }
 
 // Checks whether the brake is engaged.
@@ -256,9 +312,4 @@ void tree::Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
     // Draw player.
     addPhysicalTransform(states.transform);
     target.draw(m_shape, states);
-
-    // Draw leaves.
-    for (auto leaf : this->leaves) {
-        target.draw(*leaf, states);
-    }
 }

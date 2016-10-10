@@ -20,13 +20,9 @@ namespace tree
         // Test shape for Player.
         sf::RectangleShape m_shape;
 
-        // Test hat for player.
-        sf::RectangleShape m_hat;
-
         // Particles for engine thrust.
         Particles engineParticles;
 
-        // Leaves on the player.
         std::vector<Leaf*> leaves;
 
         // Planet that is currently being absorbed.
