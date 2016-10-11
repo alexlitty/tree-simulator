@@ -4,7 +4,8 @@
 
 // Constructor.
 tree::Galaxy::Galaxy(std::vector<tree::Player*> &initPlayers)
-: players(initPlayers)
+: players(initPlayers),
+  boundary(1000.0f)
 {
     // Initialize backgrounds.
     for (unsigned int i = 0; i < 10; i++) {
@@ -179,6 +180,9 @@ void tree::Galaxy::draw(sf::RenderTarget &target, sf::RenderStates states) const
     for (auto seed : this->seeds) {
         seed->draw(target, states);
     }
+
+    // Draw boundary.
+    boundary.draw(target, states);
 
     // Draw players.
     for (auto player : this->players) {

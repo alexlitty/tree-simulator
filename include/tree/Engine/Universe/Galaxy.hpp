@@ -2,6 +2,7 @@
 #define TREESIMULATOR_ENGINE_UNIVERSE_GALAXY_HPP
 
 #include <tree/Object/Background/Stars.hpp>
+#include <tree/Object/Boundary/Circle.hpp>
 #include <tree/Object/Planet.hpp>
 #include <tree/Object/Player.hpp>
 #include <tree/Object/Weapon/Seed.hpp>
@@ -15,6 +16,9 @@ namespace tree
 
         // Backgrounds.
         std::vector<tree::Background::Stars*> backgrounds;
+
+        // Boundary.
+        boundary::Circle boundary;
 
         // Planets in this galaxy.
         std::vector<Planet*> planets;
