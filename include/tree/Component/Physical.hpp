@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <SFML/Graphics.hpp>
-#include <tree/Component/Object.hpp>
+#include <tree/Component/Drawable.hpp>
 #include <tree/Math.hpp>
 #include <tree/Physics/World.hpp>
 

@@ -31,7 +31,7 @@ namespace tree
      *
      * Has health properties, which implies living and death conditions.
      */
-    class Lifeform : virtual public Physical
+    class Lifeform : virtual public Physical, virtual public Drawable
     {
         uint32_t m_healthMax;
         uint32_t m_health;
@@ -98,6 +98,11 @@ namespace tree
          * Retrieves the death status of this lifeform.
          */
         bool isDead() const;
+
+        /**
+         * Act.
+         */
+        virtual void act();
     };
 }
 

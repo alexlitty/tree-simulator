@@ -179,9 +179,9 @@ void tree::Physical::setAngle(Angle angle)
 // Performs a rotation with default power.
 void tree::Physical::rotate(bool direction)
 {
-    this->rotate(
-        direction ? m_rotationPower : -m_rotationPower
-    );
+    Angle angle;
+    angle.radians(direction ? m_rotationPower : -m_rotationPower);
+    this->rotate(angle);
 }
 
 // Performs a rotation.

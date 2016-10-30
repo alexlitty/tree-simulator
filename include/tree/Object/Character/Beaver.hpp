@@ -22,7 +22,7 @@ namespace tree
             Beaver(Players &_players, b2Vec2 position);
 
             // Be a beaver.
-            void act();
+            void act() override;
 
             // Draw beaver.
             void draw(sf::RenderTarget &target, sf::RenderStates states) const;

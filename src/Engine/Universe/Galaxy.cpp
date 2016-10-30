@@ -1,5 +1,6 @@
 #include <limits>
 #include <tree/Engine/Universe/Galaxy.hpp>
+#include <tree/Object/Character/Beaver.hpp>
 #include <tree/Utility/Collection.hpp>
 
 // Constructor.
@@ -56,6 +57,18 @@ tree::Galaxy::Galaxy(std::vector<tree::Player*> &initPlayers)
         this->planets.push_back(planet);
     }
 
+    // Create enemies.
+    for (unsigned int i = 0; i < 20; i++) {
+        Vector enemyPosition(
+            tree::random(-100.0f, 100.0f),
+            tree::random(-100.0f, 100.0f)
+        );
+
+        this->lifeforms.push_back(
+            new tree::character::Beaver(this->players, enemyPosition)
+        );
+    }
+
     // Create example wormhole entrance.
     this->wormholeEntrances.push_back(
         new WormholeEntrance(Vector(100.0f, 0.0f))
@@ -71,6 +84,14 @@ tree::Galaxy::~Galaxy()
 
     for (auto planet : this->planets) {
         delete planet;
+    }
+
+    for (auto lifeform : this->lifeforms) {
+        delete lifeform;
+    }
+
+    for (auto wormholeEntrance: this->wormholeEntrances) {
+        delete wormholeEntrance;
     }
 
     for (auto seed : this->seeds) {
@@ -180,6 +201,10 @@ bool tree::Galaxy::act()
             player->act(this->seeds);
         }
 
+        // Lifeform acting.
+        for (auto lifeform : this->lifeforms) {
+            lifeform->act();
+        }
     }
 
     // Check for galaxy end conditions.
@@ -204,6 +229,11 @@ void tree::Galaxy::draw(sf::RenderTarget &target, sf::RenderStates states) const
     // Draw planets.
     for (auto planet : this->planets) {
         planet->draw(target, states);
+    }
+
+    // Draw lifeforms.
+    for (auto lifeform : this->lifeforms) {
+        lifeform->draw(target, states);
     }
 
     // Draw wormhole entrances.

@@ -24,6 +24,9 @@ namespace tree
         // Planets in this galaxy.
         std::vector<Planet*> planets;
 
+        // Lifeforms in this galaxy, excluding players.
+        std::vector<Lifeform*> lifeforms;
+
         // Wormhole entrances in this galaxy.
         std::vector<WormholeEntrance*> wormholeEntrances;
 

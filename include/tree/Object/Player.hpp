@@ -12,7 +12,7 @@ namespace tree
     /**
      * Representation of a Player in the game.
      */
-    class Player : public Lifeform, public Drawable
+    class Player : public Lifeform
     {
         // Molecular composition.
         MoleculeCollection molecules;

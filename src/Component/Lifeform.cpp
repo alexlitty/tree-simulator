@@ -108,3 +108,9 @@ bool tree::Lifeform::isDead() const
 {
     return (m_health == 0);
 }
+
+// Act.
+void tree::Lifeform::act()
+{
+
+}
