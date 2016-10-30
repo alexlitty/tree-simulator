@@ -92,6 +92,9 @@ namespace tree
          */
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
     };
+
+    // Collection of players.
+    typedef std::vector<Player*> Players;
 }
 
 #endif

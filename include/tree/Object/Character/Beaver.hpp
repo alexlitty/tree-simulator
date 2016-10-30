@@ -2,6 +2,7 @@
 #define TREESIMULATOR_OBJECT_CHARACTER_BEAVER
 
 #include <tree/Component.hpp>
+#include <tree/Object/Player.hpp>
 
 namespace tree
 {
@@ -12,12 +13,13 @@ namespace tree
           virtual public Intel,
           virtual public Lifeform
         {
+            Players players;
             mutable sf::RectangleShape m_tempShape;
 
         public:
 
             // Constructor.
-            Beaver(b2Vec2 position);
+            Beaver(Players &_players, b2Vec2 position);
 
             // Be a beaver.
             void act();

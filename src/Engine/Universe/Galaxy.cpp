@@ -190,7 +190,6 @@ bool tree::Galaxy::act()
             }
         }
     }
-
     return false;
 }
 

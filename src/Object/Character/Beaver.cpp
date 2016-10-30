@@ -2,8 +2,9 @@
 #include <tree/Object/Character/Beaver.hpp>
 
 // Constructor.
-tree::character::Beaver::Beaver(b2Vec2 position)
-: tree::Lifeform::Lifeform(tree::Faction::beaver, 10)
+tree::character::Beaver::Beaver(Players &_players, b2Vec2 position)
+: tree::Lifeform::Lifeform(tree::Faction::beaver, 10),
+  players(_players)
 {
     m_thrustPower = 1E5;
 
@@ -39,9 +40,9 @@ tree::character::Beaver::Beaver(b2Vec2 position)
 // Be a beaver.
 void tree::character::Beaver::act()
 {
-    /*// Find an enemy.
+    // Find an enemy.
     tree::Physical *enemy = nullptr;
-    for (auto lifeform : sta!ge.lifeforms) {
+    for (auto lifeform : this->players) {
         if (this->isHostile(*lifeform)) {
             enemy = lifeform;
             break;
@@ -50,9 +51,9 @@ void tree::character::Beaver::act()
 
     // Move toward enemy.
     if (enemy != nullptr) {
-        b2Vec2 position = enemy->getPosition();
+        Vector position = enemy->getPosition();
         this->moveBlindly(position);
-    }*/
+    }
 
     // Find a planet.
     /*tree::Physical *planet = sta!ge.gravities[0];
