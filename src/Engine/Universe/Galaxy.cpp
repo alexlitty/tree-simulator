@@ -55,6 +55,11 @@ tree::Galaxy::Galaxy(std::vector<tree::Player*> &initPlayers)
         planet->enablePhysics();
         this->planets.push_back(planet);
     }
+
+    // Create example wormhole entrance.
+    this->wormholeEntrances.push_back(
+        new WormholeEntrance(Vector(100.0f, 0.0f))
+    );
 }
 
 // Destructor.
@@ -79,8 +84,19 @@ tree::Vector tree::Galaxy::getFocusCenter() const
     return this->players[0]->getPixelPosition();
 }
 
+// Locks and unlocks the galaxy for animations.
+void tree::Galaxy::lock()
+{
+    this->isLocked = true;
+}
+
+void tree::Galaxy::unlock()
+{
+    this->isLocked = false;
+}
+
 // Simulates the galaxy.
-void tree::Galaxy::act()
+bool tree::Galaxy::act()
 {
     // Adjust backgrounds.
     for (auto background : this->backgrounds) {
@@ -98,69 +114,84 @@ void tree::Galaxy::act()
         player->prepare();
     }
 
-    // Handle planet absorptions.
-    for (auto player : this->players) {
-
-        // Try to absorb a planet.
-        if (planets.size() && sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-
-            // Find something to absorb.
-            if (!player->isAbsorbing()) {
-
-                // Find nearest planet.
-                int currentDistance;
-                int smallestDistance = std::numeric_limits<int>::max();
-                tree::Planet *closestPlanet = nullptr;
-                for (auto planet : this->planets) {
-                    currentDistance = planet->getPosition().distance(
-                        this->players[0]->getPosition()
-                    );
-
-                    if (smallestDistance > currentDistance) {
-                        smallestDistance = currentDistance;
-                        closestPlanet = planet;
-                    }
-                }
-
-                // Start absorbing from planet.
-                player->setAbsorptionTarget(closestPlanet);
-            }
-
-            // Absorb.
-            tree::Planet *absorptionTarget = player->getAbsorptionTarget();
-            if (absorptionTarget->canCrumble()) {
-                player->absorb();
-            }
-
-            // Planet totally absorbed. Destroy it.
-            else {
-                player->takeAbsorptionTarget();
-
-                tree::remove(this->planets, absorptionTarget);
-                delete absorptionTarget;
-            }
-        }
-
-        // Stop absorbing.
-        else {
-            tree::Planet *absorptionTarget = player->getAbsorptionTarget();
-
-            if (absorptionTarget) {
-                absorptionTarget->restoreHealth();
-                player->resetAbsorptionTarget();
-            }
-        }
-    }
-
     // Planet acting.
     for (auto planet : this->planets) {
         planet->act();
     }
 
-    // Player acting.
-    for (auto player : this->players) {
-        player->act(this->seeds);
+    if (!this->isLocked) {
+
+        // Handle planet absorptions.
+        for (auto player : this->players) {
+
+            // Try to absorb a planet.
+            if (planets.size() && sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+
+                // Find something to absorb.
+                if (!player->isAbsorbing()) {
+
+                    // Find nearest planet.
+                    int currentDistance;
+                    int smallestDistance = std::numeric_limits<int>::max();
+                    tree::Planet *closestPlanet = nullptr;
+                    for (auto planet : this->planets) {
+                        currentDistance = planet->getPosition().distance(
+                            this->players[0]->getPosition()
+                        );
+
+                        if (smallestDistance > currentDistance) {
+                            smallestDistance = currentDistance;
+                            closestPlanet = planet;
+                        }
+                    }
+
+                    // Start absorbing from planet.
+                    player->setAbsorptionTarget(closestPlanet);
+                }
+
+                // Absorb.
+                tree::Planet *absorptionTarget = player->getAbsorptionTarget();
+                if (absorptionTarget->canCrumble()) {
+                    player->absorb();
+                }
+
+                // Planet totally absorbed. Destroy it.
+                else {
+                    player->takeAbsorptionTarget();
+
+                    tree::remove(this->planets, absorptionTarget);
+                    delete absorptionTarget;
+                }
+            }
+
+            // Stop absorbing.
+            else {
+                tree::Planet *absorptionTarget = player->getAbsorptionTarget();
+
+                if (absorptionTarget) {
+                    absorptionTarget->restoreHealth();
+                    player->resetAbsorptionTarget();
+                }
+            }
+        }
+
+        // Player acting.
+        for (auto player : this->players) {
+            player->act(this->seeds);
+        }
+
     }
+
+    // Check for galaxy end conditions.
+    for (auto player : players) {
+        for (auto wormholeEntrance : wormholeEntrances) {
+            if (wormholeEntrance->canInfluence(player->getPosition())) {
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 // Draws the galaxy.
@@ -176,6 +207,11 @@ void tree::Galaxy::draw(sf::RenderTarget &target, sf::RenderStates states) const
         planet->draw(target, states);
     }
 
+    // Draw wormhole entrances.
+    for (auto wormholeEntrance : this->wormholeEntrances) {
+        wormholeEntrance->draw(target, states);
+    }
+
     // Draw weapons.
     for (auto seed : this->seeds) {
         seed->draw(target, states);
@@ -183,9 +219,4 @@ void tree::Galaxy::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
     // Draw boundary.
     boundary.draw(target, states);
-
-    // Draw players.
-    for (auto player : this->players) {
-        player->draw(target, states);
-    }
 }

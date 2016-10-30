@@ -105,6 +105,12 @@ float tree::Vector::distance(tree::Vector other) const
     );
 }
 
+// Whether this vector is near another vector.
+bool tree::Vector::isNear(Vector other, float threshold) const
+{
+    return this->distance(other) <= threshold;
+}
+
 // Finds the center between this and another vector.
 tree::Vector tree::Vector::center(tree::Vector other) const
 {

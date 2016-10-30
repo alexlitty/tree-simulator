@@ -3,6 +3,8 @@
 
 #include <tree/Engine/Universe/Galaxy.hpp>
 #include <tree/Object/Player.hpp>
+#include <tree/Universe/Wormhole.hpp>
+#include <tree/Utility/Timer.hpp>
 
 namespace tree
 {
@@ -11,8 +13,14 @@ namespace tree
         // Players.
         std::vector<tree::Player*> players;
 
-        // All galaxies in the universe.
-        std::vector<Galaxy*> galaxies;
+        // Current galaxy being played.
+        Galaxy* currentGalaxy;
+
+        // Current wormhole.
+        Wormhole* wormhole = nullptr;
+
+        // Timer used when exiting a galaxy.
+        Timer timerExit;
 
     public:
 
@@ -30,6 +38,21 @@ namespace tree
          * Get the center of camera focus.
          */
         tree::Vector getFocusCenter() const;
+
+        /**
+         * Sets the next galaxy to play in.
+         */
+        void setNextGalaxy();
+
+        /**
+         * Destroys the current galaxy.
+         */
+        void destroyGalaxy();
+
+        /**
+         * Destroys the current wormhole.
+         */
+        void destroyWormhole();
 
         /**
          * Emulate the universe.

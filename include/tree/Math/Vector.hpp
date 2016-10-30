@@ -57,6 +57,11 @@ namespace tree
         float distance(Vector other) const;
 
         /**
+         * Whether this vector is near another vector.
+         */
+        bool isNear(Vector other, float threshold = 10.0f) const;
+
+        /**
          * Finds the center between this and another vector.
          */
         Vector center(Vector other) const;

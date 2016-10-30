@@ -6,6 +6,7 @@
 #include <tree/Object/Planet.hpp>
 #include <tree/Object/Player.hpp>
 #include <tree/Object/Weapon/Seed.hpp>
+#include <tree/Object/WormholeEntrance.hpp>
 
 namespace tree
 {
@@ -23,8 +24,14 @@ namespace tree
         // Planets in this galaxy.
         std::vector<Planet*> planets;
 
+        // Wormhole entrances in this galaxy.
+        std::vector<WormholeEntrance*> wormholeEntrances;
+
         // @@@ seeds
         std::vector<tree::weapon::Seed*> seeds;
+
+        // Whether this galaxy is locked for animations.
+        bool isLocked = false;
 
     public:
 
@@ -46,9 +53,15 @@ namespace tree
         tree::Vector getFocusCenter() const;
 
         /**
+         * Locks and unlocks the galaxy for animations.
+         */
+        void lock();
+        void unlock();
+
+        /**
          * Emulates the galaxy.
          */
-        void act();
+        bool act();
 
         /**
          * Draws the galaxy.
