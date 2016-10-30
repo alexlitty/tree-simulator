@@ -4,11 +4,14 @@
 // Attempt to face a target.
 void tree::Intel::faceTarget(Vector& target)
 {
-    Angle deltaAngle = this->getPosition().getAngle(target);
+    Angle deltaAngle;
+    deltaAngle.radians(
+        this->getPosition().getAngle(target).radians() + PI
+    );
 
     Angle angle = this->getAngle() - deltaAngle;
 
-    if (!tree::similar(angle.radians(), 0.0f, 0.1f)) {
+    if (!tree::similar(angle.degrees(), 0.0f, 20.0f)) {
         if (angle.radians() < 0.0f) {
             this->rotate(true);
         } else {
