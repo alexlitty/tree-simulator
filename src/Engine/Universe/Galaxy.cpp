@@ -200,15 +200,24 @@ bool tree::Galaxy::act()
         for (auto lifeform : this->lifeforms) {
             if (lifeform->isDestroyed()) {
                 this->deadLifeforms.insert(lifeform);
-                continue;
             }
 
-            lifeform->act();
+            else {
+                lifeform->act();
+            }
         }
 
         // Lifeform destroying.
         for (auto lifeform : this->deadLifeforms) {
             tree::remove(this->lifeforms, lifeform);
+
+            // If this is the last enemy, make wormhole.
+            if (!this->lifeforms.size()) {
+                this->wormholeEntrances.push_back(
+                    new WormholeEntrance(lifeform->getPosition())
+                );
+            }
+
             delete lifeform;
         }
         this->deadLifeforms.clear();
