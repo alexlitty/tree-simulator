@@ -37,6 +37,12 @@ tree::character::Beaver::Beaver(Players &_players, b2Vec2 position)
     this->addFixture(fixtureDef);
 }
 
+// Handle collisions.
+void tree::character::Beaver::onCollision(Physical *other)
+{
+
+}
+
 // Be a beaver.
 void tree::character::Beaver::act()
 {

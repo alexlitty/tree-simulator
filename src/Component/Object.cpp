@@ -40,3 +40,13 @@ bool tree::Object::isPhysical() const
 {
     return m_isPhysical;
 }
+
+bool tree::Object::isWeapon() const
+{
+    return m_isWeapon;
+}
+
+bool tree::Object::isDamageable() const
+{
+    return m_isDamageable;
+}

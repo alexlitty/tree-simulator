@@ -68,11 +68,6 @@ tree::Galaxy::Galaxy(std::vector<tree::Player*> &initPlayers)
             new tree::character::Beaver(this->players, enemyPosition)
         );
     }
-
-    // Create example wormhole entrance.
-    this->wormholeEntrances.push_back(
-        new WormholeEntrance(Vector(100.0f, 0.0f))
-    );
 }
 
 // Destructor.

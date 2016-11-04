@@ -21,6 +21,9 @@ namespace tree
             // Constructor.
             Beaver(Players &_players, b2Vec2 position);
 
+            // Handle collisions.
+            void onCollision(Physical *other);
+
             // Be a beaver.
             void act() override;
 

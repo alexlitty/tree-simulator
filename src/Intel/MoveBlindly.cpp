@@ -10,8 +10,13 @@ void tree::Intel::faceTarget(Vector& target)
     );
 
     Angle angle = this->getAngle() - deltaAngle;
+    float degrees = angle.degrees();
 
-    if (!tree::similar(angle.degrees(), 0.0f, 20.0f)) {
+    if (!tree::similar(degrees, 0.0f, 60.0f)) {
+        this->setLinearVelocity(tree::VectorZero);
+    }
+
+    if (!tree::similar(degrees, 0.0f, 20.0f)) {
         if (angle.radians() < 0.0f) {
             this->rotate(true);
         } else {
