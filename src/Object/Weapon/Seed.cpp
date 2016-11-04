@@ -35,6 +35,15 @@ tree::weapon::Seed::Seed(Vector initialPoint, Vector initialVelocity)
     this->setLinearVelocity(initialVelocity);
 }
 
+// Handles collisions.
+void tree::weapon::Seed::onCollision(tree::Physical *other)
+{
+    if (other->isDamageable()) {
+        Damageable *object = dynamic_cast<Damageable*>(other);
+        object->damage(10);
+    }
+}
+
 // Draws the seed.
 void tree::weapon::Seed::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {

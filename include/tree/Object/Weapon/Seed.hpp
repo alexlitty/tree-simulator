@@ -8,7 +8,11 @@ namespace tree
 {
     namespace weapon
     {
-        class Seed : public Drawable, public Expirable, public Physical
+        class Seed
+        : virtual public Drawable,
+          virtual public Expirable,
+          virtual public Physical,
+          virtual public Weapon
         {
             sf::CircleShape shape;
 
@@ -18,6 +22,11 @@ namespace tree
              * Constructor.
              */
             Seed(Vector initialPoint, Vector initialVelocity);
+
+            /**
+             * Handle collisions.
+             */
+            void onCollision(Physical *other) override;
 
             /**
              * Draws the seed.

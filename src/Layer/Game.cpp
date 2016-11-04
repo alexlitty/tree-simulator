@@ -4,6 +4,7 @@
 #include <tree/Math.hpp>
 #include <tree/Object/Character/Beaver.hpp>
 #include <tree/Object/Planet.hpp>
+#include <tree/Physics/Collisions.hpp>
 #include <tree/Resource/Font.hpp>
 #include <tree/Resource/Shader.hpp>
 
@@ -22,7 +23,7 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
 // Destructor.
 tree::Layer::Game::~Game()
 {
-
+    tree::collisions.clear();
 }
 
 // Updates views.
@@ -85,6 +86,11 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
         return false;
     }
 
+    // Perform physics.
+    tree::collisions.clear();
+    tree::world.Step(1.0 / 120.0f, 20, 20);
+    tree::collisions.resolve();
+
     // Update universe.
     universe.act();
 
@@ -94,9 +100,6 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
             gravityTarget->applyGravity(gravitySource);
         }
     }*/
-
-    // Perform physics.
-    tree::world.Step(1.0 / 120.0f, 20, 20);
 
     // @@@ expirables? messages?
 

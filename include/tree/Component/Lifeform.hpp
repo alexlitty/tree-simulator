@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <tree/Component/Physical.hpp>
+#include <tree/Component/Damageable.hpp>
 
 namespace tree
 {
@@ -31,18 +32,18 @@ namespace tree
      *
      * Has health properties, which implies living and death conditions.
      */
-    class Lifeform : virtual public Physical, virtual public Drawable
+    class Lifeform
+    : virtual public Physical,
+      virtual public Drawable,
+      virtual public Damageable
     {
-        uint32_t m_healthMax;
-        uint32_t m_health;
-
         Faction m_faction;
 
     public:
         /**
          * Constructor.
          */
-        Lifeform(Faction faction, uint32_t health_max = 1);
+        Lifeform(Faction faction, unsigned int maxDamage = 1);
 
         /**
          * Checks the opinion between two lifeforms.
@@ -58,46 +59,6 @@ namespace tree
          * Quickly checks hostility.
          */
         bool isHostile(Lifeform &other) const;
-
-        /**
-         * Retrieves maximum health.
-         */
-        uint32_t getHealthMax() const;
-
-        /**
-         * Sets maximum health.
-         */
-        void setHealthMax(uint32_t amount, bool fill = true);
-
-        /**
-         * Retrieves health.
-         */
-        uint32_t getHealth() const;
-
-        /**
-         * Sets health.
-         */
-        void setHealth(uint32_t amount);
-
-        /**
-         * Fills health to maximum.
-         */
-        void fillHealth();
-
-        /**
-         * Performs damage onto this lifeform.
-         */
-        void damage(uint32_t amount);
-
-        /**
-         * Provides this lifeform with a certain amount of health.
-         */
-        void heal(uint32_t amount);
-
-        /**
-         * Retrieves the death status of this lifeform.
-         */
-        bool isDead() const;
 
         /**
          * Act.

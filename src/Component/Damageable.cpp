@@ -1,6 +1,8 @@
 #include <tree/Component/Damageable.hpp>
 
-tree::Damageable::Damageable()
+tree::Damageable::Damageable(unsigned int maxDamage)
+: m_damage(0),
+  m_maxDamage(maxDamage)
 {
     this->m_isDamageable = true;
 }

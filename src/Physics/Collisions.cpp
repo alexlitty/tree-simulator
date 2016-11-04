@@ -33,7 +33,8 @@ void tree::ContactListener::resolve()
         objects = m_collisions.front();
         m_collisions.pop_front();
 
-        objects.first->onCollision(*objects.second);
+        objects.first->onCollision(objects.second);
+        objects.second->onCollision(objects.first);
     }
 }
 

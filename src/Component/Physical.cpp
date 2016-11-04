@@ -117,7 +117,7 @@ void tree::Physical::removeJoint(b2Joint *joint, bool fromOther)
 }
 
 // Handle a collision with another physical object.
-void tree::Physical::onCollision(tree::Physical &other)
+void tree::Physical::onCollision(tree::Physical *other)
 {
 
 }

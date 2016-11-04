@@ -103,7 +103,7 @@ namespace tree
         /**
          * Handle a collision with another physical object.
          */
-        virtual void onCollision(Physical &other);
+        virtual void onCollision(Physical *other);
 
         /**
          * Gets mass.

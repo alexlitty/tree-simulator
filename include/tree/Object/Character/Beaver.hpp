@@ -11,7 +11,8 @@ namespace tree
         class Beaver
         : virtual public Drawable,
           virtual public Intel,
-          virtual public Lifeform
+          virtual public Lifeform,
+          virtual public Damageable
         {
             Players players;
             mutable sf::RectangleShape m_tempShape;
@@ -22,7 +23,7 @@ namespace tree
             Beaver(Players &_players, b2Vec2 position);
 
             // Handle collisions.
-            void onCollision(Physical *other);
+            void onCollision(Physical *other) override;
 
             // Be a beaver.
             void act() override;

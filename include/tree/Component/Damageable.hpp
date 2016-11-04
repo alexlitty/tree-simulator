@@ -8,11 +8,11 @@ namespace tree
     class Damageable : virtual public Object
     {
     protected:
-        unsigned int m_damage = 0;
-        unsigned int m_maxDamage = 0;
+        unsigned int m_damage;
+        unsigned int m_maxDamage;
 
     public:
-        Damageable();
+        Damageable(unsigned int maxDamage = 1);
 
         void setMaxDamage(unsigned int amount);
         unsigned int getHealth() const;

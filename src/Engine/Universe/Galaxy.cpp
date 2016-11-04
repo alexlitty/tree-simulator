@@ -198,8 +198,20 @@ bool tree::Galaxy::act()
 
         // Lifeform acting.
         for (auto lifeform : this->lifeforms) {
+            if (lifeform->isDestroyed()) {
+                this->deadLifeforms.insert(lifeform);
+                continue;
+            }
+
             lifeform->act();
         }
+
+        // Lifeform destroying.
+        for (auto lifeform : this->deadLifeforms) {
+            tree::remove(this->lifeforms, lifeform);
+            delete lifeform;
+        }
+        this->deadLifeforms.clear();
     }
 
     // Check for galaxy end conditions.

@@ -1,6 +1,7 @@
 #ifndef TREESIMULATOR_ENGINE_UNIVERSE_GALAXY_HPP
 #define TREESIMULATOR_ENGINE_UNIVERSE_GALAXY_HPP
 
+#include <set>
 #include <tree/Object/Background/Stars.hpp>
 #include <tree/Object/Boundary/Circle.hpp>
 #include <tree/Object/Planet.hpp>
@@ -26,6 +27,7 @@ namespace tree
 
         // Lifeforms in this galaxy, excluding players.
         std::vector<Lifeform*> lifeforms;
+        std::set<Lifeform*> deadLifeforms;
 
         // Wormhole entrances in this galaxy.
         std::vector<WormholeEntrance*> wormholeEntrances;
