@@ -93,8 +93,8 @@ void tree::Vector::setMagnitude(float magnitude)
 void tree::Vector::extend(Angle angle, float magnitude)
 {
     float a = angle.radians();
-    x = magnitude * std::cos(a);
-    y = magnitude * std::sin(a);
+    x += magnitude * std::cos(a);
+    y += magnitude * std::sin(a);
 }
 
 // Finds the distance between this and another vector.
@@ -128,6 +128,19 @@ void tree::Vector::easeToward(tree::Vector &other, float percent)
 
     this->x = this->x - (x * percent);
     this->y = this->y - (y * percent);
+}
+
+// Calculates a "perpendicular" vector.
+#include <iostream>
+tree::Vector tree::Vector::perpendicular(tree::Vector &other, float magnitude)
+{
+    Angle angle = this->getAngle(other);
+    angle.degrees(angle.degrees() + 90.0f);
+    std::cout << "++ angle: " << angle.degrees() << std::endl;
+
+    Vector result = *this;
+    result.extend(angle, magnitude);
+    return result;
 }
 
 // Calculates the normal of this vector.
@@ -168,6 +181,12 @@ sf::Vector2f tree::Vector::toDrawable() const
 tree::Vector::operator sf::Vector2f() const
 {
     return this->toDrawable();
+}
+
+tree::Vector::operator sf::Vertex() const
+{
+    sf::Vector2f position(x, y);
+    return sf::Vertex(position);
 }
 
 // Convert to Box2D vector.

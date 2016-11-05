@@ -12,7 +12,6 @@ tree::Player::Player()
 
     // Initialize shape.
     sf::Vector2f shapeSize(2.0f, 1.0f);
-    m_shape.setSize(shapeSize);
 
     // Physical body definition.
     b2BodyDef bodyDef;
@@ -80,27 +79,21 @@ void tree::Player::addLeaf()
 // Generates the player based on its composition.
 void tree::Player::generate()
 {
-    m_shape.setOutlineThickness(0);
+    // Decide trunk color.
     sf::Color color;
-
     if (this->molecules[Molecule::Water]) {
         color = sf::Color(
             tree::random(10, 50),
             tree::random(0, 150),
             tree::random(150, 225)
         );
-
-        m_shape.setFillColor(color);
     }
 
     else if (this->molecules[Molecule::Oxygen]) {
-        m_shape.setOutlineThickness(1.0f);
-
-        color = sf::Color(200, 200, 200);
-        m_shape.setOutlineColor(color);
-
+        //m_shape.setOutlineThickness(1.0f);
+        //color = sf::Color(200, 200, 200);
+        //m_shape.setOutlineColor(color);
         color = sf::Color(25, 25, 25);
-        m_shape.setFillColor(color);
     }
 
     else {
@@ -109,7 +102,12 @@ void tree::Player::generate()
             tree::random(150, 175),
             0
         );
-        m_shape.setFillColor(color);
+    }
+
+    // Give the trunk a shape.
+    tree::makeArc(this->trunk, Vector(0.0f, 0.0f), Vector(10.0f, 15.0f), 5.0f);
+    for (unsigned int i = 0; i < this->trunk.getVertexCount(); i++) {
+        //this->trunk[i].color = color;
     }
 }
 
@@ -310,5 +308,5 @@ void tree::Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
     // Draw player.
     addPhysicalTransform(states.transform);
-    target.draw(m_shape, states);
+    target.draw(this->trunk, states);
 }

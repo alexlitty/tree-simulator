@@ -17,8 +17,8 @@ namespace tree
         // Molecular composition.
         MoleculeCollection molecules;
 
-        // Test shape for Player.
-        sf::RectangleShape m_shape;
+        // Shape of the player.
+        sf::VertexArray trunk;
 
         // Particles for engine thrust.
         Particles engineParticles;

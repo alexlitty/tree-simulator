@@ -72,6 +72,12 @@ namespace tree
         void easeToward(Vector &other, float percent = 0.3f);
 
         /**
+         * Calculates a vector that would make a line with this vector that is
+         * perpendicular to a line made by another vector. 
+         */
+        Vector perpendicular(Vector &other, float magnitude = 1.0f);
+
+        /**
          * Calculates vector normals, alone or with another vector.
          */
         Vector normal() const;
@@ -92,6 +98,11 @@ namespace tree
          */
         sf::Vector2f toDrawable() const;
         operator sf::Vector2f() const;
+
+        /**
+         * Convert to SFML vertex.
+         */
+        operator sf::Vertex() const;
 
         /**
          * Convert to Box2D vector.

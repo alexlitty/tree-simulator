@@ -19,12 +19,22 @@ void tree::Angle::radians(float v)
     _rads = v;
 }
 
+void tree::Angle::addRadians(float v)
+{
+    this->radians(this->radians() + v);
+}
+
 // Sets this angle in degrees.
 void tree::Angle::degrees(float v)
 {
     this->radians(
         (v * tree::PI) / 180.0f
     );
+}
+
+void tree::Angle::addDegrees(float v)
+{
+    this->degrees(this->degrees() + v);
 }
 
 // Retrieves this angle in radians.

@@ -22,11 +22,13 @@ namespace tree
          * Sets this angle in radians.
          */
         void radians(float v);
+        void addRadians(float v);
 
         /**
          * Sets this angle in degrees.
          */
         void degrees(float v);
+        void addDegrees(float v);
 
         /**
          * Retrieves this angle in radians.
