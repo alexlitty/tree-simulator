@@ -6,7 +6,7 @@
 
 namespace tree
 {
-    void makeArc(sf::VertexArray &vertices, Vector start, Vector end, float magnitude);
+    void makeArc(sf::VertexArray &vertices, Vector start, Vector end, float magnitude, DistributionFunction dist = IdentityDistribution);
 }
 
 #endif

@@ -1,8 +1,10 @@
 #include <tree/Math/Arc.hpp>
 
-void tree::makeArc(sf::VertexArray &vertices, tree::Vector start, tree::Vector end, float magnitude)
+#include <iostream>
+void tree::makeArc(sf::VertexArray &vertices, tree::Vector start, tree::Vector end, float magnitude, DistributionFunction dist)
 {
     sf::Vertex vertex;
+    float progress;
 
     Vector current = start;
     Vector magnified;
@@ -36,9 +38,9 @@ void tree::makeArc(sf::VertexArray &vertices, tree::Vector start, tree::Vector e
         if ((increment.y > 0.0f && current.y > end.y) || (increment.y < 0.0f && current.y < end.y)) {
             current.y = end.y;
         }
-        
+
         magnified = current;
-        magnified.extend(angle, magnitude);
+        magnified.extend(angle, dist(current.progress(start, end)) * magnitude);
 
         vertex = magnified;
         vertex.color = sf::Color::Red;

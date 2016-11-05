@@ -105,7 +105,7 @@ void tree::Player::generate()
     }
 
     // Give the trunk a shape.
-    tree::makeArc(this->trunk, Vector(0.0f, 0.0f), Vector(10.0f, 15.0f), 5.0f);
+    tree::makeArc(this->trunk, Vector(0.0f, 0.0f), Vector(10.0f, 15.0f), 5.0f, tree::NormalDistribution);
     for (unsigned int i = 0; i < this->trunk.getVertexCount(); i++) {
         //this->trunk[i].color = color;
     }

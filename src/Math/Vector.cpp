@@ -105,6 +105,22 @@ float tree::Vector::distance(tree::Vector other) const
     );
 }
 
+// Calculates percentage of progress made toward another vector.
+float tree::Vector::progress(tree::Vector &start, tree::Vector &end) const
+{
+    float totalDistance = start.distance(end);
+
+    if (totalDistance == 0.0f) {
+        return 1.0f;
+    }
+
+    float result = this->distance(end) / totalDistance;
+    if (result > 1.0f) {
+        result = 1.0f;
+    }
+    return result;
+}
+
 // Whether this vector is near another vector.
 bool tree::Vector::isNear(Vector other, float threshold) const
 {

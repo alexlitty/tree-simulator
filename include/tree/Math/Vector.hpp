@@ -57,6 +57,11 @@ namespace tree
         float distance(Vector other) const;
 
         /**
+         * Calculates percentage of progress made toward a final vector.
+         */
+        float progress(Vector &start, Vector &end) const;
+
+        /**
          * Whether this vector is near another vector.
          */
         bool isNear(Vector other, float threshold = 10.0f) const;
