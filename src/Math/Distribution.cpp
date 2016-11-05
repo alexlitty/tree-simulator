@@ -7,11 +7,10 @@ float tree::IdentityDistribution(float x)
 
 float tree::NormalDistribution(float x)
 {
-    if (x < 0.5f) {
-        return x * 2;
-    }
+    return (std::sin(TWO_PI * (x - 0.25)) + 1) / 2;
+}
 
-    else {
-        return (1.0f - x) * 2;
-    }
+float tree::EaseOutDistribution(float x)
+{
+    return x * (2 - x);
 }

@@ -9,6 +9,7 @@ namespace tree
 
     float IdentityDistribution(float x);
     float NormalDistribution(float x);
+    float EaseOutDistribution(float x);
 }
 
 #endif
