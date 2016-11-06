@@ -105,9 +105,21 @@ void tree::Player::generate()
     }
 
     // Give the trunk a shape.
-    tree::makeArc(this->trunk, Vector(0.0f, 0.0f), Vector(10.0f, 15.0f), 5.0f, tree::EaseOutDistribution);
+    this->trunk.clear();
+    this->trunk.setPrimitiveType(sf::TrianglesFan);
+    Vector start(0.0f, 0.0f);
+    Vector mid(7.0f, 1.5f);
+    Vector end(0.0f, 3.0f);
+
+    // Start the triangles fan.
+    this->trunk.append(start.center(end));
+
+    // Add arcs to the fan.
+    tree::makeArc(this->trunk, start, mid, -0.2f, tree::NormalDistribution);
+    tree::makeArc(this->trunk, mid,   end, -0.2f, tree::NormalDistribution);
+
     for (unsigned int i = 0; i < this->trunk.getVertexCount(); i++) {
-        //this->trunk[i].color = color;
+        this->trunk[i].color = color;
     }
 }
 

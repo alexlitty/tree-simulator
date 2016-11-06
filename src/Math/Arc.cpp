@@ -10,7 +10,7 @@ void tree::makeArc(sf::VertexArray &vertices, tree::Vector start, tree::Vector e
     Vector magnified;
 
     Vector center = start.center(end);
-    unsigned int steps = 10;
+    unsigned int steps = 3;
     Vector increment(
         (end.x - start.x) / steps,
         (end.y - start.y) / steps
@@ -19,17 +19,8 @@ void tree::makeArc(sf::VertexArray &vertices, tree::Vector start, tree::Vector e
     Angle angle = start.getAngle(center);
     angle.addDegrees(90.0f);
 
-    // Initialize vertices with a center vertex.
-    vertices.clear();
-    vertices.setPrimitiveType(sf::TrianglesFan);
-    vertex = center;
-    vertex.color = sf::Color::Magenta;
-    vertices.append(vertex);
-
-    // Incrementally add remaining vertices.
-    vertex = current;
-    vertex.color = sf::Color::Cyan;
-    vertices.append(vertex);
+    // Incrementally add vertices.
+    vertices.append(current);
     while (current != end) {
         current += increment;
         if ((increment.x > 0.0f && current.x > end.x) || (increment.x < 0.0f && current.x < end.x)) {
@@ -41,12 +32,7 @@ void tree::makeArc(sf::VertexArray &vertices, tree::Vector start, tree::Vector e
 
         magnified = current;
         magnified.extend(angle, dist(current.progress(start, end)) * magnitude);
-
-        vertex = magnified;
-        vertex.color = sf::Color::Red;
-        vertices.append(vertex);
+        vertices.append(magnified);
     }
-    vertex = end;
-    vertex.color = sf::Color::Cyan;
-    vertices.append(vertex);
+    vertices.append(end);
 }

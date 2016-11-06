@@ -12,7 +12,7 @@
  * Constructor.
  */
 tree::Layer::Root::Root()
-: m_window(sf::VideoMode(1300, 700), "Tree Simulator"),
+: m_window(sf::VideoMode(1300, 700), "Tree Simulator", 0, sf::ContextSettings(0, 0, 3)),
   m_layer(nullptr)
 {
     m_window.setVerticalSyncEnabled(true);
