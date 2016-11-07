@@ -2,8 +2,7 @@
 
 // Constructor.
 tree::Universe::Universe()
-: currentGalaxy(nullptr),
-  timerExit(6)
+: currentGalaxy(nullptr)
 {
     this->players.push_back(new tree::Player());
     this->setNextGalaxy();
@@ -78,13 +77,7 @@ void tree::Universe::draw(sf::RenderTarget &target, sf::RenderStates states) con
 {
     // Draw galaxy.
     if (this->currentGalaxy) {
-        sf::RenderStates galaxyStates = states;
-        if (this->timerExit.isTicking()) {
-            float scale = 1.0f + this->timerExit.percent();
-            galaxyStates.transform.scale(scale, scale);
-        }
-
-        this->currentGalaxy->draw(target, galaxyStates);
+        this->currentGalaxy->draw(target, states);
     }
 
     // Draw players.

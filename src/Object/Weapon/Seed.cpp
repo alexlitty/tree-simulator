@@ -5,7 +5,8 @@
  */
 
 tree::weapon::Seed::Seed(Vector initialPoint, Vector initialVelocity)
-: shape(0.4f, 6)
+: tree::Expirable::Expirable(90),
+  shape(0.4f, 6)
 {
     this->shape.setFillColor(sf::Color::Yellow);
     tree::centerOrigin(this->shape);
@@ -42,6 +43,19 @@ void tree::weapon::Seed::onCollision(tree::Physical *other)
         Damageable *object = dynamic_cast<Damageable*>(other);
         object->damage(10);
     }
+}
+
+// Act.
+void tree::weapon::Seed::act()
+{
+    sf::Color color = this->shape.getFillColor();
+
+    float percent = this->expireTicker.percent();
+    if (percent > 0.8f) {
+        color.a = (1.0f - percent) * 5.0f * 255;
+    }
+
+    this->shape.setFillColor(color);
 }
 
 // Draws the seed.

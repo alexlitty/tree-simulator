@@ -29,6 +29,11 @@ namespace tree
             void onCollision(Physical *other) override;
 
             /**
+             * Act.
+             */
+            void act();
+
+            /**
              * Draws the seed.
              */
             virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;

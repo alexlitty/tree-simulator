@@ -34,6 +34,7 @@ namespace tree
 
         // @@@ seeds
         std::vector<tree::weapon::Seed*> seeds;
+        std::set<tree::weapon::Seed*> deadWeapons;
 
         // Whether this galaxy is locked for animations.
         bool isLocked = false;

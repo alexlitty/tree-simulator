@@ -5,6 +5,7 @@
 tree::Leaf::Leaf(Physical* _parent, Vector _position, Molecule _molecule)
 : parent(_parent),
   molecule(_molecule),
+  shootThresholdTicker(tree::random(5, 15)),
   position(_position)
 {
     Vector tipPosition = this->position + Vector(
@@ -18,20 +19,30 @@ tree::Leaf::Leaf(Physical* _parent, Vector _position, Molecule _molecule)
     tree::makeArc(this->vertices, tipPosition, this->position, 1.0f, tree::NormalDistribution);
 }
 
+// Act.
+void tree::Leaf::act()
+{
+    this->shootThresholdTicker.tick();
+}
+
 // Shoots seeds.
 void tree::Leaf::shoot(std::vector<tree::weapon::Seed*> &seeds, Angle angle)
 {
-    Vector newPosition = this->parent->applyPhysicalTransform(this->position);
-    newPosition.x = (newPosition.x - 0.25f) + tree::random(0.0f, 0.5f);
-    newPosition.y = (newPosition.y - 0.25f) + tree::random(0.0f, 0.5f);
+    if (this->shootThresholdTicker.isMaxed()) {
+        this->shootThresholdTicker.reset();
 
-    Vector localVelocity(angle, 250.0f);
-    tree::weapon::Seed* seed = new tree::weapon::Seed(
-        newPosition,
-        localVelocity + this->parent->getLinearVelocity()
-    );
+        Vector newPosition = this->parent->applyPhysicalTransform(this->position);
+        newPosition.x = (newPosition.x - 0.25f) + tree::random(0.0f, 0.5f);
+        newPosition.y = (newPosition.y - 0.25f) + tree::random(0.0f, 0.5f);
 
-    seeds.push_back(seed);
+        Vector localVelocity(angle, 250.0f);
+        tree::weapon::Seed* seed = new tree::weapon::Seed(
+            newPosition,
+            localVelocity + this->parent->getLinearVelocity()
+        );
+
+        seeds.push_back(seed);
+    }
 }
 
 // Draws leaf.

@@ -137,6 +137,24 @@ bool tree::Galaxy::act()
 
     if (!this->isLocked) {
 
+        // Weapon destroying and acting.
+        for (auto weapon : this->seeds) {
+            if (weapon->isExpired()) {
+                this->deadWeapons.insert(weapon);
+            }
+            
+            else {
+                weapon->act();
+                weapon->tickLifetime();
+            }
+        }
+
+        for (auto weapon : this->deadWeapons) {
+            tree::remove(this->seeds, weapon);
+            delete weapon;
+        }
+        this->deadWeapons.clear();
+
         // Handle planet absorptions.
         for (auto player : this->players) {
 

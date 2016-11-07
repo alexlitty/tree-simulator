@@ -109,12 +109,13 @@ void tree::Player::generate()
         this->trunk[i].color = color;
     }
 
+    // Destroy existing leaves.
     for (auto leaf : this->leaves) {
         delete leaf;
     }
     this->leaves.clear();
 
-    // Add leaves.
+    // Generate new leaves.
     unsigned int vertexIndex;
     for (auto moleculeCount : this->molecules) {
         for (unsigned int i = 0; i < moleculeCount.second; i++) {
@@ -261,8 +262,9 @@ void tree::Player::act(std::vector<tree::weapon::Seed*> &seeds)
         angle.degrees(180);
     }
 
-    if (shooting) {
-        for (auto leaf : this->leaves) {
+    for (auto leaf : this->leaves) {
+        leaf->act();
+        if (shooting) {
             leaf->shoot(seeds, angle);
         }
     }

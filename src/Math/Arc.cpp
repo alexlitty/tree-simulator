@@ -10,7 +10,7 @@ void tree::makeArc(sf::VertexArray &vertices, tree::Vector start, tree::Vector e
     Vector magnified;
 
     Vector center = start.center(end);
-    unsigned int steps = 3;
+    unsigned int steps = static_cast<unsigned int>(std::ceil(start.distance(end))) * 3;
     Vector increment(
         (end.x - start.x) / steps,
         (end.y - start.y) / steps

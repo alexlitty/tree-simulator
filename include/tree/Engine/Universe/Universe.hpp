@@ -4,7 +4,6 @@
 #include <tree/Engine/Universe/Galaxy.hpp>
 #include <tree/Object/Player.hpp>
 #include <tree/Universe/Wormhole.hpp>
-#include <tree/Utility/Timer.hpp>
 
 namespace tree
 {
@@ -18,9 +17,6 @@ namespace tree
 
         // Current wormhole.
         Wormhole* wormhole = nullptr;
-
-        // Timer used when exiting a galaxy.
-        Timer timerExit;
 
     public:
 

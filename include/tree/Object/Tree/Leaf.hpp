@@ -5,6 +5,7 @@
 #include <tree/Chemistry.hpp>
 #include <tree/Math.hpp>
 #include <tree/Object/Weapon/Seed.hpp>
+#include <tree/Utility/Ticker.hpp>
 
 namespace tree
 {
@@ -19,6 +20,9 @@ namespace tree
         // Shape of the leaf.
         sf::VertexArray vertices;
 
+        // Shooting threshold ticker.
+        Ticker shootThresholdTicker;
+
     public:
 
         // Relative position of the leaf.
@@ -28,6 +32,11 @@ namespace tree
          * Constructor.
          */
         Leaf(Physical* _parent, Vector _position, Molecule _molecule);
+
+        /**
+         * Act.
+         */
+        void act();
 
         /**
          * Shoots seeds.

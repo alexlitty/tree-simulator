@@ -2,7 +2,6 @@
 #define TREESIMULATOR_UNIVERSE_WORMHOLE_HPP
 
 #include <tree/Component.hpp>
-#include <tree/Utility/Timer.hpp>
 
 namespace tree
 {
@@ -11,8 +10,6 @@ namespace tree
         sf::CircleShape test;
 
     public:
-        Timer timer;
-
         Wormhole();
 
         bool act();

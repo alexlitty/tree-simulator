@@ -2,19 +2,19 @@
 
 // Constructor.
 tree::Expirable::Expirable(unsigned int lifetime)
-: m_expireLifetime(lifetime)
+: expireTicker(lifetime)
 {
     m_isExpirable = true;
+}
+
+// Tick towards expiration.
+void tree::Expirable::tickLifetime()
+{
+    this->expireTicker.tick();
 }
 
 // Checks if this object has expired.
 bool tree::Expirable::isExpired() const
 {
-    return static_cast<unsigned int>(m_expireClock.getElapsedTime().asMilliseconds()) >= m_expireLifetime;
-}
-
-// Action to occur upon expiration.
-void tree::Expirable::expire()
-{
-
+    return this->expireTicker.isMaxed();
 }
