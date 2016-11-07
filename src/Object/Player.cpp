@@ -116,9 +116,14 @@ void tree::Player::generate()
     this->leaves.clear();
 
     // Generate new leaves.
-    unsigned int vertexIndex;
+    unsigned int leavesCount, vertexIndex;
     for (auto moleculeCount : this->molecules) {
-        for (unsigned int i = 0; i < moleculeCount.second; i++) {
+        leavesCount = moleculeCount.second / 15;
+        if (!leavesCount && moleculeCount.second) {
+            leavesCount = 1;
+        }
+
+        for (unsigned int i = 0; i < leavesCount; i++) {
             vertexIndex = tree::random(0, this->trunk.getVertexCount() - 1);
 
             this->leaves.push_back(

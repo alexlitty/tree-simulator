@@ -23,7 +23,7 @@ namespace tree
         /**
          * Constructor.
          */
-        Universe();
+        Universe(std::vector<tree::Player*> &_players);
 
         /**
          * Deconstructor.

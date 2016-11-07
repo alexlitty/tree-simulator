@@ -2,8 +2,6 @@
 #define TREESIMULATOR_CHEMISTRY_MOLECULE_HPP
 
 #include <string>
-#include <vector>
-
 #include <tree/Chemistry/Element.hpp>
 
 namespace tree
@@ -15,6 +13,11 @@ namespace tree
         Hydrogen
     };
     typedef CountCollection<Molecule> MoleculeCollection;
+
+    /**
+     * Gets the name of a molecule as a string.
+     */
+    std::string getMoleculeName(Molecule molecule);
 
     /**
      * Generates the most interesting molecule possible, removing the required

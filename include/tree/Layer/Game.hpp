@@ -29,15 +29,16 @@ namespace tree
             sf::View m_viewInterface;
 
             // Game universe.
-            tree::Universe universe;
+            tree::Universe *universe;
 
             // Collection of players.
             std::vector<tree::Player*> players;
 
-            // FPS information.
-            sf::Text m_framesText;
-            unsigned int m_frames;
-            sf::Clock m_framesClock;
+            // Debug mode objects.
+            bool debugMode = false;
+            sf::Text debugText;
+            unsigned int debugFrames;
+            sf::Clock debugFramesClock;
 
         public:
             /**

@@ -14,9 +14,6 @@ namespace tree
      */
     class Player : public Lifeform
     {
-        // Molecular composition.
-        MoleculeCollection molecules;
-
         // Objects that make up the player.
         sf::VertexArray trunk;
         std::vector<sf::VertexArray> branches;
@@ -32,6 +29,9 @@ namespace tree
         tree::PlanetCrumbs planetCrumbs;
 
     public:
+
+        // Molecular composition.
+        MoleculeCollection molecules;
 
         // Color of test hat.
         sf::Color hatColor;

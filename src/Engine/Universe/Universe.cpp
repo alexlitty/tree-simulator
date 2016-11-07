@@ -1,10 +1,10 @@
 #include <tree/Engine/Universe/Universe.hpp>
 
 // Constructor.
-tree::Universe::Universe()
-: currentGalaxy(nullptr)
+tree::Universe::Universe(std::vector<tree::Player*> &_players)
+: players(_players),
+  currentGalaxy(nullptr)
 {
-    this->players.push_back(new tree::Player());
     this->setNextGalaxy();
 }
 
@@ -13,11 +13,6 @@ tree::Universe::~Universe()
 {
     this->destroyWormhole();
     this->destroyGalaxy();
-
-    // Destroy players.
-    for (auto player : players) {
-        delete player;
-    }
 }
 
 // Get the center of camera focus.

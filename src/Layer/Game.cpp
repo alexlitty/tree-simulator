@@ -12,11 +12,13 @@
 tree::Layer::Game::Game(sf::RenderWindow &window)
 : m_window(window)
 {
-    m_framesText.setCharacterSize(18);
-    m_framesText.setColor(sf::Color::White);
-    m_framesText.setFont(tree::Font::Standard);
+    this->players.push_back(new tree::Player);
+    this->universe = new tree::Universe(this->players);
 
-    // Initialize view.
+    this->debugText.setCharacterSize(18);
+    this->debugText.setColor(sf::Color::White);
+    this->debugText.setFont(tree::Font::Standard);
+
     this->updateViews(true);
 }
 
@@ -24,13 +26,18 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
 tree::Layer::Game::~Game()
 {
     tree::collisions.clear();
+
+    delete this->universe;
+    for (auto player : this->players) {
+        delete player;
+    }
 }
 
 // Updates views.
 void tree::Layer::Game::updateViews(bool immediate)
 {
     // Center game view on player.
-    m_viewGame.setCenter(this->universe.getFocusCenter());
+    m_viewGame.setCenter(this->universe->getFocusCenter());
 
     // Get window resolution.
     sf::Vector2f windowSize(
@@ -86,13 +93,22 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
         return false;
     }
 
+    // Toggle debug mode.
+    for (auto event : events) {
+        if (event.type == sf::Event::KeyPressed) {
+            if (event.key.code == sf::Keyboard::Tab) {
+                this->debugMode = !this->debugMode;
+            }
+        }
+    }
+
     // Perform physics.
     tree::collisions.clear();
     tree::world.Step(1.0 / 120.0f, 20, 20);
     tree::collisions.resolve();
 
     // Update universe.
-    universe.act();
+    universe->act();
 
     /*// Perform gravity.
     for (auto gravitySource : m_sta!ge.gravities) {
@@ -111,25 +127,66 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
     m_render_states.shader = nullptr;
 
     // Draw universe.
-    this->universe.draw(m_window, m_render_states);
+    this->universe->draw(m_window, m_render_states);
 
     // Set interface view.
     m_window.setView(m_viewInterface);
 
-    // Draw interface.
-    // @@@
+    // Draw debug mode objects.
+    if (this->debugMode) {
+        Vector debugPosition(0.0f, 0.0f);
 
-    // Draw FPS information.
-    m_frames++;
-    if (m_frames >= 1) {
-        m_framesText.setString(
-            "FPS: " + std::to_string(
-                static_cast<int>(std::round(m_frames / m_framesClock.restart().asSeconds()))
-            )
+        // FPS.
+        debugFrames++;
+        if (debugFrames >= 1) {
+            debugText.setString(
+                "FPS: " + std::to_string(
+                    static_cast<int>(
+                        std::round(
+                            debugFrames / debugFramesClock.restart().asSeconds()
+                        )
+                    )
+                )
+            );
+            debugFrames = 0;
+        }
+        debugText.setPosition(debugPosition);
+        m_window.draw(debugText);
+
+        // Physical objects.
+        debugPosition.y += 20.0f;
+        debugText.setPosition(debugPosition);
+        debugText.setString(
+            "Physics objects: "
+            + std::to_string(tree::world.GetBodyCount())
         );
-        m_frames = 0;
+        m_window.draw(debugText);
+
+        // Molecules.
+        for (unsigned int playerIndex = 0; playerIndex < players.size(); playerIndex++) {
+            debugPosition.x = 0.0f;
+            debugPosition.y += 40.0f;
+            debugText.setPosition(debugPosition);
+            debugText.setString("Player #" + std::to_string(playerIndex + 1));
+            m_window.draw(debugText);
+
+            for (auto molecule : players[0]->molecules) {
+                if (molecule.second) {
+                    debugPosition.x = 20.0f;
+                    debugPosition.y += 20.0f;
+                    debugText.setPosition(debugPosition);
+
+                    debugText.setString(
+                        std::to_string(molecule.second)
+                        + " "
+                        + tree::getMoleculeName(molecule.first)
+                    );
+
+                    m_window.draw(debugText);
+                }
+            }
+        }
     }
-    m_window.draw(m_framesText);
 
     // End this frame.
     return true;
