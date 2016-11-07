@@ -77,10 +77,9 @@ namespace tree
         void easeToward(Vector &other, float percent = 0.3f);
 
         /**
-         * Calculates a vector that would make a line with this vector that is
-         * perpendicular to a line made by another vector. 
+         * Returns a copy of this vector rotated about another vector.
          */
-        Vector perpendicular(Vector &other, float magnitude = 1.0f);
+        Vector rotated(Angle angle, Vector other = Vector(0.0f, 0.0f));
 
         /**
          * Calculates vector normals, alone or with another vector.

@@ -2,18 +2,26 @@
 #include <tree/Object/Weapon/Seed.hpp>
 
 // Constructor.
-tree::Leaf::Leaf(Physical* _parent)
+tree::Leaf::Leaf(Physical* _parent, Vector _position, Molecule _molecule)
 : parent(_parent),
-  shape(1.0f, 5)
+  molecule(_molecule),
+  position(_position)
 {
-    this->shape.setFillColor(sf::Color::Red);
-    tree::centerOrigin(this->shape);
+    Vector tipPosition = this->position + Vector(
+        tree::random(1, 2),
+        tree::random(1, 2)
+    );
+
+    this->vertices.setPrimitiveType(sf::TrianglesFan);
+    this->vertices.append(position.center(tipPosition));
+    tree::makeArc(this->vertices, this->position, tipPosition, 1.0f, tree::NormalDistribution);
+    tree::makeArc(this->vertices, tipPosition, this->position, 1.0f, tree::NormalDistribution);
 }
 
 // Shoots seeds.
 void tree::Leaf::shoot(std::vector<tree::weapon::Seed*> &seeds, Angle angle)
 {
-    Vector newPosition = this->position + this->parent->getPosition();
+    Vector newPosition = this->parent->applyPhysicalTransform(this->position);
     newPosition.x = (newPosition.x - 0.25f) + tree::random(0.0f, 0.5f);
     newPosition.y = (newPosition.y - 0.25f) + tree::random(0.0f, 0.5f);
 
@@ -29,6 +37,5 @@ void tree::Leaf::shoot(std::vector<tree::weapon::Seed*> &seeds, Angle angle)
 // Draws leaf.
 void tree::Leaf::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-    states.transform.translate(this->position);
-    target.draw(this->shape, states);
+    target.draw(this->vertices, states);
 }

@@ -126,6 +126,18 @@ namespace tree
             return this->collection[item];
         }
 
+        /**
+         * Iterator access.
+         */
+        typename std::map<T, unsigned int>::iterator begin()
+        {
+            return this->collection.begin();
+        };
+
+        typename std::map<T, unsigned int>::iterator end()
+        {
+            return this->collection.end();
+        };
     };
 }
 

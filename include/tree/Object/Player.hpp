@@ -17,13 +17,13 @@ namespace tree
         // Molecular composition.
         MoleculeCollection molecules;
 
-        // Shape of the player.
+        // Objects that make up the player.
         sf::VertexArray trunk;
+        std::vector<sf::VertexArray> branches;
+        std::vector<Leaf*> leaves;
 
         // Particles for engine thrust.
         Particles engineParticles;
-
-        std::vector<Leaf*> leaves;
 
         // Planet that is currently being absorbed.
         tree::Planet *absorptionTarget = nullptr;

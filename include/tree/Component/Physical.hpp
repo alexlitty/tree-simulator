@@ -197,6 +197,16 @@ namespace tree
         Vector estimateLinearVelocity() const;
 
         /**
+         * Gets the current physical transform.
+         */
+        sf::Transform getPhysicalTransform() const;
+
+        /**
+         * Transforms a local vector to a global vector.
+         */
+        Vector applyPhysicalTransform(Vector vector) const;
+
+        /**
          * Adds the physical transform to a drawing state.
          */
         void addPhysicalTransform(sf::Transform &transform) const;

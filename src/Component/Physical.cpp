@@ -314,12 +314,27 @@ tree::Vector tree::Physical::estimateLinearVelocity() const
     return this->getLinearVelocity() + stepForce;
 }
 
+// Gets the current physical transform.
+sf::Transform tree::Physical::getPhysicalTransform() const
+{
+    sf::Transform transform;
+    Angle angle;
+    angle.radians(m_body->GetAngle());
+
+    transform.translate(this->getPixelPosition());
+    transform.rotate(angle.degrees());
+    return transform;
+}
+
+// Transforms a local vector to a global vector.
+tree::Vector tree::Physical::applyPhysicalTransform(tree::Vector vector) const
+{
+    return this->getPhysicalTransform().transformPoint(vector);
+}
+
 // Adds the physical transform to a drawing transform.
 void tree::Physical::addPhysicalTransform(sf::Transform &transform) const
 {
-    transform.translate(this->getPixelPosition());
-
-    Angle angle;
-    angle.radians(m_body->GetAngle());
-    transform.rotate(angle.degrees());
+    sf::Transform physicalTransform = this->getPhysicalTransform();
+    transform.combine(physicalTransform);
 }

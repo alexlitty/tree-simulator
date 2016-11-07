@@ -2,6 +2,7 @@
 #define TREESIMULATOR_OBJECT_TREE_LEAF
 
 #include <tree/Component.hpp>
+#include <tree/Chemistry.hpp>
 #include <tree/Math.hpp>
 #include <tree/Object/Weapon/Seed.hpp>
 
@@ -9,11 +10,14 @@ namespace tree
 {
     class Leaf : public Drawable
     {
-        // Player this leaf is attached to.
+        // Object this leaf is attached to.
         Physical* parent;
 
+        // Molecule composing this leaf.
+        Molecule molecule;
+
         // Shape of the leaf.
-        sf::CircleShape shape;
+        sf::VertexArray vertices;
 
     public:
 
@@ -23,7 +27,7 @@ namespace tree
         /**
          * Constructor.
          */
-        Leaf(Physical* _parent);
+        Leaf(Physical* _parent, Vector _position, Molecule _molecule);
 
         /**
          * Shoots seeds.
@@ -34,7 +38,6 @@ namespace tree
          * Draws the leaf.
          */
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-
     };
 }
 

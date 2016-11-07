@@ -146,17 +146,17 @@ void tree::Vector::easeToward(tree::Vector &other, float percent)
     this->y = this->y - (y * percent);
 }
 
-// Calculates a "perpendicular" vector.
-#include <iostream>
-tree::Vector tree::Vector::perpendicular(tree::Vector &other, float magnitude)
+// Returns a copy of this vector rotated about another vector.
+tree::Vector tree::Vector::rotated(tree::Angle angle, tree::Vector other)
 {
-    Angle angle = this->getAngle(other);
-    angle.degrees(angle.degrees() + 90.0f);
-    std::cout << "++ angle: " << angle.degrees() << std::endl;
+    float rads = angle.radians();
+    float sin  = std::sin(rads);
+    float cos  = std::cos(rads);
 
-    Vector result = *this;
-    result.extend(angle, magnitude);
-    return result;
+    return Vector(
+        cos * (this->x - other.x) - sin * (this->y - other.y) + other.x,
+        sin * (this->x - other.x) + cos * (this->y - other.y) + other.y
+    );
 }
 
 // Calculates the normal of this vector.

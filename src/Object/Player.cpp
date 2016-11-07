@@ -35,9 +35,6 @@ tree::Player::Player()
     fixtureDef.filter.maskBits = tree::COLLISION_WORLD | tree::COLLISION_ENEMY;
     this->addFixture(fixtureDef);
 
-    // Add first leaf.
-    this->addLeaf();
-
     // Initial molecule.
     ElementCollection elements;
     switch (tree::random(0, 2)) {
@@ -64,16 +61,6 @@ tree::Player::~Player()
     for (auto leaf : this->leaves) {
         delete leaf;
     }
-}
-
-// Adds a leaf to the player.
-void tree::Player::addLeaf()
-{
-    tree::Leaf* leaf = new tree::Leaf(this);
-    leaf->position.x = 1.5f;
-    leaf->position.y = 0.0f;
-
-    this->leaves.push_back(leaf);
 }
 
 // Generates the player based on its composition.
@@ -115,11 +102,32 @@ void tree::Player::generate()
     this->trunk.append(start.center(end));
 
     // Add arcs to the fan.
-    tree::makeArc(this->trunk, start, mid, -0.2f, tree::NormalDistribution);
-    tree::makeArc(this->trunk, mid,   end, -0.2f, tree::NormalDistribution);
+    tree::makeArc(this->trunk, start, mid, 0.4f, tree::NormalDistribution);
+    tree::makeArc(this->trunk, mid,   end, -0.4f, tree::NormalDistribution);
 
     for (unsigned int i = 0; i < this->trunk.getVertexCount(); i++) {
         this->trunk[i].color = color;
+    }
+
+    for (auto leaf : this->leaves) {
+        delete leaf;
+    }
+    this->leaves.clear();
+
+    // Add leaves.
+    unsigned int vertexIndex;
+    for (auto moleculeCount : this->molecules) {
+        for (unsigned int i = 0; i < moleculeCount.second; i++) {
+            vertexIndex = tree::random(0, this->trunk.getVertexCount() - 1);
+
+            this->leaves.push_back(
+                new tree::Leaf(
+                    this,
+                    this->trunk[vertexIndex].position,
+                    moleculeCount.first
+                )
+            );
+        }
     }
 }
 
@@ -321,4 +329,9 @@ void tree::Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
     // Draw player.
     addPhysicalTransform(states.transform);
     target.draw(this->trunk, states);
+
+    // Draw leaves.
+    for (auto leaf : this->leaves) {
+        leaf->draw(target, states);
+    }
 }
