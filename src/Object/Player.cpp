@@ -15,7 +15,7 @@ tree::Player::Player()
 
     // Physical body definition.
     b2BodyDef bodyDef;
-    bodyDef.position.Set(0.0f, 0.0f);
+    bodyDef.position.Set(1.0f, 1.0f);
     bodyDef.type = b2_dynamicBody;
     bodyDef.angularDamping = 100.0f;
     bodyDef.fixedRotation = true;
@@ -66,7 +66,8 @@ tree::Player::~Player()
 // Generates the player based on its composition.
 void tree::Player::generate()
 {
-    // Decide trunk color.
+    // Decide color schemes.
+    sf::Color woodColor(222, 184, 135);
     sf::Color color;
     if (this->molecules[Molecule::Water]) {
         color = sf::Color(
@@ -102,11 +103,34 @@ void tree::Player::generate()
     this->trunk.append(start.center(end));
 
     // Add arcs to the fan.
-    tree::makeArc(this->trunk, start, mid, 0.4f, tree::NormalDistribution);
-    tree::makeArc(this->trunk, mid,   end, -0.4f, tree::NormalDistribution);
+    tree::makeArc(this->trunk, start, mid, -0.2f, tree::NormalDistribution);
+    tree::makeArc(this->trunk, mid,   end, -0.2f, tree::NormalDistribution);
 
-    for (unsigned int i = 0; i < this->trunk.getVertexCount(); i++) {
-        this->trunk[i].color = color;
+    unsigned int trunkVertexCount = this->trunk.getVertexCount();
+    for (unsigned int i = 0; i < trunkVertexCount; i++) {
+        this->trunk[i].color = woodColor;
+    }
+
+    // Add decorative branches.
+    this->branches.clear();
+    for (unsigned int i = 0; i < 2; i++) {
+        unsigned int vertexIndex = tree::random(1, trunkVertexCount - 2);
+        start = this->trunk[vertexIndex].position;
+        mid = Vector(
+            start.x + (start.x < 0 ? -2.0f : 2.0f),
+            start.y + 2.0f
+        );
+
+        sf::VertexArray branch;
+        branch.setPrimitiveType(sf::TrianglesFan);
+        branch.append(start.center(end));
+        tree::makeArc(branch, start, mid, -0.1f, tree::NormalDistribution);
+        tree::makeArc(branch, mid, start, -0.1f, tree::NormalDistribution);
+
+        for (unsigned int i = 0; i < branch.getVertexCount(); i++) {
+            branch[i].color = woodColor;
+        }
+        this->branches.push_back(branch);
     }
 
     // Destroy existing leaves.
@@ -336,6 +360,9 @@ void tree::Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
     // Draw player.
     addPhysicalTransform(states.transform);
     target.draw(this->trunk, states);
+    for (auto branch : this->branches) {
+        target.draw(branch, states);
+    }
 
     // Draw leaves.
     for (auto leaf : this->leaves) {
