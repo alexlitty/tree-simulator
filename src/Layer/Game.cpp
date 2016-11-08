@@ -93,15 +93,6 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
         return false;
     }
 
-    // Toggle debug mode.
-    for (auto event : events) {
-        if (event.type == sf::Event::KeyPressed) {
-            if (event.key.code == sf::Keyboard::Tab) {
-                this->debugMode = !this->debugMode;
-            }
-        }
-    }
-
     // Perform physics.
     tree::collisions.clear();
     tree::world.Step(1.0 / 120.0f, 20, 20);
@@ -117,8 +108,6 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
         }
     }*/
 
-    // @@@ expirables? messages?
-
     // Set game view.
     this->updateViews();
     m_window.setView(m_viewGame);
@@ -133,7 +122,7 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
     m_window.setView(m_viewInterface);
 
     // Draw debug mode objects.
-    if (this->debugMode) {
+    if (tree::debug) {
         Vector debugPosition(0.0f, 0.0f);
 
         // FPS.

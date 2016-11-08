@@ -5,6 +5,8 @@
 
 namespace tree
 {
+    extern bool debug;
+
     /**
      * Print a string to the console.
      *

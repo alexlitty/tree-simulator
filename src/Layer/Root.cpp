@@ -12,7 +12,7 @@
  * Constructor.
  */
 tree::Layer::Root::Root()
-: m_window(sf::VideoMode(1300, 700), "Tree Simulator", 0, sf::ContextSettings(0, 0, 3)),
+: m_window(sf::VideoMode::getFullscreenModes()[0], "Tree Simulator", 0, sf::ContextSettings(0, 0, 0)),
   m_layer(nullptr)
 {
     m_window.setVerticalSyncEnabled(true);
@@ -73,6 +73,12 @@ bool tree::Layer::Root::execute(std::vector<sf::Event> &events)
                     m_menu = nullptr;
                 }
                 break;
+            }
+
+            if (event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::Tab) {
+                    tree::debug = !tree::debug;
+                }
             }
 
             events.push_back(event);

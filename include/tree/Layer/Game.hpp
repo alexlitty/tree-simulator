@@ -35,7 +35,6 @@ namespace tree
             std::vector<tree::Player*> players;
 
             // Debug mode objects.
-            bool debugMode = false;
             sf::Text debugText;
             unsigned int debugFrames;
             sf::Clock debugFramesClock;
