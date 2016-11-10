@@ -237,7 +237,7 @@ bool tree::Player::isBrakeEngaged() const
 }
 
 // Act.
-void tree::Player::act(std::vector<tree::weapon::Seed*> &seeds)
+void tree::Player::act(std::vector<tree::Weapon*> &weapons)
 {
     // Move the player.
     bool moving = false;
@@ -313,7 +313,7 @@ void tree::Player::act(std::vector<tree::weapon::Seed*> &seeds)
     for (auto leaf : this->leaves) {
         leaf->act();
         if (shooting) {
-            leaf->shoot(seeds, angle);
+            leaf->shoot(weapons, angle);
         }
     }
 

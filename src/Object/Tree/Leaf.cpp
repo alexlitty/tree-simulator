@@ -1,4 +1,5 @@
 #include <tree/Object/Tree/Leaf.hpp>
+#include <tree/Object/Weapon/Electricity.hpp>
 #include <tree/Object/Weapon/Seed.hpp>
 
 // Constructor.
@@ -26,8 +27,19 @@ void tree::Leaf::act()
 }
 
 // Shoots seeds.
-void tree::Leaf::shoot(std::vector<tree::weapon::Seed*> &seeds, Angle angle)
+void tree::Leaf::shoot(std::vector<tree::Weapon*> &weapons, Angle angle)
 {
+    if (this->shootThresholdTicker.isMaxed()) {
+        this->shootThresholdTicker.reset();
+        tree::Weapon* electricity = new tree::weapon::Electricity(
+            this->position,
+            this->position + Vector(5.0f, 5.0f)
+        );
+
+        weapons.push_back(electricity);
+    }
+    return;
+
     if (this->shootThresholdTicker.isMaxed()) {
         this->shootThresholdTicker.reset();
 
@@ -41,7 +53,7 @@ void tree::Leaf::shoot(std::vector<tree::weapon::Seed*> &seeds, Angle angle)
             localVelocity + this->parent->getLinearVelocity()
         );
 
-        seeds.push_back(seed);
+        weapons.push_back(seed);
     }
 }
 

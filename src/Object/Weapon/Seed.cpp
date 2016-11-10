@@ -46,7 +46,7 @@ void tree::weapon::Seed::onCollision(tree::Physical *other)
 }
 
 // Act.
-void tree::weapon::Seed::act()
+void tree::weapon::Seed::act(std::vector<tree::Vector> &targets)
 {
     sf::Color color = this->shape.getFillColor();
 

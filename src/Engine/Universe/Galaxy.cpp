@@ -89,8 +89,8 @@ tree::Galaxy::~Galaxy()
         delete wormholeEntrance;
     }
 
-    for (auto seed : this->seeds) {
-        delete seed;
+    for (auto weapon : this->weapons) {
+        delete weapon;
     }
 }
 
@@ -123,8 +123,8 @@ bool tree::Galaxy::act()
     for (auto planet : this->planets) {
         planet->prepare();
     }
-    for (auto seed : this->seeds) {
-        seed->prepare();
+    for (auto weapon : this->weapons) {
+        weapon->prepare();
     }
     for (auto player : this->players) {
         player->prepare();
@@ -138,19 +138,20 @@ bool tree::Galaxy::act()
     if (!this->isLocked) {
 
         // Weapon destroying and acting.
-        for (auto weapon : this->seeds) {
+        std::vector<Vector> enemyTargets;
+        for (auto weapon : this->weapons) {
             if (weapon->isExpired()) {
                 this->deadWeapons.insert(weapon);
             }
             
             else {
-                weapon->act();
+                weapon->act(enemyTargets);
                 weapon->tickLifetime();
             }
         }
 
         for (auto weapon : this->deadWeapons) {
-            tree::remove(this->seeds, weapon);
+            tree::remove(this->weapons, weapon);
             delete weapon;
         }
         this->deadWeapons.clear();
@@ -211,7 +212,7 @@ bool tree::Galaxy::act()
 
         // Player acting.
         for (auto player : this->players) {
-            player->act(this->seeds);
+            player->act(this->weapons);
         }
 
         // Lifeform acting.
@@ -276,8 +277,8 @@ void tree::Galaxy::draw(sf::RenderTarget &target, sf::RenderStates states) const
     }
 
     // Draw weapons.
-    for (auto seed : this->seeds) {
-        seed->draw(target, states);
+    for (auto weapon : this->weapons) {
+        weapon->draw(target, states);
     }
 
     // Draw boundary.

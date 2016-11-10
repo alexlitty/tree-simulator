@@ -4,8 +4,6 @@
 #include <tree/Component.hpp>
 #include <tree/Chemistry.hpp>
 #include <tree/Math.hpp>
-#include <tree/Object/Weapon/Seed.hpp>
-#include <tree/Utility/Ticker.hpp>
 
 namespace tree
 {
@@ -39,9 +37,9 @@ namespace tree
         void act();
 
         /**
-         * Shoots seeds.
+         * Shoots weapons.
          */
-        void shoot(std::vector<tree::weapon::Seed*> &seeds, Angle angle);
+        void shoot(std::vector<tree::Weapon*> &weapons, Angle angle);
 
         /**
          * Draws the leaf.

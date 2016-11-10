@@ -8,11 +8,7 @@ namespace tree
 {
     namespace weapon
     {
-        class Seed
-        : virtual public Drawable,
-          virtual public Expirable,
-          virtual public Physical,
-          virtual public Weapon
+        class Seed : virtual public Weapon
         {
             sf::CircleShape shape;
 
@@ -31,7 +27,7 @@ namespace tree
             /**
              * Act.
              */
-            void act();
+            virtual void act(std::vector<Vector> &targets) override;
 
             /**
              * Draws the seed.

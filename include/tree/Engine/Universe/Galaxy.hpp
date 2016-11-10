@@ -32,9 +32,9 @@ namespace tree
         // Wormhole entrances in this galaxy.
         std::vector<WormholeEntrance*> wormholeEntrances;
 
-        // @@@ seeds
-        std::vector<tree::weapon::Seed*> seeds;
-        std::set<tree::weapon::Seed*> deadWeapons;
+        // Weapons.
+        std::vector<tree::Weapon*> weapons;
+        std::set<tree::Weapon*> deadWeapons;
 
         // Whether this galaxy is locked for animations.
         bool isLocked = false;
