@@ -17,7 +17,7 @@ namespace tree
         // Objects that make up the player.
         sf::VertexArray trunk;
         std::vector<sf::VertexArray> branches;
-        //std::vector<sf::CircleShape> decorativeLeaves;
+        std::vector<sf::CircleShape> decorativeLeaves;
         std::vector<Leaf*> leaves;
 
         // Particles for engine thrust.

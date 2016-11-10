@@ -104,6 +104,7 @@ void tree::Player::generate()
 
     // Add arcs to the fan.
     tree::makeArc(this->trunk, start, mid, -0.2f, tree::NormalDistribution);
+    unsigned int tipIndex = this->trunk.getVertexCount() - 1;
     tree::makeArc(this->trunk, mid,   end, -0.2f, tree::NormalDistribution);
 
     unsigned int trunkVertexCount = this->trunk.getVertexCount();
@@ -113,24 +114,35 @@ void tree::Player::generate()
 
     // Add decorative branches.
     this->branches.clear();
+    this->decorativeLeaves.clear();
     for (unsigned int i = 0; i < 2; i++) {
-        unsigned int vertexIndex = tree::random(1, trunkVertexCount - 2);
-        start = this->trunk[vertexIndex].position;
+        int sign = i == 0 ? -1 : 1;
+
+        unsigned int branchCenterIndex = tipIndex + ((tipIndex / 2) * sign);
+        start = this->trunk[branchCenterIndex - 3].position;
+        end = this->trunk[branchCenterIndex + 2].position;
         mid = Vector(
-            start.x + (start.x < 0 ? -2.0f : 2.0f),
-            start.y + 2.0f
+            start.x + tree::random(4, 6),
+            start.y + (tree::random(2, 6) * (i == 0 ? -1 : 1))
         );
 
         sf::VertexArray branch;
         branch.setPrimitiveType(sf::TrianglesFan);
         branch.append(start.center(end));
-        tree::makeArc(branch, start, mid, -0.1f, tree::NormalDistribution);
-        tree::makeArc(branch, mid, start, -0.1f, tree::NormalDistribution);
+        tree::makeArc(branch, start, mid, -1.0f * sign, tree::NormalDistribution);
+        tree::makeArc(branch, mid, end, 1.0f * sign, tree::NormalDistribution);
 
         for (unsigned int i = 0; i < branch.getVertexCount(); i++) {
             branch[i].color = woodColor;
         }
         this->branches.push_back(branch);
+
+        // Decorative leaves.
+        sf::CircleShape decorativeLeafShape(5.0f, 20);
+        tree::centerOrigin(decorativeLeafShape);
+        decorativeLeafShape.setPosition(mid);
+        decorativeLeafShape.setFillColor(color);
+        this->decorativeLeaves.push_back(decorativeLeafShape);
     }
 
     // Destroy existing leaves.
@@ -147,13 +159,20 @@ void tree::Player::generate()
             leavesCount = 1;
         }
 
-        for (unsigned int i = 0; i < leavesCount; i++) {
-            vertexIndex = tree::random(0, this->trunk.getVertexCount() - 1);
+        // No decorative leaves? No leaves.
+        if (!this->decorativeLeaves.size()) {
+            break;
+        }
 
+        for (unsigned int i = 0; i < leavesCount; i++) {
             this->leaves.push_back(
                 new tree::Leaf(
                     this,
-                    this->trunk[vertexIndex].position,
+                    tree::randomPointOnCircle(
+                        this->decorativeLeaves[
+                            tree::random(0, this->decorativeLeaves.size() - 1)
+                        ]
+                    ),
                     moleculeCount.first
                 )
             );
@@ -360,6 +379,9 @@ void tree::Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
     // Draw player.
     addPhysicalTransform(states.transform);
     target.draw(this->trunk, states);
+    for (auto decorativeLeaf : this->decorativeLeaves) {
+        target.draw(decorativeLeaf, states);
+    }
     for (auto branch : this->branches) {
         target.draw(branch, states);
     }

@@ -35,6 +35,7 @@ namespace tree
      * Generates a random point on a circle.
      */
     Vector randomPointOnCircle(float radius, tree::Vector origin = tree::VectorZero);
+    Vector randomPointOnCircle(sf::CircleShape &circle);
 
     /**
      * Generates a random point on a circle's border.

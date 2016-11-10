@@ -44,6 +44,7 @@ tree::Angle tree::randomAngle()
 }
 
 // Generates a random point on a circle.
+#include <iostream>
 tree::Vector tree::randomPointOnCircle(float radius, tree::Vector origin)
 {
     tree::Vector localPoint(
@@ -52,6 +53,11 @@ tree::Vector tree::randomPointOnCircle(float radius, tree::Vector origin)
     );
 
     return localPoint + origin;
+}
+
+tree::Vector tree::randomPointOnCircle(sf::CircleShape &circle)
+{
+    return tree::randomPointOnCircle(circle.getRadius(), circle.getPosition());
 }
 
 // Generates a random point on a circle's border.
