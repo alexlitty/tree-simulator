@@ -27,7 +27,7 @@ void tree::Leaf::act()
 }
 
 // Shoots seeds.
-void tree::Leaf::shoot(std::vector<tree::Weapon*> &weapons, Angle angle)
+void tree::Leaf::shoot(Angle angle, std::vector<tree::Lifeform*> &enemies, std::vector<tree::Weapon*> &weapons)
 {
     if (this->shootThresholdTicker.isMaxed()) {
         Vector globalPosition = this->parent->applyTransform(this->position);

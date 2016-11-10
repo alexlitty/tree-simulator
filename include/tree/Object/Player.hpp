@@ -79,7 +79,7 @@ namespace tree
         /**
          * Perform actions.
          */
-        void act(std::vector<tree::Weapon*> &weapons);
+        void act(std::vector<Lifeform*> &enemies, std::vector<Weapon*> &weapons);
 
         /**
          * Performs a thrust.

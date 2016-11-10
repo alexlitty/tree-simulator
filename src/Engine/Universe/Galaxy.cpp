@@ -212,7 +212,7 @@ bool tree::Galaxy::act()
 
         // Player acting.
         for (auto player : this->players) {
-            player->act(this->weapons);
+            player->act(this->lifeforms, this->weapons);
         }
 
         // Lifeform acting.

@@ -152,7 +152,7 @@ void tree::Player::generate()
     this->leaves.clear();
 
     // Generate new leaves.
-    unsigned int leavesCount, vertexIndex;
+    unsigned int leavesCount;
     for (auto moleculeCount : this->molecules) {
         leavesCount = moleculeCount.second / 15;
         if (!leavesCount && moleculeCount.second) {
@@ -237,7 +237,7 @@ bool tree::Player::isBrakeEngaged() const
 }
 
 // Act.
-void tree::Player::act(std::vector<tree::Weapon*> &weapons)
+void tree::Player::act(std::vector<tree::Lifeform*> &enemies, std::vector<tree::Weapon*> &weapons)
 {
     // Move the player.
     bool moving = false;
@@ -313,7 +313,7 @@ void tree::Player::act(std::vector<tree::Weapon*> &weapons)
     for (auto leaf : this->leaves) {
         leaf->act();
         if (shooting) {
-            leaf->shoot(weapons, angle);
+            leaf->shoot(angle, enemies, weapons);
         }
     }
 

@@ -39,7 +39,7 @@ namespace tree
         /**
          * Shoots weapons.
          */
-        void shoot(std::vector<tree::Weapon*> &weapons, Angle angle);
+        void shoot(Angle angle, std::vector<Lifeform*> &enemies, std::vector<Weapon*> &weapons);
 
         /**
          * Draws the leaf.

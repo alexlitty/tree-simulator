@@ -9,10 +9,8 @@ namespace tree
     namespace character
     {
         class Beaver
-        : virtual public Drawable,
-          virtual public Intel,
-          virtual public Lifeform,
-          virtual public Damageable
+        : virtual public Lifeform,
+          virtual public Intel
         {
             Players players;
             mutable sf::RectangleShape m_tempShape;

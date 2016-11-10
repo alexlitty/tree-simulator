@@ -34,7 +34,6 @@ namespace tree
      */
     class Lifeform
     : virtual public Physical,
-      virtual public Drawable,
       virtual public Damageable
     {
         Faction m_faction;
