@@ -1,7 +1,7 @@
 #include <tree/Object/Weapon/Electricity.hpp>
 
 tree::weapon::Electricity::Electricity(tree::Vector start, tree::Vector end)
-: tree::Weapon::Weapon(1)
+: tree::Expirable::Expirable(1)
 {
     vertices.setPrimitiveType(sf::LinesStrip);
     vertices.append(start);

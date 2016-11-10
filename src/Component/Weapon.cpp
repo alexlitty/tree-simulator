@@ -1,7 +1,6 @@
 #include <tree/Component/Weapon.hpp>
 
-tree::Weapon::Weapon(unsigned int lifetime)
-: tree::Expirable::Expirable(lifetime)
+tree::Weapon::Weapon()
 {
     m_isWeapon = true;
 }

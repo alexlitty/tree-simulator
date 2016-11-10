@@ -204,7 +204,7 @@ namespace tree
         /**
          * Transforms a local vector to a global vector.
          */
-        Vector applyPhysicalTransform(Vector vector) const;
+        Vector applyTransform(Vector vector) const;
 
         /**
          * Adds the physical transform to a drawing state.

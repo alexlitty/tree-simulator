@@ -321,16 +321,13 @@ tree::Vector tree::Physical::estimateLinearVelocity() const
 sf::Transform tree::Physical::getPhysicalTransform() const
 {
     sf::Transform transform;
-    Angle angle;
-    angle.radians(m_body->GetAngle());
-
     transform.translate(this->getPixelPosition());
-    transform.rotate(angle.degrees());
+    transform.rotate(this->getAngle().degrees());
     return transform;
 }
 
 // Transforms a local vector to a global vector.
-tree::Vector tree::Physical::applyPhysicalTransform(tree::Vector vector) const
+tree::Vector tree::Physical::applyTransform(tree::Vector vector) const
 {
     return this->getPhysicalTransform().transformPoint(vector);
 }

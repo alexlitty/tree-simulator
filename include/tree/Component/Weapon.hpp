@@ -11,7 +11,7 @@ namespace tree
       virtual public Physical
     {
     public:
-        Weapon(unsigned int lifetime = 60);
+        Weapon();
         virtual void act(std::vector<Vector> &targets);
     };
 }

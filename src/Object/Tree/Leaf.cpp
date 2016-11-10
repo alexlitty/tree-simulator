@@ -30,17 +30,18 @@ void tree::Leaf::act()
 void tree::Leaf::shoot(std::vector<tree::Weapon*> &weapons, Angle angle)
 {
     if (this->shootThresholdTicker.isMaxed()) {
+        Vector globalPosition = this->parent->applyTransform(this->position);
+
         this->shootThresholdTicker.reset();
         tree::Weapon* electricity = new tree::weapon::Electricity(
-            this->position,
-            this->position + Vector(5.0f, 5.0f)
+            globalPosition,
+            globalPosition + Vector(5.0f, 5.0f)
         );
 
         weapons.push_back(electricity);
     }
     return;
-
-    if (this->shootThresholdTicker.isMaxed()) {
+    /*if (this->shootThresholdTicker.isMaxed()) {
         this->shootThresholdTicker.reset();
 
         Vector newPosition = this->parent->applyPhysicalTransform(this->position);
@@ -54,7 +55,7 @@ void tree::Leaf::shoot(std::vector<tree::Weapon*> &weapons, Angle angle)
         );
 
         weapons.push_back(seed);
-    }
+    }*/
 }
 
 // Draws leaf.
