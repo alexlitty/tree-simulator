@@ -14,7 +14,7 @@ namespace tree
      *
      * Physics powered by Box2D.
      */
-    class Physical : virtual public Object
+    class Physical : virtual public Drawable
     {
     protected:
 
@@ -115,7 +115,7 @@ namespace tree
          */
         Vector getPosition() const;
         sf::Vector2f getPixelPosition() const;
-        void setPosition(Vector pos);
+        void setPosition(Vector position);
 
         /**
          * Gets position, plus an angled distance.

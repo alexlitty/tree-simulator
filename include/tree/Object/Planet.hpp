@@ -8,9 +8,7 @@
 
 namespace tree
 {
-    class Planet
-    : public Drawable,
-      public Physical
+    class Planet : virtual public Physical
     {
         // Molecular composition.
         MoleculeCollection molecules;

@@ -141,10 +141,11 @@ sf::Vector2f tree::Physical::getPixelPosition() const
     return Vector(result);
 }
 
-// Sets physical position.
-void tree::Physical::setPosition(tree::Vector pos)
+// Sets position.
+void tree::Physical::setPosition(Vector position)
 {
-    m_body->SetTransform(pos, this->getAngle().radians());
+    tree::Drawable::setPosition(position);
+    m_body->SetTransform(position, this->getAngle().radians());
 }
 
 // Gets position, plus an angled distance.
@@ -169,6 +170,8 @@ tree::Angle tree::Physical::getAngle() const
 // Sets current angle.
 void tree::Physical::setAngle(Angle angle)
 {
+    tree::Drawable::setAngle(angle);
+
     bool originalValue = this->getFixedRotation();
     this->setFixedRotation(false);
 
@@ -185,7 +188,7 @@ void tree::Physical::rotate(bool direction)
 }
 
 // Performs a rotation.
-void tree::Physical::rotate(Angle angle)
+void tree::Physical::rotate(tree::Angle angle)
 {
     this->setAngle(
         this->getAngle() + angle

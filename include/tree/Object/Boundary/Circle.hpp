@@ -7,7 +7,7 @@ namespace tree
 {
     namespace boundary
     {
-        class Circle : public Physical, public Drawable
+        class Circle : virtual public Physical
         {
             sf::CircleShape shape;
 
