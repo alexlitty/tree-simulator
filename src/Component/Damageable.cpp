@@ -29,6 +29,7 @@ void tree::Damageable::damage(unsigned int amount)
     if (this->m_damage > this->m_maxDamage) {
         this->m_damage = this->m_maxDamage;
     }
+
 }
 
 void tree::Damageable::heal(unsigned int amount)

@@ -50,6 +50,11 @@ bool tree::Layer::Root::execute(std::vector<sf::Event> &events)
         throw tree::Error("Could not load simple noise shader.");
     }
 
+    if (!tree::Shader::Fragment::Test.loadFromFile("Test.frag", sf::Shader::Fragment)) {
+        throw tree::Error("Could not load test fragment shader.");
+    }
+    tree::Shader::Fragment::Test.setParameter("texture", sf::Shader::CurrentTexture);
+
     // Main game loop.
     while (m_window.isOpen()) {
 

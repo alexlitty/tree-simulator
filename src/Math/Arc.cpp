@@ -1,6 +1,5 @@
 #include <tree/Math/Arc.hpp>
 
-#include <iostream>
 void tree::makeArc(sf::VertexArray &vertices, tree::Vector start, tree::Vector end, float magnitude, DistributionFunction dist)
 {
     sf::Vertex vertex;

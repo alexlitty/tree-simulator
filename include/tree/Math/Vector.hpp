@@ -73,8 +73,10 @@ namespace tree
 
         /**
          * Eases toward another vector.
+         *
+         * Returns false if this vector is now the other vector, true otherwise.
          */
-        void easeToward(Vector &other, float percent = 0.3f);
+        bool easeToward(Vector &other, Vector increment);
 
         /**
          * Returns a copy of this vector rotated about another vector.

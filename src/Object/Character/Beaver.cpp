@@ -3,10 +3,10 @@
 
 // Constructor.
 tree::character::Beaver::Beaver(Players &_players, b2Vec2 position)
-: tree::Lifeform::Lifeform(tree::Faction::beaver, 10),
+: tree::Lifeform::Lifeform(tree::Faction::beaver),
   players(_players)
 {
-    this->setMaxDamage(1);
+    this->setMaxDamage(100);
 
     m_thrustPower = 1E5;
 

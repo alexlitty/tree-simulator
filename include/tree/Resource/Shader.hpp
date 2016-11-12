@@ -12,6 +12,10 @@ namespace tree
         extern sf::Shader Fisheye;
 
         extern sf::Shader NoiseSimple;
+
+        namespace Fragment {
+            extern sf::Shader Test;
+        }
     }
 }
 

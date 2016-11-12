@@ -5,10 +5,11 @@
 
 // Constructor.
 tree::Player::Player()
-: tree::Lifeform::Lifeform(tree::Faction::wood, 10),
+: tree::Lifeform::Lifeform(tree::Faction::wood),
   engineParticles(200, 1500)
 {
     m_thrustPower = 25E4;
+    this->setMaxDamage(100);
 
     // Initialize shape.
     sf::Vector2f shapeSize(2.0f, 1.0f);

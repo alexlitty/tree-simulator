@@ -23,23 +23,53 @@ tree::Leaf::Leaf(Physical* _parent, Vector _position, Molecule _molecule)
 // Act.
 void tree::Leaf::act()
 {
+    this->enemiesShocked.clear();
     this->shootThresholdTicker.tick();
 }
 
 // Shoots seeds.
 void tree::Leaf::shoot(Angle angle, std::vector<tree::Lifeform*> &enemies, std::vector<tree::Weapon*> &weapons)
 {
-    if (this->shootThresholdTicker.isMaxed()) {
+    //if (this->shootThresholdTicker.isMaxed()) {
         Vector globalPosition = this->parent->applyTransform(this->position);
+        Vector target;
+
+        float nearestDistance = 0.0f;
+        tree::Lifeform* nearestEnemy = nullptr;
+        for (auto enemy : enemies) {
+            if (this->enemiesShocked.count(enemy)) {
+                continue;
+            }
+
+            float distance = globalPosition.distance(enemy->getPosition());
+            if (nearestEnemy == nullptr || distance < nearestDistance) {
+                nearestDistance = distance;
+                nearestEnemy = enemy;
+            }
+        }
+
+        if (nearestEnemy) {
+            this->enemiesShocked.insert(nearestEnemy);
+            target = nearestEnemy->getPosition();
+
+            nearestEnemy->damage(1);
+        }
+
+        else {
+            target = globalPosition + Vector(
+                tree::random(0.0f, 20.0f),
+                tree::random(0.0f, 20.0f)
+            );
+        }
 
         this->shootThresholdTicker.reset();
         tree::Weapon* electricity = new tree::weapon::Electricity(
             globalPosition,
-            globalPosition + Vector(5.0f, 5.0f)
+            target
         );
 
         weapons.push_back(electricity);
-    }
+    //}
     return;
     /*if (this->shootThresholdTicker.isMaxed()) {
         this->shootThresholdTicker.reset();

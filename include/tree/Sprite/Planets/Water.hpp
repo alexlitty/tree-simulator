@@ -2,6 +2,8 @@
 #define TREESIMULATOR_SPRITE_PLANETS_WATER_HPP
 
 #include <tree/Sprite/Sprite.hpp>
+#include <tree/Resource/TextureSpace.hpp>
+#include <tree/Resource/Shader.hpp>
 
 namespace tree
 {
@@ -11,6 +13,7 @@ namespace tree
         {
             sf::CircleShape planetShape;
             sf::Color planetColor;
+            TextureSpace textureSpace;
 
         public:
             WaterPlanet(float radius);

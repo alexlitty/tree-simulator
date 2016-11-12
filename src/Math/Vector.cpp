@@ -137,13 +137,20 @@ tree::Vector tree::Vector::center(tree::Vector other) const
 }
 
 // Eases toward another vector.
-void tree::Vector::easeToward(tree::Vector &other, float percent)
+bool tree::Vector::easeToward(tree::Vector &other, tree::Vector increment)
 {
-    float x = this->x - other.x;
-    float y = this->y - other.y;
+    increment.x = std::abs(increment.x) * (this->x - other.x > 0 ? -1 : 1);
+    increment.y = std::abs(increment.y) * (this->y - other.y > 0 ? -1 : 1);
+    *this += increment;
 
-    this->x = this->x - (x * percent);
-    this->y = this->y - (y * percent);
+    if ((increment.x >= 0.0f && this->x > other.x) || (increment.x <= 0.0f && this->x < other.x)) {
+        this->x = other.x;
+    }
+    if ((increment.y >= 0.0f && this->y > other.y) || (increment.y <= 0.0f && this->y < other.y)) {
+        this->y = other.y;
+    }
+
+    return other != *this;
 }
 
 // Returns a copy of this vector rotated about another vector.

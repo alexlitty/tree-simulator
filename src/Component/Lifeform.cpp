@@ -1,9 +1,8 @@
 #include <tree/Component/Lifeform.hpp>
 
 // Constructor.
-tree::Lifeform::Lifeform(tree::Faction faction, unsigned int maxDamage)
-: tree::Damageable::Damageable(maxDamage),
-  m_faction(faction)
+tree::Lifeform::Lifeform(tree::Faction faction)
+: m_faction(faction)
 {
     m_isLifeform = true;
 }

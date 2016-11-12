@@ -1,6 +1,7 @@
 #ifndef TREESIMULATOR_OBJECT_TREE_LEAF
 #define TREESIMULATOR_OBJECT_TREE_LEAF
 
+#include <set>
 #include <tree/Component.hpp>
 #include <tree/Chemistry.hpp>
 #include <tree/Math.hpp>
@@ -20,6 +21,9 @@ namespace tree
 
         // Shooting threshold ticker.
         Ticker shootThresholdTicker;
+
+        // Enemies currently being shocked.
+        std::set<tree::Lifeform*> enemiesShocked;
 
     public:
 

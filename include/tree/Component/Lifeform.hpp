@@ -42,7 +42,7 @@ namespace tree
         /**
          * Constructor.
          */
-        Lifeform(Faction faction, unsigned int maxDamage = 1);
+        Lifeform(Faction faction);
 
         /**
          * Checks the opinion between two lifeforms.
