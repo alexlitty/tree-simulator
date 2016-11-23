@@ -18,6 +18,11 @@ tree::Leaf::Leaf(Physical* _parent, Vector _position, Molecule _molecule)
     this->vertices.append(position.center(tipPosition));
     tree::makeArc(this->vertices, this->position, tipPosition, 1.0f, tree::NormalDistribution);
     tree::makeArc(this->vertices, tipPosition, this->position, 1.0f, tree::NormalDistribution);
+
+    // Color the leaf.
+    for (unsigned int i = 0; i < this->vertices.getVertexCount(); i++) {
+        this->vertices[i].color = tree::getRandomColor(this->molecule);
+    }
 }
 
 // Act.

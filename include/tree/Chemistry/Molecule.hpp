@@ -2,6 +2,7 @@
 #define TREESIMULATOR_CHEMISTRY_MOLECULE_HPP
 
 #include <string>
+#include <SFML/Graphics.hpp>
 #include <tree/Chemistry/Element.hpp>
 
 namespace tree
@@ -24,6 +25,11 @@ namespace tree
      * elements out of the given collection.
      */
     Molecule generateMolecule(ElementCollection &elements);
+
+    /**
+     * Generates a random color based on a molecule.
+     */
+    sf::Color getRandomColor(Molecule molecule);
 }
 
 

@@ -70,27 +70,17 @@ void tree::Player::generate()
     // Decide color schemes.
     sf::Color woodColor(222, 184, 135);
     sf::Color color;
+
     if (this->molecules[Molecule::Water]) {
-        color = sf::Color(
-            tree::random(10, 50),
-            tree::random(0, 150),
-            tree::random(150, 225)
-        );
+        color = tree::getRandomColor(Molecule::Water);
     }
 
     else if (this->molecules[Molecule::Oxygen]) {
-        //m_shape.setOutlineThickness(1.0f);
-        //color = sf::Color(200, 200, 200);
-        //m_shape.setOutlineColor(color);
-        color = sf::Color(225, 225, 225);
+        color = tree::getRandomColor(Molecule::Oxygen);
     }
 
     else {
-        color = sf::Color(
-            tree::random(150, 255),
-            tree::random(150, 175),
-            0
-        );
+        color = tree::getRandomColor(Molecule::Hydrogen);
     }
 
     // Give the trunk a shape.
