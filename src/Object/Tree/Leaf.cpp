@@ -31,6 +31,7 @@ void tree::Leaf::act()
 void tree::Leaf::shoot(Angle angle, std::vector<tree::Lifeform*> &enemies, std::vector<tree::Weapon*> &weapons)
 {
     //if (this->shootThresholdTicker.isMaxed()) {
+    if (molecule == tree::Molecule::Oxygen) {
         Vector globalPosition = this->parent->applyTransform(this->position);
         Vector target;
 
@@ -69,12 +70,12 @@ void tree::Leaf::shoot(Angle angle, std::vector<tree::Lifeform*> &enemies, std::
         );
 
         weapons.push_back(electricity);
-    //}
-    return;
-    /*if (this->shootThresholdTicker.isMaxed()) {
+    }
+
+    else if (this->shootThresholdTicker.isMaxed()) {
         this->shootThresholdTicker.reset();
 
-        Vector newPosition = this->parent->applyPhysicalTransform(this->position);
+        Vector newPosition = this->parent->applyTransform(this->position);
         newPosition.x = (newPosition.x - 0.25f) + tree::random(0.0f, 0.5f);
         newPosition.y = (newPosition.y - 0.25f) + tree::random(0.0f, 0.5f);
 
@@ -85,7 +86,7 @@ void tree::Leaf::shoot(Angle angle, std::vector<tree::Lifeform*> &enemies, std::
         );
 
         weapons.push_back(seed);
-    }*/
+    }
 }
 
 // Draws leaf.

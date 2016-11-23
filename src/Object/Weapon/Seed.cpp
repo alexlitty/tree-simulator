@@ -41,7 +41,7 @@ void tree::weapon::Seed::onCollision(tree::Physical *other)
 {
     if (other->isDamageable()) {
         Damageable *object = dynamic_cast<Damageable*>(other);
-        object->damage(10);
+        object->damage(100);
     }
 }
 
