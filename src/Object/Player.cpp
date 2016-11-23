@@ -82,7 +82,7 @@ void tree::Player::generate()
         //m_shape.setOutlineThickness(1.0f);
         //color = sf::Color(200, 200, 200);
         //m_shape.setOutlineColor(color);
-        color = sf::Color(25, 25, 25);
+        color = sf::Color(225, 225, 225);
     }
 
     else {
