@@ -1,3 +1,4 @@
+#include <tree/Chemistry/Molecule.hpp>
 #include <tree/Sprite/Planets/Water.hpp>
 #include <tree/Math.hpp>
 
@@ -6,7 +7,7 @@ tree::sprite::WaterPlanet::WaterPlanet(float radius)
 : textureSpace(radius * 2, (radius * 2) + 25.0f)
 {
     sf::RectangleShape textureShape(sf::Vector2f(radius * 2, 25.0f));
-    textureShape.setFillColor(sf::Color::Red);
+    textureShape.setFillColor(tree::getRandomColor(tree::Molecule::Water));
 
     this->textureSpace.texture->clear();
     this->textureSpace.texture->draw(textureShape);
@@ -26,7 +27,7 @@ tree::sprite::WaterPlanet::WaterPlanet(float radius)
         tree::random(0, 150),
         tree::random(150, 225)
     );
-    this->planetShape.setFillColor(this->planetColor);
+    this->planetShape.setFillColor(tree::getRandomColor(tree::Molecule::Water));
 }
 
 void tree::sprite::WaterPlanet::animate()
