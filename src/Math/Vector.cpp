@@ -323,17 +323,17 @@ tree::Vector tree::operator /(tree::Vector lhs, const float rhs)
 }
 
 // Compare the equality of vectors.
-bool tree::operator ==(const tree::Vector &lhs, const tree::Vector &rhs)
+bool tree::operator ==(const tree::Vector& lhs, const tree::Vector& rhs)
 {
     return (lhs.x == rhs.x && lhs.y == rhs.y);
 }
 
-bool tree::operator !=(const tree::Vector &lhs, const tree::Vector &rhs)
+bool tree::operator !=(const tree::Vector& lhs, const tree::Vector& rhs)
 {
     return !(lhs == rhs);
 }
 
-bool tree::similar(const tree::Vector &lhs, const tree::Vector &rhs, float epsilon)
+bool tree::similar(const tree::Vector& lhs, const tree::Vector& rhs, float epsilon)
 {
     return tree::similar(lhs.x, rhs.x, epsilon) && tree::similar(lhs.y, rhs.y, epsilon);
 }

@@ -232,37 +232,41 @@ void tree::Player::act(std::vector<tree::Lifeform*> &enemies, std::vector<tree::
 {
     // Move the player.
     bool moving = false;
-    Angle goal;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
         moving = true;
-        goal.degrees(0);
+        this->targetAngle.radians(0);
     }
 
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
         moving = true;
-        goal.degrees(90);
+        this->targetAngle.radians(tree::PI_HALF);
     }
     
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
         moving = true;
-        goal.degrees(180);
+        this->targetAngle.radians(tree::PI);
     }
 
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
         moving = true;
-        goal.degrees(270);
+        this->targetAngle.radians((3 * tree::PI) / 2);
     }
 
     else {
         moving = false;
-        goal = this->getAngle();
     }
 
     // Rotate toward goal direction.
-    Angle deltaAngle = goal - this->getAngle();
-    deltaAngle.radians(deltaAngle.radians() / 3);
+    Angle deltaAngle;
+    if (this->getAngle() != this->targetAngle) {
+        Angle incrementAngle;
+        incrementAngle.radians(tree::PI / 9);
 
-    this->rotate(deltaAngle);
+        Angle newAngle = this->getAngle();
+        newAngle.ease(this->targetAngle, incrementAngle);
+        this->setAngle(newAngle);
+    }
+
 
     // Engage brakes.
     if (this->isBrakeEngaged()) {

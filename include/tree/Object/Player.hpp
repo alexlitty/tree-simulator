@@ -29,6 +29,9 @@ namespace tree
         // Crumbs from the planet being absorbed.
         tree::PlanetCrumbs planetCrumbs;
 
+        // Target angle to be rotating towards.
+        Angle targetAngle;
+
     public:
 
         // Molecular composition.
