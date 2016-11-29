@@ -231,40 +231,57 @@ bool tree::Player::isBrakeEngaged() const
 void tree::Player::act(std::vector<tree::Lifeform*> &enemies, std::vector<tree::Weapon*> &weapons)
 {
     // Move the player.
-    bool moving = false;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-        moving = true;
-        this->targetAngle.radians(0);
+    bool up = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
+    bool left = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
+    bool down = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
+    bool right = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
+
+    if (down && right) {
+        this->targetAngle.radians(QUARTER_PI);
     }
 
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-        moving = true;
-        this->targetAngle.radians(tree::PI_HALF);
-    }
-    
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-        moving = true;
-        this->targetAngle.radians(tree::PI);
+    else if (down && left) {
+        this->targetAngle.radians(THREE_QUARTERS_PI);
     }
 
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-        moving = true;
-        this->targetAngle.radians((3 * tree::PI) / 2);
+    else if (up && left) {
+        this->targetAngle.radians(FIVE_QUARTERS_PI);
     }
 
-    else {
-        moving = false;
+    else  if (up && right) {
+        this->targetAngle.radians(SEVEN_QUARTERS_PI);
+    }
+
+    else if (right) {
+        this->targetAngle.radians(0.0f);
+    }
+
+    else if (down) {
+        this->targetAngle.radians(HALF_PI);
+    }
+
+    else if (left) {
+        this->targetAngle.radians(PI);
+    }
+
+    else if (up) {
+        this->targetAngle.radians(THREE_HALVES_PI);
     }
 
     // Rotate toward goal direction.
     Angle deltaAngle;
     if (this->getAngle() != this->targetAngle) {
         Angle incrementAngle;
-        incrementAngle.radians(tree::PI / 9);
+        incrementAngle.radians(tree::PI / 3);
 
         Angle newAngle = this->getAngle();
         newAngle.ease(this->targetAngle, incrementAngle);
         this->setAngle(newAngle);
+
+        // Burst into new direction.
+        if (newAngle == this->targetAngle) {
+            this->setLinearVelocity(Vector(this->targetAngle, this->getLinearVelocity().getMagnitude()));
+        }
     }
 
 
@@ -277,7 +294,7 @@ void tree::Player::act(std::vector<tree::Lifeform*> &enemies, std::vector<tree::
 
     // Thrust.
     else {
-        if (moving) {
+        if (up || left || down || right) {
             this->thrust(true);
         }
     }
@@ -319,7 +336,9 @@ void tree::Player::act(std::vector<tree::Lifeform*> &enemies, std::vector<tree::
 // Perform a thrust.
 void tree::Player::thrust(bool direction)
 {
-    this->applyThrust(direction);
+    if (this->getLinearVelocity().getMagnitude() < 500.0f) {
+        this->applyThrust(direction);
+    }
 
     Vector baseEngineVector(this->getAngle(), 0.1f);
     baseEngineVector = this->getPosition() - baseEngineVector;

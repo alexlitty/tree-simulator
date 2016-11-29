@@ -41,7 +41,7 @@ void tree::Intel::maintainDistance(tree::Vector target, float distance)
                 float deltaAngle = this->getPosition().getAngle(target).radians();
 
                 // We are. Do nothing.
-                if (deltaAngle < PI_HALF && deltaAngle > -PI_HALF) {
+                if (deltaAngle < HALF_PI && deltaAngle > -HALF_PI) {
                     return;
                 }
             }
