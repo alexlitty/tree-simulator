@@ -10,7 +10,8 @@
 
 // Constructor.
 tree::Layer::Game::Game(sf::RenderWindow &window)
-: m_window(window)
+: m_window(window),
+  radar(this->players)
 {
     this->players.push_back(new tree::Player);
     this->universe = new tree::Universe(this->players);
@@ -49,6 +50,9 @@ void tree::Layer::Game::updateViews(bool immediate)
     // Set interface view.
     m_viewInterface.setSize(windowSize.x, windowSize.y);
     m_viewInterface.setCenter(windowSize.x / 2.0f, windowSize.y / 2.0f);
+
+    // Realign gui objects.
+    radar.setPosition(windowSize.x - (120.0f), 20.0f);
 
     // Get goal size and angle.
     sf::Vector2f goalSize;
@@ -120,6 +124,9 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
 
     // Set interface view.
     m_window.setView(m_viewInterface);
+
+    // Draw gui objects.
+    this->radar.draw(m_window, m_render_states);
 
     // Draw debug mode objects.
     if (tree::debug) {

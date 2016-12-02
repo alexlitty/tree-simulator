@@ -8,6 +8,7 @@
 
 #include <tree/Component.hpp>
 #include <tree/Engine/Universe/Universe.hpp>
+#include <tree/Gui/Radar.hpp>
 #include <tree/Layer/Type.hpp>
 #include <tree/Object/Background/Stars.hpp>
 #include <tree/Object/Player.hpp>
@@ -33,6 +34,9 @@ namespace tree
 
             // Collection of players.
             std::vector<tree::Player*> players;
+
+            // Gui objects.
+            tree::Radar radar;
 
             // Debug mode objects.
             sf::Text debugText;
