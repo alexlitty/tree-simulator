@@ -285,18 +285,16 @@ void tree::Player::act(std::vector<tree::Lifeform*> &enemies, std::vector<tree::
     }
 
 
-    // Engage brakes.
-    if (this->isBrakeEngaged()) {
+    // Engage absolute brakes.
+    if (this->isBrakeEngaged() || (!up && !left && !down && !right)) {
         tree::Vector brakingVelocity = this->getLinearVelocity();
         brakingVelocity *= 0.875f;
         this->setLinearVelocity(brakingVelocity);
     }
 
     // Thrust.
-    else {
-        if (up || left || down || right) {
-            this->thrust(true);
-        }
+    else if (up || left || down || right) {
+        this->thrust(true);
     }
 
     // Activate leaves.
