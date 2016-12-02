@@ -4,7 +4,7 @@
 tree::Radar::Radar(std::vector<tree::Player*>& initPlayers)
 : players(initPlayers),
   background(50.0f, 60),
-  player(10.0f, 5)
+  player(2.0f, 5)
 {
     this->background.setFillColor(sf::Color(60, 60, 60, 125));
     this->background.setOutlineThickness(2.0f);
