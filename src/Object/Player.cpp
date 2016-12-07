@@ -65,19 +65,21 @@ tree::Player::~Player()
     }
 }
 
+// Forces the player to face an angle.
+void tree::Player::forceAngle(tree::Angle angle)
+{
+    this->setAngle(angle);
+    this->targetAngle = angle;
+}
+
 // Generates the player based on its composition.
 void tree::Player::generate()
 {
-    // No elements? No tree!
-    if (this->elements.isEmpty()) {
-        return;
-    }
     this->molecules = tree::generateMolecules(this->elements);
 
     // Decide color schemes.
     sf::Color woodColor(222, 184, 135);
     sf::Color color;
-
     if (this->molecules[Molecule::Water]) {
         color = tree::getRandomColor(Molecule::Water);
     }
@@ -108,6 +110,11 @@ void tree::Player::generate()
     unsigned int trunkVertexCount = this->trunk.getVertexCount();
     for (unsigned int i = 0; i < trunkVertexCount; i++) {
         this->trunk[i].color = woodColor;
+    }
+
+    // The tree is still a baby!
+    if (this->molecules.isEmpty()) {
+        return;
     }
 
     // Add decorative branches.

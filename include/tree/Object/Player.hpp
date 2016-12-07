@@ -48,6 +48,11 @@ namespace tree
         ~Player();
 
         /**
+         * Forces the player to face an angle.
+         */
+        void forceAngle(Angle angle);
+
+        /**
          * Adds a leaf to the player.
          */
         void addLeaf();

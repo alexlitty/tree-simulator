@@ -9,7 +9,7 @@ tree::Layer::IntroMinigame::IntroMinigame(sf::RenderWindow& initWindow, std::vec
 {
     Angle startingAngle;
     startingAngle.radians(THREE_HALVES_PI);
-    this->players[0]->setAngle(startingAngle);
+    this->players[0]->forceAngle(startingAngle);
     this->players[0]->setPosition(tree::VectorZero);
 
     this->players[0]->elements.add(Element::Hydrogen);
@@ -41,7 +41,9 @@ void tree::Layer::IntroMinigame::updateViews()
 bool tree::Layer::IntroMinigame::execute(std::vector<sf::Event>& events)
 {
     this->updateViews();
-    //this->homePlanet->prepare();
+    for (auto player : this->players) {
+        player->act();
+    }
 
     this->launchDistance = this->players[0]->getPosition().distance(this->homePlanet->getPosition());
     return this->launchDistance < this->maxLaunchDistance;

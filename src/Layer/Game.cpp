@@ -118,9 +118,6 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
         }
         
         else {
-            for (auto player : this->players) {
-                player->act();
-            }
             this->introMinigame->draw();
         }
 
