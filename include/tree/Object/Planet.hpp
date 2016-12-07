@@ -34,9 +34,9 @@ namespace tree
         ~Planet();
 
         /**
-         * Get the molecules that compose this planet.
+         * Get the elements that compose this planet.
          */
-        MoleculeCollection& getMolecules();
+        ElementCollection getElements();
 
         /**
          * Gets the normal radius of this planet.

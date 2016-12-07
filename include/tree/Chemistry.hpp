@@ -1,6 +1,6 @@
 #ifndef TREESIMULATOR_CHEMISTRY_HPP
 #define TREESIMULATOR_CHEMISTRY_HPP
 
-#include <tree/Chemistry/Molecule.hpp>
+#include <tree/Chemistry/MoleculeRecipes.hpp>
 
 #endif

@@ -37,22 +37,20 @@ tree::Player::Player()
     this->addFixture(fixtureDef);
 
     // Initial molecule.
-    ElementCollection elements;
     switch (tree::random(0, 2)) {
         case 0:
-            elements.add(Element::Hydrogen, 1);
+            this->elements.add(Element::Hydrogen, 1);
             break;
 
         case 1:
-            elements.add(Element::Oxygen, 1);
+            this->elements.add(Element::Oxygen, 1);
             break;
 
         default:
-            elements.add(Element::Hydrogen, 2);
-            elements.add(Element::Oxygen, 1);
+            this->elements.add(Element::Hydrogen, 2);
+            this->elements.add(Element::Oxygen, 1);
             break;
     }
-    this->molecules.add(tree::generateMolecule(elements));
     this->generate();
 }
 
@@ -70,6 +68,13 @@ void tree::Player::generate()
     // Decide color schemes.
     sf::Color woodColor(222, 184, 135);
     sf::Color color;
+
+    // Turn elements into molecules.
+    ElementCollection generatingElements = this->elements;
+    this->molecules.clear();
+    while (!generatingElements.isEmpty()) {
+        this->molecules.add(tree::generateMolecule(generatingElements));
+    }
 
     if (this->molecules[Molecule::Water]) {
         color = tree::getRandomColor(Molecule::Water);
@@ -216,7 +221,8 @@ void tree::Player::absorb()
 // Finalizes an absorption.
 void tree::Player::takeAbsorptionTarget()
 {
-    this->molecules.add(this->absorptionTarget->getMolecules());
+    ElementCollection absorbedElements = this->absorptionTarget->getElements();
+    this->elements.add(absorbedElements);
     this->resetAbsorptionTarget();
     this->generate();
 }

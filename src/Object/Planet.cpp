@@ -42,10 +42,10 @@ tree::Planet::~Planet()
     delete this->sprite;
 }
 
-// Get the molecules that compose this planet.
-tree::MoleculeCollection& tree::Planet::getMolecules()
+// Get the elements that compose this planet.
+tree::ElementCollection tree::Planet::getElements()
 {
-    return this->molecules;
+    return tree::getElements(this->molecules);
 }
 
 // Gets the radius of this planet.

@@ -8,6 +8,11 @@
 
 namespace tree
 {
+    /**
+     * Retrieves all the elements composing a molecule collection.
+     */
+    ElementCollection getElements(MoleculeCollection& molecules);
+
     extern std::map<Molecule, ElementCollection> MoleculeRecipes;
 }
 

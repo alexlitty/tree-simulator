@@ -35,6 +35,7 @@ namespace tree
     public:
 
         // Molecular composition.
+        ElementCollection elements;
         MoleculeCollection molecules;
 
         // Color of test hat.
