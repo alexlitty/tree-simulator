@@ -16,9 +16,13 @@ namespace tree
     sf::Vector2f getCenter(sf::VertexArray array);
 
     /**
-     * Centers the origin of a shape.
+     * Centers the origin of an SFML object.
      */
-    void centerOrigin(sf::Shape& object);
+    template <typename T>
+    void centerOrigin(T& object)
+    {
+        object.setOrigin(getCenter(object.getLocalBounds()));
+    }
 }
 
 #endif

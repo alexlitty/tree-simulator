@@ -13,7 +13,10 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
 : m_window(window),
   introMinigame(nullptr),
   universe(nullptr),
-  radar(this->players)
+  radar(this->players),
+  welcomeTextMessage("Welcome to", tree::Font::Header, 26),
+  welcomeTextLogo("Tree Simulator", tree::Font::Header, 60),
+  welcomeTicker(300)
 {
     this->players.push_back(new tree::Player);
 
@@ -52,6 +55,8 @@ void tree::Layer::Game::updateViews(bool immediate)
     m_viewInterface.setCenter(windowSize.x / 2.0f, windowSize.y / 2.0f);
 
     // Realign gui objects.
+    this->welcomeTextMessage.setPosition(50.0f, windowSize.y - 140.0f);
+    this->welcomeTextLogo.setPosition(50.0f, windowSize.y - 110.0f);
     radar.setPosition(windowSize.x - (120.0f), 20.0f);
 
     // Get goal size and angle.
@@ -146,6 +151,23 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
 
     // Set interface view.
     m_window.setView(m_viewInterface);
+
+    // Draw and update welcome text.
+    if (!this->welcomeTicker.tick()) {
+        float welcomePercent = this->welcomeTicker.percent();
+
+        sf::Color welcomeTextColor = sf::Color::White;
+        if (welcomePercent < 0.25f) {
+            welcomeTextColor.a = 255 * (welcomePercent * 4.0f);
+        } else if (welcomePercent > 0.75f) {
+            welcomeTextColor.a = 255 * ((1.0f - welcomePercent) * 4.0f);
+        }
+        this->welcomeTextMessage.setColor(welcomeTextColor);
+        this->welcomeTextLogo.setColor(welcomeTextColor);
+
+        m_window.draw(this->welcomeTextMessage, m_render_states);
+        m_window.draw(this->welcomeTextLogo, m_render_states);
+    }
 
     // Draw gui objects.
     this->radar.draw(m_window, m_render_states);

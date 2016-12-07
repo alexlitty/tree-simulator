@@ -41,6 +41,11 @@ namespace tree
             // Gui objects.
             tree::Radar radar;
 
+            // Welcome text.
+            sf::Text welcomeTextMessage;
+            sf::Text welcomeTextLogo;
+            Ticker welcomeTicker;
+
             // Debug mode objects.
             sf::Text debugText;
             unsigned int debugFrames;

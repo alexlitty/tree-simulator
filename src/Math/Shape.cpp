@@ -23,9 +23,3 @@ sf::Vector2f tree::getCenter(sf::VertexArray array)
     result.y /= array.getVertexCount();
     return result;
 }
-
-// Centers the origin of a shape.
-void tree::centerOrigin(sf::Shape& object)
-{
-    object.setOrigin(getCenter(object.getLocalBounds()));
-}
