@@ -18,6 +18,7 @@ tree::Layer::IntroMinigame::IntroMinigame(sf::RenderWindow& initWindow, std::vec
     this->players[0]->forceAngle(startingAngle);
 
     Vector startingPosition;
+    startingPosition.x = 0.0f;
     startingPosition.y = -this->homePlanet->getRadius();
     this->players[0]->setPosition(startingPosition);
     this->players[0]->generate();
@@ -43,11 +44,18 @@ void tree::Layer::IntroMinigame::updateViews()
 bool tree::Layer::IntroMinigame::execute(std::vector<sf::Event>& events)
 {
     this->updateViews();
+    this->homePlanet->prepare();
     for (auto player : this->players) {
         player->act();
+        player->prepare();
     }
 
     this->launchDistance = this->players[0]->getPosition().distance(this->homePlanet->getPosition());
+    if (!(this->launchDistance < this->maxLaunchDistance)) {
+        std::cout << this->launchDistance << std::endl;
+        std::cout << this->players[0]->getPosition().x << ", " << this->players[0]->getPosition().y << std::endl;
+        std::cout << this->homePlanet->getPosition().x << ", " << this->homePlanet->getPosition().y << std::endl;
+    }
     return this->launchDistance < this->maxLaunchDistance;
 }
 
