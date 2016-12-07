@@ -4,16 +4,26 @@
 tree::Layer::IntroMinigame::IntroMinigame(sf::RenderWindow& initWindow, std::vector<tree::Player*>& initPlayers)
 : window(initWindow),
   players(initPlayers),
-  ground(100.0f, 120)
+  launchDistance(0.0f),
+  maxLaunchDistance(50.0f)
 {
-    this->ground.setFillColor(sf::Color::Green);
-    tree::centerOrigin(this->ground);
-    this->ground.setPosition(100.0f, 50.0f);
-
     Angle startingAngle;
     startingAngle.radians(THREE_HALVES_PI);
     this->players[0]->setAngle(startingAngle);
     this->players[0]->setPosition(tree::VectorZero);
+
+    this->players[0]->elements.add(Element::Hydrogen);
+    this->players[0]->generate();
+
+    // Create home planet.
+    this->homePlanet = new Planet(Vector(0, 25.0f));
+    this->homePlanet->elements.add(Element::Hydrogen, 10);
+    this->homePlanet->generate();
+}
+
+tree::Layer::IntroMinigame::~IntroMinigame()
+{
+    delete homePlanet;
 }
 
 void tree::Layer::IntroMinigame::updateViews()
@@ -22,7 +32,7 @@ void tree::Layer::IntroMinigame::updateViews()
     float resolution = windowSize.x / windowSize.y;
 
     Vector gameViewSize;
-    gameViewSize.y = 50.0f;
+    gameViewSize.y = 100.0f;
     gameViewSize.x = gameViewSize.y * resolution;
     this->gameView.setSize(gameViewSize);
     this->gameView.setCenter(this->players[0]->getPosition());
@@ -31,13 +41,22 @@ void tree::Layer::IntroMinigame::updateViews()
 bool tree::Layer::IntroMinigame::execute(std::vector<sf::Event>& events)
 {
     this->updateViews();
-    return true;
+    //this->homePlanet->prepare();
+
+    this->launchDistance = this->players[0]->getPosition().distance(this->homePlanet->getPosition());
+    return this->launchDistance < this->maxLaunchDistance;
 }
 
 void tree::Layer::IntroMinigame::draw()
 {
-    this->window.clear(sf::Color::Blue);
+    float launchPercent = this->launchDistance / this->maxLaunchDistance;
+
+    sf::Color skyColor = sf::Color::Black;
+    skyColor.r = 125 - (launchPercent * 125);
+    skyColor.b = 255 - (launchPercent * 255);
+    this->window.clear(skyColor);
 
     this->window.setView(this->gameView);
+    this->homePlanet->draw(this->window, this->renderStates);
     this->players[0]->draw(this->window, this->renderStates);
 }

@@ -83,6 +83,7 @@ namespace tree
         /**
          * Perform actions.
          */
+        void act();
         void act(std::vector<Lifeform*> &enemies, std::vector<Weapon*> &weapons);
 
         /**

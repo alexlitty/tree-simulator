@@ -10,9 +10,6 @@ namespace tree
 {
     class Planet : virtual public Physical
     {
-        // Molecular composition.
-        MoleculeCollection molecules;
-
         // Main fixture for this planet.
         b2Fixture *m_fixture;
 
@@ -23,6 +20,10 @@ namespace tree
         unsigned int health = 0;
 
     public:
+        // Elemental composition.
+        ElementCollection elements;
+        MoleculeCollection molecules;
+
         /**
          * Constructors.
          */
@@ -47,11 +48,6 @@ namespace tree
          * Gets the density of this planet, influenced by molecules.
          */
         float getMoleculeDensity() const;
-
-        /**
-         * Receives a new set of molecules.
-         */
-        void receiveMolecules(MoleculeCollection newMolecules);
 
         /**
          * Generates this planet based on molecule composition.

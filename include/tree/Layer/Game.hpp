@@ -29,6 +29,9 @@ namespace tree
             sf::View m_viewGame;
             sf::View m_viewInterface;
 
+            // Minigames.
+            Layer::IntroMinigame* introMinigame;
+
             // Game universe.
             tree::Universe *universe;
 
@@ -42,9 +45,6 @@ namespace tree
             sf::Text debugText;
             unsigned int debugFrames;
             sf::Clock debugFramesClock;
-
-            // Minigames.
-            Layer::IntroMinigame* introMinigame;
 
         public:
             /**

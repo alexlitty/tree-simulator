@@ -36,8 +36,12 @@ tree::Player::Player()
     fixtureDef.filter.maskBits = tree::COLLISION_WORLD | tree::COLLISION_ENEMY;
     this->addFixture(fixtureDef);
 
+    Angle startingAngle;
+    startingAngle.radians(THREE_HALVES_PI);
+    this->setAngle(startingAngle);
+
     // Initial molecule.
-    switch (tree::random(0, 2)) {
+    /*switch (tree::random(0, 2)) {
         case 0:
             this->elements.add(Element::Hydrogen, 1);
             break;
@@ -50,8 +54,7 @@ tree::Player::Player()
             this->elements.add(Element::Hydrogen, 2);
             this->elements.add(Element::Oxygen, 1);
             break;
-    }
-    this->generate();
+    }*/
 }
 
 // Destructor.
@@ -65,16 +68,15 @@ tree::Player::~Player()
 // Generates the player based on its composition.
 void tree::Player::generate()
 {
+    // No elements? No tree!
+    if (this->elements.isEmpty()) {
+        return;
+    }
+    this->molecules = tree::generateMolecules(this->elements);
+
     // Decide color schemes.
     sf::Color woodColor(222, 184, 135);
     sf::Color color;
-
-    // Turn elements into molecules.
-    ElementCollection generatingElements = this->elements;
-    this->molecules.clear();
-    while (!generatingElements.isEmpty()) {
-        this->molecules.add(tree::generateMolecule(generatingElements));
-    }
 
     if (this->molecules[Molecule::Water]) {
         color = tree::getRandomColor(Molecule::Water);
@@ -234,8 +236,19 @@ bool tree::Player::isBrakeEngaged() const
 }
 
 // Act.
+void tree::Player::act()
+{
+    std::vector<tree::Lifeform*> noLifeforms;
+    std::vector<tree::Weapon*> noWeapons;
+    this->act(noLifeforms, noWeapons);
+}
 void tree::Player::act(std::vector<tree::Lifeform*> &enemies, std::vector<tree::Weapon*> &weapons)
 {
+    // Player is still being created.
+    if (this->elements.isEmpty()) {
+        return;
+    }
+
     // Move the player.
     bool up = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
     bool left = sf::Keyboard::isKeyPressed(sf::Keyboard::A);

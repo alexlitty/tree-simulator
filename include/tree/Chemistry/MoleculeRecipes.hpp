@@ -13,6 +13,11 @@ namespace tree
      */
     ElementCollection getElements(MoleculeCollection& molecules);
 
+    /**
+     * Generates the most interesting molecules from an element collection.
+     */
+    MoleculeCollection generateMolecules(ElementCollection elements);
+
     extern std::map<Molecule, ElementCollection> MoleculeRecipes;
 }
 

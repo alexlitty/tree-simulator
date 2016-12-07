@@ -11,6 +11,7 @@
 // Constructor.
 tree::Layer::Game::Game(sf::RenderWindow &window)
 : m_window(window),
+  introMinigame(nullptr),
   universe(nullptr),
   radar(this->players)
 {
@@ -19,8 +20,6 @@ tree::Layer::Game::Game(sf::RenderWindow &window)
     this->debugText.setCharacterSize(18);
     this->debugText.setColor(sf::Color::White);
     this->debugText.setFont(tree::Font::Standard);
-
-    this->introMinigame = new Layer::IntroMinigame(this->m_window, this->players);
 }
 
 // Destructor.
@@ -74,7 +73,7 @@ void tree::Layer::Game::updateViews(bool immediate)
 
         // Size.
         goalSize -= m_viewGame.getSize();
-        goalSize = m_viewGame.getSize() + (goalSize / 10.0f);
+        goalSize = m_viewGame.getSize() + (goalSize / 20.0f);
         m_viewGame.setSize(goalSize);
 
         // Angle.
@@ -98,9 +97,20 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
         return false;
     }
 
+    // Perform physics.
+    tree::collisions.clear();
+    tree::world.Step(1.0 / 120.0f, 20, 20);
+    tree::collisions.resolve();
+
+    // Start the game.
+    if (!this->universe && !this->introMinigame) {
+        this->introMinigame = new Layer::IntroMinigame(this->m_window, this->players);
+    }
+
     // Play intro minigame.
     if (this->introMinigame) {
-        if (true) { //!this->introMinigame->execute(events)) {
+        if (!this->introMinigame->execute(events)) {
+            this->m_viewGame = this->introMinigame->gameView;
             delete this->introMinigame;
             this->introMinigame = nullptr;
 
@@ -108,16 +118,14 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
         }
         
         else {
+            for (auto player : this->players) {
+                player->act();
+            }
             this->introMinigame->draw();
         }
 
         return true;
     }
-
-    // Perform physics.
-    tree::collisions.clear();
-    tree::world.Step(1.0 / 120.0f, 20, 20);
-    tree::collisions.resolve();
 
     // Update universe.
     universe->act();

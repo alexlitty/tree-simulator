@@ -60,16 +60,10 @@ float tree::Planet::getMoleculeDensity() const
     return 3E4 * this->molecules.count();
 }
 
-// Receives a new set of molecules.
-void tree::Planet::receiveMolecules(tree::MoleculeCollection newMolecules)
-{
-    this->molecules.add(newMolecules);
-    this->generate();
-}
-
 // Generates this planet based on molecule composition.
 void tree::Planet::generate()
 {
+    this->molecules = tree::generateMolecules(this->elements);
     float radius = this->getRadius();
 
     // Update physical shape.

@@ -28,13 +28,15 @@ tree::Vector tree::Universe::getFocusCenter() const
 // Sets the next galaxy to play in.
 void tree::Universe::setNextGalaxy()
 {
+    bool firstGalaxy = this->currentGalaxy == nullptr;
     this->destroyGalaxy();
     this->currentGalaxy = new Galaxy(this->players);
 
     // Reset player positions.
     for (auto player : this->players) {
-        player->setPosition(tree::VectorZero);
-        player->setLinearVelocity(tree::VectorZero);
+        if (!firstGalaxy) {
+            player->setPosition(tree::VectorZero);
+        }
     }
 }
 

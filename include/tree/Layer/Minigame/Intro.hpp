@@ -12,20 +12,23 @@ namespace tree
         {
             sf::RenderWindow& window;
             sf::RenderStates renderStates;
-
-            std::vector<Player*>& players;
-            sf::CircleShape ground;
-
-            sf::View gameView;
             sf::View interfaceView;
 
+            std::vector<Player*>& players;
+
+            float launchDistance;
+            float maxLaunchDistance;
+
         public:
+            sf::View gameView;
+
+            Planet *homePlanet;
+
             IntroMinigame(sf::RenderWindow& initWindow, std::vector<Player*>& initPlayers);
+            ~IntroMinigame();
 
             void updateViews();
-
             virtual bool execute(std::vector<sf::Event>& events) override;
-
             void draw();
         };
     }

@@ -12,6 +12,16 @@ tree::ElementCollection tree::getElements(tree::MoleculeCollection& molecules)
     return elements;
 }
 
+// Generates the most interesting molecules from an element collection.
+tree::MoleculeCollection tree::generateMolecules(tree::ElementCollection elements)
+{
+    MoleculeCollection molecules;
+    while (!elements.isEmpty()) {
+        molecules.add(tree::generateMolecule(elements));
+    }
+    return molecules;
+}
+
 std::map<tree::Molecule, tree::ElementCollection> tree::MoleculeRecipes = {
     {
         Molecule::Water,
