@@ -135,6 +135,9 @@ void tree::Player::generate()
         branch.append(start.center(end));
         tree::makeArc(branch, start, mid, -1.0f * sign, tree::NormalDistribution);
         tree::makeArc(branch, mid, end, 1.0f * sign, tree::NormalDistribution);
+        for (unsigned int i = branchCenterIndex + 2; i > branchCenterIndex - 3; i--) {
+            branch.append(this->trunk[i].position);
+        }
 
         for (unsigned int i = 0; i < branch.getVertexCount(); i++) {
             branch[i].color = woodColor;

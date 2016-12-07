@@ -50,12 +50,16 @@ bool tree::Layer::IntroMinigame::execute(std::vector<sf::Event>& events)
         player->prepare();
     }
 
-    this->launchDistance = this->players[0]->getPosition().distance(this->homePlanet->getPosition());
-    if (!(this->launchDistance < this->maxLaunchDistance)) {
-        std::cout << this->launchDistance << std::endl;
-        std::cout << this->players[0]->getPosition().x << ", " << this->players[0]->getPosition().y << std::endl;
-        std::cout << this->homePlanet->getPosition().x << ", " << this->homePlanet->getPosition().y << std::endl;
+    for (auto event : events) {
+        if (event.type == sf::Event::MouseButtonPressed) {
+            if (this->players[0]->elements.isEmpty()) {
+                this->players[0]->elements.add(Element::Oxygen);
+                this->players[0]->generate();
+            }
+        }
     }
+
+    this->launchDistance = this->players[0]->getPosition().distance(this->homePlanet->getPosition());
     return this->launchDistance < this->maxLaunchDistance;
 }
 
