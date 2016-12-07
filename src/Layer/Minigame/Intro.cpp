@@ -4,21 +4,23 @@
 tree::Layer::IntroMinigame::IntroMinigame(sf::RenderWindow& initWindow, std::vector<tree::Player*>& initPlayers)
 : window(initWindow),
   players(initPlayers),
-  launchDistance(0.0f),
-  maxLaunchDistance(50.0f)
+  launchDistance(0.0f)
 {
+    // Create home planet.
+    this->homePlanet = new Planet(tree::VectorZero);
+    this->homePlanet->elements.add(Element::Hydrogen, 20);
+    this->homePlanet->generate();
+    this->maxLaunchDistance = this->homePlanet->getRadius() * 2;
+
+    // Set player on planet.
     Angle startingAngle;
     startingAngle.radians(THREE_HALVES_PI);
     this->players[0]->forceAngle(startingAngle);
-    this->players[0]->setPosition(tree::VectorZero);
 
-    this->players[0]->elements.add(Element::Hydrogen);
+    Vector startingPosition;
+    startingPosition.y = -this->homePlanet->getRadius();
+    this->players[0]->setPosition(startingPosition);
     this->players[0]->generate();
-
-    // Create home planet.
-    this->homePlanet = new Planet(Vector(0, 25.0f));
-    this->homePlanet->elements.add(Element::Hydrogen, 10);
-    this->homePlanet->generate();
 }
 
 tree::Layer::IntroMinigame::~IntroMinigame()
@@ -59,6 +61,10 @@ void tree::Layer::IntroMinigame::draw()
     this->window.clear(skyColor);
 
     this->window.setView(this->gameView);
-    this->homePlanet->draw(this->window, this->renderStates);
     this->players[0]->draw(this->window, this->renderStates);
+
+    // Let the player "sink" beneath the planet slightly.
+    sf::RenderStates planetRenderStates = this->renderStates;
+    planetRenderStates.transform.scale(1.1f, 1.1f);
+    this->homePlanet->draw(this->window, planetRenderStates);
 }

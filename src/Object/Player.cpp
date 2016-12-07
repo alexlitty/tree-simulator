@@ -99,6 +99,10 @@ void tree::Player::generate()
     Vector mid(7.0f, 1.5f);
     Vector end(0.0f, 3.0f);
 
+    if (this->elements.isEmpty()) {
+        mid.x = 2.5f;
+    }
+
     // Start the triangles fan.
     this->trunk.append(start.center(end));
 
@@ -110,11 +114,6 @@ void tree::Player::generate()
     unsigned int trunkVertexCount = this->trunk.getVertexCount();
     for (unsigned int i = 0; i < trunkVertexCount; i++) {
         this->trunk[i].color = woodColor;
-    }
-
-    // The tree is still a baby!
-    if (this->molecules.isEmpty()) {
-        return;
     }
 
     // Add decorative branches.
@@ -143,11 +142,13 @@ void tree::Player::generate()
         this->branches.push_back(branch);
 
         // Decorative leaves.
-        sf::CircleShape decorativeLeafShape(5.0f, 20);
-        tree::centerOrigin(decorativeLeafShape);
-        decorativeLeafShape.setPosition(mid);
-        decorativeLeafShape.setFillColor(color);
-        this->decorativeLeaves.push_back(decorativeLeafShape);
+        if (!this->elements.isEmpty()) {
+            sf::CircleShape decorativeLeafShape(5.0f, 20);
+            tree::centerOrigin(decorativeLeafShape);
+            decorativeLeafShape.setPosition(mid);
+            decorativeLeafShape.setFillColor(color);
+            this->decorativeLeaves.push_back(decorativeLeafShape);
+        }
     }
 
     // Destroy existing leaves.

@@ -123,6 +123,7 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
 
         return true;
     }
+    std::cout << "?????" << std::endl;
 
     // Update universe.
     universe->act();
