@@ -11,16 +11,16 @@
 // Constructor.
 tree::Layer::Game::Game(sf::RenderWindow &window)
 : m_window(window),
+  universe(nullptr),
   radar(this->players)
 {
     this->players.push_back(new tree::Player);
-    this->universe = new tree::Universe(this->players);
 
     this->debugText.setCharacterSize(18);
     this->debugText.setColor(sf::Color::White);
     this->debugText.setFont(tree::Font::Standard);
 
-    this->updateViews(true);
+    this->introMinigame = new Layer::IntroMinigame(this->m_window, this->players);
 }
 
 // Destructor.
@@ -32,6 +32,7 @@ tree::Layer::Game::~Game()
     for (auto player : this->players) {
         delete player;
     }
+    delete this->introMinigame;
 }
 
 // Updates views.
@@ -95,6 +96,22 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
     // Reset.
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
         return false;
+    }
+
+    // Play intro minigame.
+    if (this->introMinigame) {
+        if (true) { //!this->introMinigame->execute(events)) {
+            delete this->introMinigame;
+            this->introMinigame = nullptr;
+
+            this->universe = new tree::Universe(this->players);
+        }
+        
+        else {
+            this->introMinigame->draw();
+        }
+
+        return true;
     }
 
     // Perform physics.

@@ -9,7 +9,7 @@
 #include <tree/Component.hpp>
 #include <tree/Engine/Universe/Universe.hpp>
 #include <tree/Gui/Radar.hpp>
-#include <tree/Layer/Type.hpp>
+#include <tree/Layer/Minigame/Intro.hpp>
 #include <tree/Object/Background/Stars.hpp>
 #include <tree/Object/Player.hpp>
 
@@ -43,6 +43,9 @@ namespace tree
             unsigned int debugFrames;
             sf::Clock debugFramesClock;
 
+            // Minigames.
+            Layer::IntroMinigame* introMinigame;
+
         public:
             /**
              * Constructor.
@@ -64,7 +67,7 @@ namespace tree
             /**
              * Execute the Game.
              */
-            bool execute(std::vector<sf::Event> &events) override;
+            virtual bool execute(std::vector<sf::Event> &events) override;
         };
     }
 }
