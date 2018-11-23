@@ -1,13 +1,14 @@
-SOURCES=$(shell find src/ -type f -name '*.cpp')
+# Paths
+SRCPATH=src
+INCPATHS=include
+BUILDPATH=build
+
+# Files
+SOURCES=$(shell find src -type f -name '*.cpp')
 OBJECTS=$(SOURCES:.cpp=.o)
 
-# Paths
-SRCPATH=src/
-INCPATHS=include/
-BINPATH=bin
-
 # Linker flags
-LDFLAGS=-Llib -lBox2D -lGLEW -lsfml-system -lsfml-window -lsfml-graphics
+LDFLAGS=-Wl,-rpath,lib -Llib -lBox2D -lGLEW -lsfml-system -lsfml-window -lsfml-graphics
 
 # Background colors
 BG_WHITE=$$(tput setab 7)
@@ -58,7 +59,7 @@ $(GOAL): $(SOURCES_FILES) $(EXECUTABLE)
 $(EXECUTABLE): $(OBJECT_FILES)
 	@echo ""
 	@echo "$(BG_WHITE)$(FG_GREEN) Linking $(COLOR_RESET)"
-	$(CC) $(LDFLAGS) $(OBJECT_FILES) -o $(BINPATH)/$(GOAL)/$@
+	$(CC) $(LDFLAGS) $(OBJECT_FILES) -o $(BUILDPATH)/$(GOAL)/$@
 	@echo ""
 
 # Compile source into objects

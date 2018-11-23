@@ -6,6 +6,6 @@ else
     make linux64 -B -j 2
 fi
 if [ "$?" -eq "0" ]; then
-  cd ./bin/linux64
+  cd ./build/linux64
   ./treesimulator
 fi
