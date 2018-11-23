@@ -1,3 +1,4 @@
+#include <cmath>
 #include <tree/Math/Misc.hpp>
 #include <tree/Math/Vector.hpp>
 

@@ -1,3 +1,4 @@
+#include <cmath>
 #include <tree/Math/Constant.hpp>
 #include <tree/Math/Angle.hpp>
 
