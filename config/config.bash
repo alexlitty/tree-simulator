@@ -1,7 +1,10 @@
 set -Eeuo pipefail
 
-PATH_ROOT=$(cd $(dirname $0)/..; pwd)
+export PATH_ROOT=$(cd $(dirname $0)/..; pwd)
 
-PATH_BIN=${PATH_ROOT}/bin
-PATH_BUILD=${PATH_ROOT}/build
-PATH_CONFIG=${PATH_ROOT}/config
+export PATH_BIN=${PATH_ROOT}/bin
+export PATH_BUILD=${PATH_ROOT}/build
+export PATH_CONFIG=${PATH_ROOT}/config
+
+export PATH_INCLUDE=${PATH_ROOT}/include
+export PATH_SOURCE=${PATH_ROOT}/src

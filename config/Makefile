@@ -1,67 +1,33 @@
 GOAL = $(MAKECMDGOALS)
 
-# Paths
-SRCPATH=src
-INCPATHS=include
-BUILDPATH=build
+# Directories and files
+DIRS_INCLUDES=$(PATH_INCLUDE)
+FILES_SOURCES=$(shell find $(PATH_SOURCE) -type f -name '*.cpp')
+FILES_OBJECTS=$(FILES_SOURCES:%.cpp=%.o)
 
-# Linker flags
-LDFLAGS=-Wl,-rpath,lib -Llib -lBox2D -lGLEW -lsfml-system -lsfml-window -lsfml-graphics
-
-# Colors
-BG_WHITE=$$(tput setab 7)
-FG_RED=$$(tput setaf 1)
-FG_GREEN=$$(tput setaf 2)
-FG_YELLOW=$$(tput setaf 3)
-FG_BLUE=$$(tput setaf 4)
-FG_MAGENTA=$$(tput setaf 5)
-FG_CYAN=$$(tput setaf 6)
-COLOR_RESET=$$(tput sgr 0)
-
-# Source and object filepaths
-SOURCES=$(shell find src -type f -name '*.cpp')
-OBJECTS=$(SOURCES:%.cpp=%.o)
-SOURCE_FILES=$(SOURCES)
-OBJECT_FILES=$(OBJECTS)
-
-ifeq ($(GOAL), clean)
-	GOAL = 
-	SOURCE_FILES =
-endif
+FILES_EXECUTABLE_Darwin_i386=tree-simulator
+FILES_EXECUTABLE=$(PATH_BUILD)/$(GOAL)/$(FILES_EXECUTABLE_$(GOAL))
 
 # Compilers
 CC_Darwin_i386=g++
 CC = $(CC_$(GOAL))
 
-# Language-specific flags
-CFLAGS_Darwin_i386=-Wall -std=c++11 -g
-CFLAGS=$(CFLAGS_$(GOAL))
+# Flags
+FLAGS_INCLUDES=$(foreach TMP,$(DIRS_INCLUDES),-I$(TMP))
+FLAGS_LINKER=-Wl,-rpath,lib -Llib -lBox2D -lGLEW -lsfml-system -lsfml-window -lsfml-graphics
 
-INCFLAGS=$(foreach TMP,$(INCPATHS),-I$(TMP))
-EXECUTABLE_Darwin_i386=treesimulator
+FLAGS_C_Darwin_i386=-Wall -std=c++11 -g
+FLAGS_C=$(FLAGS_C_$(GOAL))
 
-PATH_EXECUTABLE=$(BUILDPATH)/$(GOAL)/$(EXECUTABLE_$(GOAL))
+# Targets
+$(GOAL): $(FILES_EXECUTABLE)
+	@: # Suppress the "nothing to be done" message.
 
-# Initial Target
-$(GOAL): $(SOURCES_FILES) $(PATH_EXECUTABLE)
-
-# Link into executable
-$(PATH_EXECUTABLE): $(OBJECT_FILES)
-	@echo ""
-	@echo "$(BG_WHITE)$(FG_GREEN) Linking $(COLOR_RESET)"
+$(FILES_EXECUTABLE): $(FILES_OBJECTS)
+	@echo "Linking: $@"
 	@mkdir -p $(dir $@)
-	$(CC) $(LDFLAGS) $(OBJECT_FILES) -o $@
-	@echo ""
+	@$(CC) $(FLAGS_LINKER) $(FILES_OBJECTS) -o $@
 
-# Compile source into objects
-.cpp.o:
-#	@echo "$(BG_WHITE)$(FG_BLUE) Compiling $< $(COLOR_RESET)"
-#	@mkdir -p $(dir $@)
-	$(CC) $(INCFLAGS) $(CFLAGS) -c $< -o $@
-#	@echo ""
-
-# Used to find all source files
-# Cleaning Target
-.PHONY: clean
-clean:
-	@find . -type f -name '*.o' -delete
+%.o: %.cpp
+	@echo "Compiling: $<"
+	@$(CC) $(FLAGS_INCLUDES) $(FLAGS_C) -c $< -o $@
