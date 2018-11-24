@@ -30,28 +30,27 @@ ifeq ($(GOAL), clean)
 endif
 
 # Compilers
-CC_linux64=g++
-CC_win32=i686-w64-mingw32-g++
+CC_Darwin_i386=g++
 CC = $(CC_$(GOAL))
 
 # Language-specific flags
-CFLAGS_linux64=-Wall -std=c++11 -g
-CFLAGS_win32=-Wall -std=c++0x -g
+CFLAGS_Darwin_i386=-Wall -std=c++11 -g
 CFLAGS=$(CFLAGS_$(GOAL))
 
 INCFLAGS=$(foreach TMP,$(INCPATHS),-I$(TMP))
-EXECUTABLE_linux64=treesimulator
-EXECUTABLE_win32=treesimulator.exe
-EXECUTABLE=$(EXECUTABLE_$(GOAL))
+EXECUTABLE_Darwin_i386=treesimulator
+
+PATH_EXECUTABLE=$(BUILDPATH)/$(GOAL)/$(EXECUTABLE_$(GOAL))
 
 # Initial Target
-$(GOAL): $(SOURCES_FILES) $(EXECUTABLE)
+$(GOAL): $(SOURCES_FILES) $(PATH_EXECUTABLE)
 
 # Link into executable
-$(EXECUTABLE): $(OBJECT_FILES)
+$(PATH_EXECUTABLE): $(OBJECT_FILES)
 	@echo ""
 	@echo "$(BG_WHITE)$(FG_GREEN) Linking $(COLOR_RESET)"
-	$(CC) $(LDFLAGS) $(OBJECT_FILES) -o $(BUILDPATH)/$(GOAL)/$@
+	@mkdir -p $(dir $@)
+	$(CC) $(LDFLAGS) $(OBJECT_FILES) -o $@
 	@echo ""
 
 # Compile source into objects
