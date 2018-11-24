@@ -1,41 +1,33 @@
+GOAL = $(MAKECMDGOALS)
+
 # Paths
 SRCPATH=src
 INCPATHS=include
 BUILDPATH=build
 
-# Files
-SOURCES=$(shell find src -type f -name '*.cpp')
-OBJECTS=$(SOURCES:.cpp=.o)
-
 # Linker flags
 LDFLAGS=-Wl,-rpath,lib -Llib -lBox2D -lGLEW -lsfml-system -lsfml-window -lsfml-graphics
 
-# Background colors
+# Colors
 BG_WHITE=$$(tput setab 7)
-
-# Foreground colors
 FG_RED=$$(tput setaf 1)
 FG_GREEN=$$(tput setaf 2)
 FG_YELLOW=$$(tput setaf 3)
 FG_BLUE=$$(tput setaf 4)
 FG_MAGENTA=$$(tput setaf 5)
 FG_CYAN=$$(tput setaf 6)
-
-# Other colors
 COLOR_RESET=$$(tput sgr 0)
- 
-# Goal-Based variables
-GOAL = $(MAKECMDGOALS)
+
+# Source and object filepaths
+SOURCES=$(shell find src -type f -name '*.cpp')
+OBJECTS=$(SOURCES:%.cpp=%.o)
+SOURCE_FILES=$(SOURCES)
+OBJECT_FILES=$(OBJECTS)
+
 ifeq ($(GOAL), clean)
 	GOAL = 
 	SOURCE_FILES =
 endif
-
-OBJECTS=$(SOURCES:%.cpp=%.o)
-#SOURCE_FILES=$(SOURCES:%=$(SRCPATH)%)
-#OBJECT_FILES=$(OBJECTS:%=$(SRCPATH)%)
-SOURCE_FILES =$(SOURCES)
-OBJECT_FILES=$(OBJECTS)
 
 # Compilers
 CC_linux64=g++
