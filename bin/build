@@ -3,7 +3,7 @@ source $(dirname $0)/../config/config.bash
 PATH_MAKEFILE=${PATH_CONFIG}/Makefile
 
 TARGET=$(uname -s)_$(uname -p)
-if [ ! -z $1 ]; then
+if [ $# -gt 0 ]; then
     TARGET=$1
 fi
 
