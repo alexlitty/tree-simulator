@@ -1,12 +1,16 @@
 GOAL = $(MAKECMDGOALS)
 
 # Directories and files
+DIR_TARGET=$(PATH_BUILD)/$(GOAL)
+DIR_RELEASE=$(DIR_TARGET)/release
+DIR_OBJECTS=$(DIR_TARGET)/obj
+
 DIRS_INCLUDES=$(PATH_INCLUDE)
 FILES_SOURCES=$(shell find $(PATH_SOURCE) -type f -name '*.cpp')
-FILES_OBJECTS=$(FILES_SOURCES:%.cpp=%.o)
+FILES_OBJECTS=$(subst $(PATH_SOURCE),$(DIR_OBJECTS),$(FILES_SOURCES:%.cpp=%.o))
 
-FILES_EXECUTABLE_Darwin_i386=tree-simulator
-FILES_EXECUTABLE=$(PATH_BUILD)/$(GOAL)/$(FILES_EXECUTABLE_$(GOAL))
+FILE_EXECUTABLE_Darwin_i386=tree-simulator
+FILE_EXECUTABLE=$(DIR_RELEASE)/$(FILE_EXECUTABLE_$(GOAL))
 
 # Compilers
 CC_Darwin_i386=g++
@@ -20,14 +24,15 @@ FLAGS_C_Darwin_i386=-Wall -std=c++11 -g
 FLAGS_C=$(FLAGS_C_$(GOAL))
 
 # Targets
-$(GOAL): $(FILES_EXECUTABLE)
+$(GOAL): $(FILE_EXECUTABLE)
 	@: # Suppress the "nothing to be done" message.
 
-$(FILES_EXECUTABLE): $(FILES_OBJECTS)
-	@echo "Linking: $@"
+$(FILE_EXECUTABLE): $(FILES_OBJECTS)
+	@echo "Link :: $@"
 	@mkdir -p $(dir $@)
 	@$(CC) $(FLAGS_LINKER) $(FILES_OBJECTS) -o $@
 
-$(PATH_ROOT)/src/%.o: $(PATH_ROOT)/src/%.cpp
-	@echo "Compiling: $<"
+$(DIR_OBJECTS)/%.o: $(PATH_SOURCE)/%.cpp
+	@echo "Comp :: $<"
+	@mkdir -p $(dir $@)
 	@$(CC) $(FLAGS_INCLUDES) $(FLAGS_C) -c $< -o $@
