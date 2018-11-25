@@ -28,6 +28,6 @@ $(FILES_EXECUTABLE): $(FILES_OBJECTS)
 	@mkdir -p $(dir $@)
 	@$(CC) $(FLAGS_LINKER) $(FILES_OBJECTS) -o $@
 
-%.o: %.cpp
+$(PATH_ROOT)/src/%.o: $(PATH_ROOT)/src/%.cpp
 	@echo "Compiling: $<"
 	@$(CC) $(FLAGS_INCLUDES) $(FLAGS_C) -c $< -o $@
