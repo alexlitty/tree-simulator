@@ -4,4 +4,4 @@ source $(dirname $0)/../config/config.bash
 TARGET=$(${PATH_BIN}/get-target)
 ${PATH_BIN}/build ${TARGET}
 
-${PATH_BUILD}/${TARGET}/tree-simulator
+${PATH_BUILD}/${TARGET}/release/tree-simulator

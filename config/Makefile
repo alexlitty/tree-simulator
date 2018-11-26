@@ -1,6 +1,10 @@
 GOAL = $(MAKECMDGOALS)
 
+# Dependencies
+LIBS=Box2D GLEW sfml-system sfml-window sfml-graphics
+
 # Directories and files
+DIR_LIBS=$(PATH_LIB)
 DIR_TARGET=$(PATH_BUILD)/$(GOAL)
 DIR_RELEASE=$(DIR_TARGET)/release
 
@@ -16,13 +20,20 @@ FILE_EXECUTABLE=$(DIR_RELEASE)/$(FILE_EXECUTABLE_$(GOAL))
 
 # Compilers
 CC_darwin-i386=g++
-CC = $(CC_$(GOAL))
+CC=$(CC_$(GOAL))
 
-# Flags
-FLAGS_C_darwin-i386=-Wall -std=c++11 -g -I$(DIR_INCLUDES)
-FLAGS_C=$(FLAGS_C_$(GOAL))
+CC_FLAGS_darwin-i386=-Wall -std=c++11 -g -I$(DIR_INCLUDES)
+CC_FLAGS=$(CC_FLAGS_$(GOAL))
 
-FLAGS_LINKER=-Wl,-rpath,lib -Llib -lBox2D -lGLEW -lsfml-system -lsfml-window -lsfml-graphics
+# Linkers
+CL_darwin-i386=g++
+CL=$(CL_$(GOAL))
+
+CL_FLAGS_darwin-i386=-Wl,-rpath,$(subst $(PATH_ROOT)/,,$(DIR_LIBS)) \
+                     $(addprefix -L,$(DIR_LIBS)) \
+                     $(addprefix -l,$(LIBS))
+
+CL_FLAGS=$(CL_FLAGS_$(GOAL))
 
 # Targets
 $(GOAL): $(FILE_EXECUTABLE)
@@ -31,9 +42,9 @@ $(GOAL): $(FILE_EXECUTABLE)
 $(FILE_EXECUTABLE): $(FILES_OBJECTS)
 	@echo "Link :: $@"
 	@mkdir -p $(dir $@)
-	@$(CC) $(FLAGS_LINKER) $(FILES_OBJECTS) -o $@
+	@$(CL) $(CL_FLAGS) $(FILES_OBJECTS) -o $@
 
 $(DIR_OBJECTS)/%.o: $(DIR_SOURCES)/%.cpp
 	@echo "Comp :: $<"
 	@mkdir -p $(dir $@)
-	@$(CC) $(FLAGS_INCLUDES) $(FLAGS_C) -c $< -o $@
+	@$(CC) $(CC_FLAGS) -c $< -o $@
