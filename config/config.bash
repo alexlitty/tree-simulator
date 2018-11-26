@@ -12,4 +12,5 @@ if [[ ! "${TREE_SIMULATOR_CONFIG:-}" ]]; then
     export PATH_LIB=${PATH_ROOT}/lib
     export PATH_INCLUDE=${PATH_ROOT}/include
     export PATH_SOURCE=${PATH_ROOT}/src
+    export PATH_ASSETS=${PATH_ROOT}/assets
 fi
