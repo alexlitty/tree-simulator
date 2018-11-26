@@ -11,15 +11,15 @@ FILES_SOURCES=$(shell find $(DIR_SOURCES) -type f -name '*.cpp')
 DIR_OBJECTS=$(DIR_TARGET)/obj
 FILES_OBJECTS=$(subst $(DIR_SOURCES),$(DIR_OBJECTS),$(FILES_SOURCES:%.cpp=%.o))
 
-FILE_EXECUTABLE_Darwin_i386=tree-simulator
+FILE_EXECUTABLE_darwin-i386=tree-simulator
 FILE_EXECUTABLE=$(DIR_RELEASE)/$(FILE_EXECUTABLE_$(GOAL))
 
 # Compilers
-CC_Darwin_i386=g++
+CC_darwin-i386=g++
 CC = $(CC_$(GOAL))
 
 # Flags
-FLAGS_C_Darwin_i386=-Wall -std=c++11 -g -I$(DIR_INCLUDES)
+FLAGS_C_darwin-i386=-Wall -std=c++11 -g -I$(DIR_INCLUDES)
 FLAGS_C=$(FLAGS_C_$(GOAL))
 
 FLAGS_LINKER=-Wl,-rpath,lib -Llib -lBox2D -lGLEW -lsfml-system -lsfml-window -lsfml-graphics
