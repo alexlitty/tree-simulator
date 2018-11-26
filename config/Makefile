@@ -3,11 +3,13 @@ GOAL = $(MAKECMDGOALS)
 # Directories and files
 DIR_TARGET=$(PATH_BUILD)/$(GOAL)
 DIR_RELEASE=$(DIR_TARGET)/release
-DIR_OBJECTS=$(DIR_TARGET)/obj
 
-DIRS_INCLUDES=$(PATH_INCLUDE)
-FILES_SOURCES=$(shell find $(PATH_SOURCE) -type f -name '*.cpp')
-FILES_OBJECTS=$(subst $(PATH_SOURCE),$(DIR_OBJECTS),$(FILES_SOURCES:%.cpp=%.o))
+DIR_INCLUDES=$(PATH_INCLUDE)
+DIR_SOURCES=$(PATH_SOURCE)
+FILES_SOURCES=$(shell find $(DIR_SOURCES) -type f -name '*.cpp')
+
+DIR_OBJECTS=$(DIR_TARGET)/obj
+FILES_OBJECTS=$(subst $(DIR_SOURCES),$(DIR_OBJECTS),$(FILES_SOURCES:%.cpp=%.o))
 
 FILE_EXECUTABLE_Darwin_i386=tree-simulator
 FILE_EXECUTABLE=$(DIR_RELEASE)/$(FILE_EXECUTABLE_$(GOAL))
@@ -17,11 +19,10 @@ CC_Darwin_i386=g++
 CC = $(CC_$(GOAL))
 
 # Flags
-FLAGS_INCLUDES=$(foreach TMP,$(DIRS_INCLUDES),-I$(TMP))
-FLAGS_LINKER=-Wl,-rpath,lib -Llib -lBox2D -lGLEW -lsfml-system -lsfml-window -lsfml-graphics
-
-FLAGS_C_Darwin_i386=-Wall -std=c++11 -g
+FLAGS_C_Darwin_i386=-Wall -std=c++11 -g -I$(DIR_INCLUDES)
 FLAGS_C=$(FLAGS_C_$(GOAL))
+
+FLAGS_LINKER=-Wl,-rpath,lib -Llib -lBox2D -lGLEW -lsfml-system -lsfml-window -lsfml-graphics
 
 # Targets
 $(GOAL): $(FILE_EXECUTABLE)
@@ -32,7 +33,7 @@ $(FILE_EXECUTABLE): $(FILES_OBJECTS)
 	@mkdir -p $(dir $@)
 	@$(CC) $(FLAGS_LINKER) $(FILES_OBJECTS) -o $@
 
-$(DIR_OBJECTS)/%.o: $(PATH_SOURCE)/%.cpp
+$(DIR_OBJECTS)/%.o: $(DIR_SOURCES)/%.cpp
 	@echo "Comp :: $<"
 	@mkdir -p $(dir $@)
 	@$(CC) $(FLAGS_INCLUDES) $(FLAGS_C) -c $< -o $@
