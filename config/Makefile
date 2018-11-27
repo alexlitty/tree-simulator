@@ -19,7 +19,8 @@ FILE_EXECUTABLE=$(DIR_RELEASE)/$(FILE_EXECUTABLE_$(GOAL))
 # Dependencies
 LIBS=Box2D GLEW sfml-system sfml-window sfml-graphics
 
-ASSET_SOURCES=$(shell find $(PATH_ASSETS) -type f)
+# todo: Improve libs per platform
+ASSET_SOURCES=$(shell find $(PATH_ASSETS) $(DIR_LIBS) -type f)
 ASSET_TARGETS=$(subst $(PATH_ROOT),$(DIR_RELEASE),$(ASSET_SOURCES))
 
 # Compilers

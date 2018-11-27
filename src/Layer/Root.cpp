@@ -30,27 +30,27 @@ bool tree::Layer::Root::execute(std::vector<sf::Event> &events)
     sf::Event event;
 
     // Font resources.
-    if (!tree::Font::Header.loadFromFile("lobster.otf")) {
+    if (!tree::Font::Header.loadFromFile("assets/lobster.otf")) {
         throw tree::Error("Could not load header font.");
     }
-    if (!tree::Font::Standard.loadFromFile("glacial.otf")) {
+    if (!tree::Font::Standard.loadFromFile("assets/glacial.otf")) {
         throw tree::Error("Could not load standard font.");
     }
 
     // Shader resources.
-    if (!tree::Shader::ForceAlpha.loadFromFile("ForceAlpha.shader", sf::Shader::Vertex)) {
+    if (!tree::Shader::ForceAlpha.loadFromFile("assets/ForceAlpha.shader", sf::Shader::Vertex)) {
         throw tree::Error("Could not load alpha shader.");
     }
-    if (!tree::Shader::Fisheye.loadFromFile("Fisheye.shader", sf::Shader::Fragment)) {
+    if (!tree::Shader::Fisheye.loadFromFile("assets/Fisheye.shader", sf::Shader::Fragment)) {
         throw tree::Error("Could not load fisheye shader.");
     }
     tree::Shader::Fisheye.setParameter("texture", sf::Shader::CurrentTexture);
 
-    if (!tree::Shader::NoiseSimple.loadFromFile("NoiseSimple.glsl", sf::Shader::Fragment)) {
+    if (!tree::Shader::NoiseSimple.loadFromFile("assets/NoiseSimple.glsl", sf::Shader::Fragment)) {
         throw tree::Error("Could not load simple noise shader.");
     }
 
-    if (!tree::Shader::Fragment::Test.loadFromFile("Test.frag", sf::Shader::Fragment)) {
+    if (!tree::Shader::Fragment::Test.loadFromFile("assets/Test.frag", sf::Shader::Fragment)) {
         throw tree::Error("Could not load test fragment shader.");
     }
     tree::Shader::Fragment::Test.setParameter("texture", sf::Shader::CurrentTexture);
