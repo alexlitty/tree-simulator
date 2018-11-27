@@ -9,7 +9,6 @@ tree::Layer::Menu::Menu(sf::RenderWindow& window)
   m_subheader("Press any key to be a tree", tree::Font::Header, 26),
   m_version("", tree::Font::Header, 26),
   m_blinker(0),
-  m_fresh(true),
   next(nullptr)
 {
     m_window.setView(m_window.getDefaultView());

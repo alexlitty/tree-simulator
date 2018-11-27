@@ -5,7 +5,6 @@
 // Constructor.
 tree::Message::Message(std::string msg, tree::MESSAGE initStyle, unsigned int ticks, unsigned int level)
 : m_ticks(ticks),
-  m_level(level),
   m_text(msg, tree::Font::Standard, 16),
   m_prioritized(false),
   style(initStyle)

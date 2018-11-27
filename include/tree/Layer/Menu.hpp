@@ -21,9 +21,6 @@ namespace tree
             // Counter for blinking the subheader.
             unsigned char m_blinker;
 
-            // Whether this class has been freshly created.
-            bool m_fresh;
-
         public:
             // Next layer to execute. Undefined until menu ends.
             tree::Layer::Type *next;

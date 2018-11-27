@@ -23,12 +23,6 @@ namespace tree
         // Ticks remaining to display this message.
         unsigned int m_ticks;
 
-        // Whether this message is visible.
-        bool m_messageVisible;
-
-        // Vertical level of this message. 0 for bottom-aligned.
-        unsigned int m_level;
-
         // Drawing shapes.
         sf::RectangleShape m_wrapper;
         sf::RectangleShape m_wrapperShadow;
