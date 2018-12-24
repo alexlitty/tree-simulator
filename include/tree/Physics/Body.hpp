@@ -47,6 +47,18 @@ namespace tree
             bool getFixedRotation() const;
 
             /**
+             * Linear velocity.
+             */
+            void setLinearVelocity(tree::Vector velocity);
+            tree::Vector getLinearVelocity() const;
+
+            /**
+             * Applying force.
+             */
+            void applyForce(tree::Vector force);
+            void applyTorque(float torque);
+
+            /**
              * Miscellaneous setters.
              */
             void setType(b2BodyType type);

@@ -88,6 +88,28 @@ bool tree::physics::Body::getFixedRotation() const
     return this->body->IsFixedRotation();
 }
 
+// Linear velocity.
+void tree::physics::Body::setLinearVelocity(tree::Vector velocity)
+{
+    this->body->SetLinearVelocity(velocity);
+}
+
+tree::Vector tree::physics::Body::getLinearVelocity() const
+{
+    return this->body->GetLinearVelocity();
+}
+
+// Applying force.
+void tree::physics::Body::applyForce(tree::Vector force)
+{
+    this->body->ApplyForceToCenter(force, true);
+}
+
+void tree::physics::Body::applyTorque(float torque)
+{
+    this->body->ApplyTorque(torque, true);
+}
+
 // Miscellaneous setters.
 void tree::physics::Body::setType(b2BodyType type)
 {
