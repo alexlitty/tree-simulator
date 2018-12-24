@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include <tree/Component/Drawable.hpp>
 #include <tree/Math.hpp>
+#include <tree/Physics/Body.hpp>
 #include <tree/Physics/World.hpp>
 
 namespace tree
@@ -17,6 +18,7 @@ namespace tree
     class Physical : virtual public Drawable
     {
     protected:
+        physics::Body body;
 
         // Physical body.
         b2Body *m_body;

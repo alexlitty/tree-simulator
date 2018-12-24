@@ -39,3 +39,8 @@ void tree::physics::Body::setFixedRotation(bool fixedRotation)
 {
     this->body->SetFixedRotation(fixedRotation);
 }
+
+b2Body* tree::physics::Body::getInternalBody()
+{
+    return this->body;
+}

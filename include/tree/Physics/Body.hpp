@@ -23,6 +23,8 @@ namespace tree
             void setType(b2BodyType type);
             void setAngularDamping(float angularDamping);
             void setFixedRotation(bool fixedRotation);
+
+            b2Body* getInternalBody();
         };
     }
 }
