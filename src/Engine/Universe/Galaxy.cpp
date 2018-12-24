@@ -47,7 +47,6 @@ tree::Galaxy::Galaxy(std::vector<tree::Player*> &initPlayers)
         }
 
         planet->generate();
-        planet->enablePhysics();
         this->planets.push_back(planet);
     }
 

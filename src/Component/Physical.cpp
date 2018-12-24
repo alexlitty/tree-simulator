@@ -2,17 +2,6 @@
 #include <tree/Engine/Constant.hpp>
 #include <tree/Utility/Collection.hpp>
 
-// Enables physics.
-void tree::Physical::enablePhysics()
-{
-    m_body->SetActive(true);
-}
-
-void tree::Physical::disablePhysics()
-{
-    m_body->SetActive(false);
-}
-
 // Create a body and add it to the physics system.
 void tree::Physical::setBody(b2BodyDef &bodyDef)
 {
