@@ -32,12 +32,6 @@ tree::Physical::Physical()
 // Destructor.
 tree::Physical::~Physical()
 {
-    // Delete joints.
-    for (auto joint : m_joints) {
-        removeJoint(joint);
-    }
-
-    // Delete body, and all other dependent objects.
     deleteBody();
 }
 
@@ -51,58 +45,6 @@ b2Fixture* tree::Physical::addFixture(b2FixtureDef &fixtureDef)
 void tree::Physical::updateMass()
 {
     m_body->ResetMassData();
-}
-
-// Add a distance joint.
-void tree::Physical::distanceJoint(Physical &other, Vector thisAnchor, Vector otherAnchor, bool localize)
-{
-    // Localize points.
-    thisAnchor = m_body->GetLocalPoint(thisAnchor);
-    otherAnchor = m_body->GetLocalPoint(otherAnchor);
-
-    // Create joint.
-    b2DistanceJointDef def;
-    def.Initialize(m_body, other.m_body, thisAnchor, otherAnchor);
-    def.frequencyHz = 0.0f;
-    def.dampingRatio = 1.0f;
-    b2Joint *joint = tree::physics::world.CreateJoint(&def);
-
-    // Track joint.
-    trackJoint(joint);
-    other.trackJoint(joint);
-}
-
-// Add a joint to be tracked.
-void tree::Physical::trackJoint(b2Joint *joint)
-{
-    m_joints.push_back(joint);
-}
-
-// Removes a joint.
-void tree::Physical::removeJoint(b2Joint *joint, bool fromOther)
-{
-    // Remove reference.
-    tree::remove(m_joints, joint);
-
-    // Other object has removed their reference. Destroy joint.
-    if (fromOther) {
-        tree::physics::world.DestroyJoint(joint);
-    }
-
-    // Or, let other object remove joint.
-    else {
-        Physical *other = reinterpret_cast<Physical*>(
-            joint->GetBodyA()->GetUserData()
-        );
-
-        if (other == this) {
-            other = reinterpret_cast<Physical*>(
-                joint->GetBodyB()->GetUserData()
-            );
-        }
-
-        other->removeJoint(joint, true);
-    }
 }
 
 // Handle a collision with another physical object.

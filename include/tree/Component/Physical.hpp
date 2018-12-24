@@ -35,9 +35,6 @@ namespace tree
          */
         void deleteBody();
 
-        // List of active joints.
-        std::vector<b2Joint*> m_joints;
-
         // Default thrust power.
         float m_thrustPower = 7500.0f;
 
@@ -80,21 +77,6 @@ namespace tree
          * Updates the mass of this body.
          */
         void updateMass();
-
-        /**
-         * Add a distance joint.
-         */
-        void distanceJoint(Physical &other, Vector thisPosition, Vector otherPosition, bool localize = true);
-
-        /**
-         * Adds a joint to be tracked.
-         */
-        void trackJoint(b2Joint *joint);
-
-        /**
-         * Removes a joint.
-         */
-        void removeJoint(b2Joint *joint, bool fromOther = false);
 
         /**
          * Handle a collision with another physical object.
