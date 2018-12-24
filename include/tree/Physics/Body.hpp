@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Box2D/Box2D.h>
+#include <tree/Math/Vector.hpp>
 
 namespace tree
 {
@@ -12,8 +12,16 @@ namespace tree
             b2Body* body;
 
         public:
-            Body();
+            Body(
+                bool dynamic = true,
+                tree::Vector position = tree::VectorZero
+            );
+
             ~Body();
+
+            void setType(b2BodyType type);
+            void setAngularDamping(float angularDamping);
+            void setFixedRotation(bool fixedRotation);
         };
     }
 }
