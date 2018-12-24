@@ -9,7 +9,7 @@ int main()
     //sf::err().rdbuf(nullptr);
 
     // Prepare Box2D.
-    tree::world.SetContactListener(&tree::collisions);
+    tree::physics::world.SetContactListener(&tree::collisions);
 
     // Prepare events container.
     std::vector<sf::Event> events;

@@ -22,14 +22,14 @@ void tree::Physical::setBody(b2BodyDef &bodyDef)
     if (m_body != nullptr) {
         deleteBody();
     }
-    m_body = tree::world.CreateBody(&bodyDef);
+    m_body = tree::physics::world.CreateBody(&bodyDef);
 }
 
 // Deletes the current body and removes it from the physics system.
 void tree::Physical::deleteBody()
 {
     if (m_body != nullptr) {
-        tree::world.DestroyBody(m_body);
+        tree::physics::world.DestroyBody(m_body);
     }
 }
 
@@ -76,7 +76,7 @@ void tree::Physical::distanceJoint(Physical &other, Vector thisAnchor, Vector ot
     def.Initialize(m_body, other.m_body, thisAnchor, otherAnchor);
     def.frequencyHz = 0.0f;
     def.dampingRatio = 1.0f;
-    b2Joint *joint = tree::world.CreateJoint(&def);
+    b2Joint *joint = tree::physics::world.CreateJoint(&def);
 
     // Track joint.
     trackJoint(joint);
@@ -97,7 +97,7 @@ void tree::Physical::removeJoint(b2Joint *joint, bool fromOther)
 
     // Other object has removed their reference. Destroy joint.
     if (fromOther) {
-        tree::world.DestroyJoint(joint);
+        tree::physics::world.DestroyJoint(joint);
     }
 
     // Or, let other object remove joint.

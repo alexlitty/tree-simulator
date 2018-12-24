@@ -104,7 +104,7 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
 
     // Perform physics.
     tree::collisions.clear();
-    tree::world.Step(1.0 / 120.0f, 20, 20);
+    tree::physics::world.Step(1.0 / 120.0f, 20, 20);
     tree::collisions.resolve();
 
     // Start the game.
@@ -198,7 +198,7 @@ bool tree::Layer::Game::execute(std::vector<sf::Event> &events)
         debugText.setPosition(debugPosition);
         debugText.setString(
             "Physics objects: "
-            + std::to_string(tree::world.GetBodyCount())
+            + std::to_string(tree::physics::world.GetBodyCount())
         );
         m_window.draw(debugText);
 

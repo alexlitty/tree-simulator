@@ -7,8 +7,10 @@
 
 namespace tree
 {
-    // Instance of the main Box2D world.
-    extern b2World world;
+    namespace physics
+    {
+        extern b2World world;
+    }
 }
 
 #endif
