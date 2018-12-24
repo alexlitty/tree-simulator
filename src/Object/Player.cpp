@@ -39,22 +39,6 @@ tree::Player::Player()
     Angle startingAngle;
     startingAngle.radians(THREE_HALVES_PI);
     this->setAngle(startingAngle);
-
-    // Initial molecule.
-    /*switch (tree::random(0, 2)) {
-        case 0:
-            this->elements.add(Element::Hydrogen, 1);
-            break;
-
-        case 1:
-            this->elements.add(Element::Oxygen, 1);
-            break;
-
-        default:
-            this->elements.add(Element::Hydrogen, 2);
-            this->elements.add(Element::Oxygen, 1);
-            break;
-    }*/
 }
 
 // Destructor.
