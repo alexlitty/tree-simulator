@@ -20,6 +20,11 @@ tree::physics::Body::~Body()
     tree::physics::world.DestroyBody(this->body);
 }
 
+void tree::physics::Body::setOwner(void *owner)
+{
+    this->body->SetUserData(owner);
+}
+
 void tree::physics::Body::setType(b2BodyType type)
 {
     this->body->SetType(type);

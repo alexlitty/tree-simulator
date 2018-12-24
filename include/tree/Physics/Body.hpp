@@ -19,6 +19,7 @@ namespace tree
 
             ~Body();
 
+            void setOwner(void *owner);
             void setType(b2BodyType type);
             void setAngularDamping(float angularDamping);
             void setFixedRotation(bool fixedRotation);
