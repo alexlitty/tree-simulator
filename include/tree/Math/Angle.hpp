@@ -14,6 +14,12 @@ namespace tree
     public:
 
         /**
+         * Quick angle creation.
+         */
+        static Angle fromRadians(float v);
+        static Angle fromDegrees(float v);
+
+        /**
          * Default constructor.
          */
         Angle();

@@ -2,6 +2,21 @@
 #include <tree/Math/Constant.hpp>
 #include <tree/Math/Angle.hpp>
 
+// Quick angle creation.
+tree::Angle tree::Angle::fromRadians(float v)
+{
+    tree::Angle angle;
+    angle.radians(v);
+    return angle;
+}
+
+tree::Angle tree::Angle::fromDegrees(float v)
+{
+    tree::Angle angle;
+    angle.degrees(v);
+    return angle;
+}
+
 // Default constructor.
 tree::Angle::Angle()
 {
